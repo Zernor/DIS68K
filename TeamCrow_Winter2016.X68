@@ -15,8 +15,9 @@ START:                  ; first instruction of program
     SIMHALT             ; halt simulator
 
 * Put variables and constants here
-MESSAGE DC.B    'HELLO, THIS IS MY FIRST COMMIT',0 
+MESSAGE DC.B    'HELLO, THIS IS MY FIRST COMMIT - Tenzin',0 
     END    START        ; last line of source
+
 
 
 
