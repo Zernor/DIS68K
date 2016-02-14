@@ -1,26 +1,38 @@
 00001000 Starting Address
 Assembler used: EASy68K Editor/Assembler v5.15.04
-Created On: 2/13/2016 2:13:58 PM
+Created On: 2/13/2016 7:40:43 PM
 
 00000000                             1  *-----------------------------------------------------------
 00000000                             2  * Title      :  68K Disassembler
-00000000                             3  * Written by :  Hoa, Tenzin, Marco F.
+00000000                             3  * Written by :  Hoa, Tenzin Khando, Marco F.
 00000000                             4  * Date       :
-00000000                             5  * Description:  68k disassembler 
+00000000                             5  * Description:  Awesome 68k disassembler 
 00000000                             6  *-----------------------------------------------------------
-00000000                             7      
-00001000                             8      ORG    $1000
-00001000                             9  START:                  ; first instruction of program
-00001000                            10  
-00001000                            11  * Put program code here
-00001000  43F9 00001010             12      LEA         MESSAGE, A1
-00001006  103C 000E                 13      MOVE.B      #14,D0
-0000100A  4E4F                      14      TRAP        #15
-0000100C  FFFF FFFF                 15      SIMHALT             ; halt simulator
-00001010                            16  
-00001010                            17  * Put variables and constants here
-00001010= 48 45 4C 4C 4F 2C ...     18  MESSAGE DC.B    'HELLO, THIS IS MY FIRST COMMIT',0 
-0000102F                            19      END    START        ; last line of source
+00000000  =0000000D                  7  CR        EQU       $0D
+00000000  =0000000A                  8  LF        EQU       $0A
+00000000                             9  
+00001000                            10      ORG    $1000
+00001000                            11  START:                 
+00001000                            12  
+00001000                            13  * Put program code here
+00001000  43F9 0000101C             14  MESSAGE     LEA         GREETING, A1
+00001006  103C 000E                 15              MOVE.B      #14,D0
+0000100A  4E4F                      16              TRAP        #15
+0000100C                            17      
+0000100C  43F9 0000104D             18  GETDATA     LEA       PROMPT,A1    
+00001012  103C 000E                 19              MOVE.B    #14,D0       
+00001016  4E4F                      20              TRAP      #15    
+00001018                            21      
+00001018                            22      
+00001018                            23      
+00001018  FFFF FFFF                 24      SIMHALT             ; halt simulator
+0000101C                            25  
+0000101C                            26  * Put variables and constants here
+0000101C= 48 45 4C 4C 4F 20 ...     27  GREETING        DC.B    'HELLO THERE, WELCOME TO AWESOME DISASSEMBLER',CR,LF,CR,LF,0 
+0000104D= 50 4C 45 41 53 45 ...     28  PROMPT          DC.B    'PLEASE ENTER THE STARTING ADDRESS ',0
+00001070= 50 4C 45 41 53 45 ...     29  PROMPT2         DC.B    'PLEASE ENTER THE ENDING ADDRESS ',0
+00001091                            30  
+00001091                            31      END    START        ; last line of source
 
 No errors detected
 No warnings generated
@@ -29,5 +41,11 @@ No warnings generated
 SYMBOL TABLE INFORMATION
 Symbol-name         Value
 -------------------------
-MESSAGE             1010
+CR                  D
+GETDATA             100C
+GREETING            101C
+LF                  A
+MESSAGE             1000
+PROMPT              104D
+PROMPT2             1070
 START               1000

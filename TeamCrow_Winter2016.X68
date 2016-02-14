@@ -4,19 +4,33 @@
 * Date       :
 * Description:  Awesome 68k disassembler 
 *-----------------------------------------------------------
-    
+CR        EQU       $0D
+LF        EQU       $0A
+
     ORG    $1000
-START:                  ; first instruction of program
+START:                 
 
 * Put program code here
-    LEA         MESSAGE, A1
-    MOVE.B      #14,D0
-    TRAP        #15
+MESSAGE     LEA         GREETING, A1
+            MOVE.B      #14,D0
+            TRAP        #15
+    
+GETDATA     LEA       PROMPT,A1    
+            MOVE.B    #14,D0       
+            TRAP      #15    
+    
+    
+    
     SIMHALT             ; halt simulator
 
 * Put variables and constants here
-MESSAGE DC.B    'HELLO, THIS IS MY FIRST COMMIT - Tenzin',0 
+GREETING        DC.B    'HELLO THERE, WELCOME TO AWESOME DISASSEMBLER',CR,LF,CR,LF,0 
+PROMPT          DC.B    'PLEASE ENTER THE STARTING ADDRESS ',0
+PROMPT2         DC.B    'PLEASE ENTER THE ENDING ADDRESS ',0
+
     END    START        ; last line of source
+
+
 
 
 
