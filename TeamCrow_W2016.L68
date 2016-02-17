@@ -1,6 +1,6 @@
 00001000 Starting Address
 Assembler used: EASy68K Editor/Assembler v5.15.04
-Created On: 2/13/2016 7:40:43 PM
+Created On: 2/16/2016 6:45:26 PM
 
 00000000                             1  *-----------------------------------------------------------
 00000000                             2  * Title      :  68K Disassembler
@@ -15,24 +15,27 @@ Created On: 2/13/2016 7:40:43 PM
 00001000                            11  START:                 
 00001000                            12  
 00001000                            13  * Put program code here
-00001000  43F9 0000101C             14  MESSAGE     LEA         GREETING, A1
+00001000  43F9 00001022             14  MESSAGE     LEA         GREETING, A1
 00001006  103C 000E                 15              MOVE.B      #14,D0
 0000100A  4E4F                      16              TRAP        #15
 0000100C                            17      
-0000100C  43F9 0000104D             18  GETDATA     LEA       PROMPT,A1    
+0000100C  43F9 00001053             18  GETDATA     LEA       PROMPT,A1    
 00001012  103C 000E                 19              MOVE.B    #14,D0       
-00001016  4E4F                      20              TRAP      #15    
-00001018                            21      
-00001018                            22      
-00001018                            23      
-00001018  FFFF FFFF                 24      SIMHALT             ; halt simulator
-0000101C                            25  
-0000101C                            26  * Put variables and constants here
-0000101C= 48 45 4C 4C 4F 20 ...     27  GREETING        DC.B    'HELLO THERE, WELCOME TO AWESOME DISASSEMBLER',CR,LF,CR,LF,0 
-0000104D= 50 4C 45 41 53 45 ...     28  PROMPT          DC.B    'PLEASE ENTER THE STARTING ADDRESS ',0
-00001070= 50 4C 45 41 53 45 ...     29  PROMPT2         DC.B    'PLEASE ENTER THE ENDING ADDRESS ',0
-00001091                            30  
-00001091                            31      END    START        ; last line of source
+00001016  4E4F                      20              TRAP      #15
+00001018                            21              
+00001018  103C 0004                 22              MOVE.B    #4, D0
+0000101C  4E4F                      23              TRAP      #15    
+0000101E                            24      
+0000101E                            25      
+0000101E                            26      
+0000101E  FFFF FFFF                 27      SIMHALT             ; halt simulator
+00001022                            28  
+00001022                            29  * Put variables and constants here
+00001022= 48 45 4C 4C 4F 20 ...     30  GREETING        DC.B    'HELLO THERE, WELCOME TO AWESOME DISASSEMBLER',CR,LF,CR,LF,0 
+00001053= 50 4C 45 41 53 45 ...     31  PROMPT          DC.B    'PLEASE ENTER THE STARTING ADDRESS ',CR,LF,0
+00001078= 50 4C 45 41 53 45 ...     32  PROMPT2         DC.B    'PLEASE ENTER THE ENDING ADDRESS ',CR,LF,0
+0000109B                            33  
+0000109B                            34      END    START        ; last line of source
 
 No errors detected
 No warnings generated
@@ -43,9 +46,9 @@ Symbol-name         Value
 -------------------------
 CR                  D
 GETDATA             100C
-GREETING            101C
+GREETING            1022
 LF                  A
 MESSAGE             1000
-PROMPT              104D
-PROMPT2             1070
+PROMPT              1053
+PROMPT2             1078
 START               1000
