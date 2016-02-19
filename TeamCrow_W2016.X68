@@ -11,17 +11,17 @@ LF        EQU       $0A
 START:                 
 
 * Put program code here
-MESSAGE     LEA         GREETING, A1
+MESSAGE     LEA         GREETING, A1 load the greeting message
             MOVE.B      #14,D0
             TRAP        #15
     
-LOOP        LEA         PROMPT,A1    
+LOOP        LEA         PROMPT,A1    load the message asked for starting address
             MOVE.B      #14,D0       
             TRAP        #15
             
-            MOVE.B      #4, D0
+            MOVE.B      #4, D0      Task 4: read a number from keyborad into D1
             TRAP        #15
-            CMP.W       #4000,D1    ;if the value entered is 4000
+            CMP.W       #4000,D1    ;comapare number in D1 to 4000, if the value entered is 4000 
             BNE         ERROR       ;else display error
             LEA         DATA, A1
             MOVE        #14, D0
@@ -42,6 +42,8 @@ PROMPT2         DC.B    'PLEASE ENTER THE ENDING ADDRESS: ',CR,LF,0
 DATA            DC.B    'WE ARE AT ADDRESS 4000',CR,LF,0
 WRONG           DC.B    'WE ARE NOT AT ADDRESS 4000',0
     END    START        ; last line of source
+
+
 
 
 
