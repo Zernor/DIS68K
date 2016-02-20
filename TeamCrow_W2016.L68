@@ -1,6 +1,6 @@
 00000400 Starting Address
 Assembler used: EASy68K Editor/Assembler v5.15.04
-Created On: 2/16/2016 8:39:03 PM
+Created On: 2/20/2016 1:35:00 PM
 
 00000000                             1  *-----------------------------------------------------------
 00000000                             2  * Title      :  68K Disassembler
@@ -8,44 +8,102 @@ Created On: 2/16/2016 8:39:03 PM
 00000000                             4  * Date       :
 00000000                             5  * Description:  Awesome 68k disassembler 
 00000000                             6  *-----------------------------------------------------------
-00000000  =0000000D                  7  CR        EQU       $0D
-00000000  =0000000A                  8  LF        EQU       $0A
-00000000                             9  
-00000400                            10      ORG    $400
-00000400                            11  START:                 
-00000400                            12  
-00000400                            13  * Put program code here
-00000400  43F9 00000444             14  MESSAGE     LEA         GREETING, A1
-00000406  103C 000E                 15              MOVE.B      #14,D0
-0000040A  4E4F                      16              TRAP        #15
-0000040C                            17      
-0000040C  43F9 00000475             18  LOOP        LEA         PROMPT,A1    
-00000412  103C 000E                 19              MOVE.B      #14,D0       
-00000416  4E4F                      20              TRAP        #15
-00000418                            21              
-00000418  103C 0004                 22              MOVE.B      #4, D0
-0000041C  4E4F                      23              TRAP        #15
-0000041E  B27C 0FA0                 24              CMP.W       #4000,D1    ;if the value entered is 4000
-00000422  6600 0010                 25              BNE         ERROR       ;else display error
-00000426  43F9 000004BF             26              LEA         DATA, A1
-0000042C  303C 000E                 27              MOVE        #14, D0
-00000430  4E4F                      28              TRAP        #15
-00000432  60D8                      29              BRA         LOOP    
-00000434                            30              
-00000434  43F9 000004D8             31  ERROR       LEA         WRONG,A1
-0000043A  103C 000E                 32              MOVE.B      #14,D0
-0000043E  4E4F                      33              TRAP        #15       
-00000440                            34      
-00000440                            35      
-00000440  FFFF FFFF                 36      SIMHALT             ; halt simulator
-00000444                            37  
-00000444                            38  * Put variables and constants here
-00000444= 48 45 4C 4C 4F 20 ...     39  GREETING        DC.B    'HELLO THERE, WELCOME TO AWESOME DISASSEMBLER',CR,LF,CR,LF,0 
-00000475= 50 4C 45 41 53 45 ...     40  PROMPT          DC.B    'PLEASE ENTER THE STARTING ADDRESS: ',0,CR,LF
-0000049B= 50 4C 45 41 53 45 ...     41  PROMPT2         DC.B    'PLEASE ENTER THE ENDING ADDRESS: ',CR,LF,0
-000004BF= 57 45 20 41 52 45 ...     42  DATA            DC.B    'WE ARE AT ADDRESS 4000',CR,LF,0
-000004D8= 57 45 20 41 52 45 ...     43  WRONG           DC.B    'WE ARE NOT AT ADDRESS 4000',0
-000004F3                            44      END    START        ; last line of source
+00000000                             7  
+00000000                             8  * Global Variables -----------------------------------------
+00000000  =00007000                  9  startLoc    EQU     $7000
+00000000  =00000FFE                 10  stack       EQU     $0FFE       * stack pointer (SP)
+00000000                            11  
+00000000                            12  * Hex values -----------------------------------------------  
+00000000  =00000000                 13  numzero     EQU     0  
+00000000  =00000001                 14  numone      EQU     1
+00000000  =00000002                 15  numtwo      EQU     2
+00000000  =00000003                 16  numthree    EQU     3
+00000000  =00000004                 17  numfour     EQU     4
+00000000  =00000005                 18  numfive     EQU     5
+00000000  =00000006                 19  numsix      EQU     6
+00000000  =00000007                 20  numseven    EQU     7
+00000000  =00000008                 21  numeight    EQU     8
+00000000  =00000009                 22  numnine     EQU     9
+00000000  =0000000A                 23  numA        EQU     10
+00000000  =0000000B                 24  numB        EQU     11
+00000000  =0000000C                 25  numC        EQU     12
+00000000  =0000000D                 26  numD        EQU     13
+00000000  =0000000E                 27  numE        EQU     $E
+00000000  =0000000F                 28  numF        EQU     15
+00000000                            29  
+00000000                            30  * Binary Hex Values ----------------------------------------
+00000000  =00000000                 31  hex0        EQU     %0000   
+00000000  =00000001                 32  hex1        EQU     %0001   
+00000000  =00000002                 33  hex2        EQU     %0010   
+00000000  =00000003                 34  hex3        EQU     %0011   
+00000000  =00000004                 35  hex4        EQU     %0100   
+00000000  =00000005                 36  hex5        EQU     %0101   
+00000000  =00000006                 37  hex6        EQU     %0110   
+00000000  =00000007                 38  hex7        EQU     %0111   
+00000000  =00000008                 39  hex8        EQU     %1000   
+00000000  =00000009                 40  hex9        EQU     %1001   
+00000000  =0000000A                 41  hexA        EQU     %1010   
+00000000  =0000000B                 42  hexB        EQU     %1011   
+00000000  =0000000C                 43  hexC        EQU     %1100   
+00000000  =0000000D                 44  hexD        EQU     %1101   
+00000000  =0000000E                 45  hexE        EQU     %1110   
+00000000  =0000000F                 46  hexF        EQU     %1111   
+00000000                            47  
+00000000                            48  * OP Codes -------------------------------------------------
+00000000  =00000000                 49  bin0000     EQU     %0000   ;ADDI, ANDI, EORI, BCHG, CMPI
+00000000  =00000001                 50  bin0001     EQU     %0001   ;MOVE.B
+00000000  =00000002                 51  bin0010     EQU     %0010   ;MOVE.L
+00000000  =00000003                 52  bin0011     EQU     %0011   ;MOVE.W
+00000000  =00000004                 53  bin0100     EQU     %0100   ;MOVEM, MULS.L, DIVU.L, LEA, CLR, JSR, RTS
+00000000  =00000005                 54  bin0101     EQU     %0101   ;SUBQ
+00000000  =00000006                 55  bin0110     EQU     %0110   ;Bcc
+00000000  =00000007                 56  bin0111     EQU     %0111   ;MOVEQ
+00000000  =00000008                 57  bin1000     EQU     %1000   ;DIVU.W
+00000000  =00000009                 58  bin1001     EQU     %1001   ;SUB, SUBA
+00000000  =0000000B                 59  bin1011     EQU     %1011   ;CMP, CMPA, EOR
+00000000  =0000000C                 60  bin1100     EQU     %1100   ;AND, MULS.W
+00000000  =0000000D                 61  bin1101     EQU     %1101   ;ADD, ADDA
+00000000  =0000000E                 62  bin1110     EQU     %1110   ;ASR, ASL, ROL, ROR
+00000000                            63  
+00000000                            64  
+00000000  =0000000D                 65  CR        EQU       $0D
+00000000  =0000000A                 66  LF        EQU       $0A
+00000000                            67  
+00000400                            68      ORG    $400
+00000400                            69  START:                 
+00000400                            70  
+00000400                            71  * Put program code here
+00000400  43F9 00000444             72  MESSAGE     LEA         GREETING, A1    *load the greeting message
+00000406  103C 000E                 73              MOVE.B      #14,D0
+0000040A  4E4F                      74              TRAP        #15
+0000040C                            75      
+0000040C  43F9 00000475             76  LOOP        LEA         PROMPT,A1       *load the message asked for starting address
+00000412  103C 000E                 77              MOVE.B      #14,D0       
+00000416  4E4F                      78              TRAP        #15
+00000418                            79              
+00000418  103C 0004                 80              MOVE.B      #4, D0          *Task 4: read a number from keyborad into D1
+0000041C  4E4F                      81              TRAP        #15
+0000041E  B27C 0FA0                 82              CMP.W       #4000,D1        *comapare number in D1 to 4000, if the value entered is 4000 
+00000422  6600 0010                 83              BNE         ERROR           *else display error
+00000426  43F9 000004BF             84              LEA         DATA, A1
+0000042C  303C 000E                 85              MOVE        #14, D0
+00000430  4E4F                      86              TRAP        #15
+00000432  60D8                      87              BRA         LOOP    
+00000434                            88              
+00000434  43F9 000004D8             89  ERROR       LEA         WRONG,A1
+0000043A  103C 000E                 90              MOVE.B      #14,D0
+0000043E  4E4F                      91              TRAP        #15       
+00000440                            92      
+00000440                            93      
+00000440  FFFF FFFF                 94      SIMHALT             ; halt simulator
+00000444                            95  
+00000444                            96  * Put variables and constants here
+00000444= 48 45 4C 4C 4F 20 ...     97  GREETING        DC.B    'HELLO THERE, WELCOME TO AWESOME DISASSEMBLER',CR,LF,CR,LF,0 
+00000475= 50 4C 45 41 53 45 ...     98  PROMPT          DC.B    'PLEASE ENTER THE STARTING ADDRESS: ',0,CR,LF
+0000049B= 50 4C 45 41 53 45 ...     99  PROMPT2         DC.B    'PLEASE ENTER THE ENDING ADDRESS: ',CR,LF,0
+000004BF= 57 45 20 41 52 45 ...    100  DATA            DC.B    'WE ARE AT ADDRESS 4000',CR,LF,0
+000004D8= 57 45 20 41 52 45 ...    101  WRONG           DC.B    'WE ARE NOT AT ADDRESS 4000',0
+000004F3                           102      END    START        ; last line of source
 
 No errors detected
 No warnings generated
@@ -54,14 +112,62 @@ No warnings generated
 SYMBOL TABLE INFORMATION
 Symbol-name         Value
 -------------------------
+BIN0000             0
+BIN0001             1
+BIN0010             2
+BIN0011             3
+BIN0100             4
+BIN0101             5
+BIN0110             6
+BIN0111             7
+BIN1000             8
+BIN1001             9
+BIN1011             B
+BIN1100             C
+BIN1101             D
+BIN1110             E
 CR                  D
 DATA                4BF
 ERROR               434
 GREETING            444
+HEX0                0
+HEX1                1
+HEX2                2
+HEX3                3
+HEX4                4
+HEX5                5
+HEX6                6
+HEX7                7
+HEX8                8
+HEX9                9
+HEXA                A
+HEXB                B
+HEXC                C
+HEXD                D
+HEXE                E
+HEXF                F
 LF                  A
 LOOP                40C
 MESSAGE             400
+NUMA                A
+NUMB                B
+NUMC                C
+NUMD                D
+NUME                E
+NUMEIGHT            8
+NUMF                F
+NUMFIVE             5
+NUMFOUR             4
+NUMNINE             9
+NUMONE              1
+NUMSEVEN            7
+NUMSIX              6
+NUMTHREE            3
+NUMTWO              2
+NUMZERO             0
 PROMPT              475
 PROMPT2             49B
+STACK               FFE
 START               400
+STARTLOC            7000
 WRONG               4D8
