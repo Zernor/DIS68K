@@ -9,11 +9,17 @@ START:                  ; first instruction of program
 
 * Put program code here
     MOVE.B      #23,D1
+    MOVE.W      #23, D1
+    MOVE.L      #23,D1
+    
     SIMHALT             ; halt simulator
 
 * Put variables and constants here
 
     END    START        ; last line of source
+
+
+
 
 *~Font name~Courier New~
 *~Font size~10~

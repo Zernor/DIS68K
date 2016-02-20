@@ -1,6 +1,6 @@
 00007000 Starting Address
 Assembler used: EASy68K Editor/Assembler v5.15.04
-Created On: 2/20/2016 11:06:00 AM
+Created On: 2/20/2016 1:18:07 PM
 
 00000000                             1  *-----------------------------------------------------------
 00000000                             2  * Title      :
@@ -12,12 +12,21 @@ Created On: 2/20/2016 11:06:00 AM
 00007000                             8  START:                  ; first instruction of program
 00007000                             9  
 00007000                            10  * Put program code here
-00007000  123C 0017                 11      MOVE.B      #23,D1
-00007004  FFFF FFFF                 12      SIMHALT             ; halt simulator
-00007008                            13  
-00007008                            14  * Put variables and constants here
-00007008                            15  
-00007008                            16      END    START        ; last line of source
+00007000  10F8 0003                 11      MOVE.B      %11,(A0)+
+00007004  12FC 0010                 12      MOVE.B      #16,(A1)+
+00007008  14FC 0019                 13      MOVE.B      #$19,(A2)+
+0000700C  16FC 0011                 14      MOVE.B      #$11,(A3)+
+00007010  18FC 0011                 15      MOVE.B      #$11,(A4)+
+00007014  1AFC 0011                 16      MOVE.B      #$11,(A5)+
+00007018  1CFC 0011                 17      MOVE.B      #$11,(A6)+
+0000701C  1EFC 0011                 18      MOVE.B      #$11,(A7)+
+00007020                            19  
+00007020                            20      
+00007020  FFFF FFFF                 21      SIMHALT             ; halt simulator
+00007024                            22  
+00007024                            23  * Put variables and constants here
+00007024                            24  
+00007024                            25      END    START        ; last line of source
 
 No errors detected
 No warnings generated
