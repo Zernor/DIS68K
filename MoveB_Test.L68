@@ -1,6 +1,6 @@
 00001000 Starting Address
 Assembler used: EASy68K Editor/Assembler v5.15.04
-Created On: 2/20/2016 4:21:42 PM
+Created On: 2/23/2016 8:54:44 PM
 
 00000000                             1  *-----------------------------------------------------------
 00000000                             2  * Title      :
@@ -18,36 +18,33 @@ Created On: 2/20/2016 4:21:42 PM
 00001000                            14  * Put program code here
 00001000  307C 7000                 15              MOVEA.W         #addressdata, A0
 00001004  1218                      16              MOVE.B          (A0)+, D1
-00001006  B23C 0012                 17              CMP.B           #$12, D1
-0000100A  6700 0012                 18              BEQ             correctA
-0000100E  6600 0002                 19              BNE             wrongData
-00001012                            20  
-00001012                            21  
-00001012                            22  
-00001012  43F9 00001046             23  wrongData   LEA             WRONG, A1
-00001018  103C 000E                 24              MOVE.B          #14,D0
-0000101C  4E4F                      25              TRAP            #15
-0000101E                            26              
-0000101E  1401                      27  correctA    MOVE.B          D1, D2
-00001020  E84A                      28              LSR             #4, D2
-00001022  B43C 0001                 29              CMP.B           #%0001, D2
-00001026  6700 000E                 30              BEQ             OP
-0000102A  43F9 00001058             31              LEA             Instruction, A1
-00001030  103C 000E                 32              MOVE.B          #14,D0
-00001034  4E4F                      33              TRAP            #15
-00001036                            34  
-00001036  43F9 00001070             35  OP          LEA             OPCODE, A1
-0000103C  103C 000E                 36              MOVE.B          #14,D0
-00001040  4E4F                      37              TRAP            #15
-00001042                            38  
-00001042  FFFF FFFF                 39      SIMHALT             ; halt simulator
-00001046                            40  
-00001046                            41  * Put variables and constants here
-00001046                            42  
-00001046= 49 54 20 49 53 20 ...     43  WRONG        DC.B    'IT IS NOT EQUAL',CR,LF,0
-00001058= 49 54 20 49 53 20 ...     44  Instruction  DC.B    'IT IS CORRECT ADDRESS',CR,LF,0
-00001070= 49 54 20 49 53 20 ...     45  OPCODE       DC.B    'IT IS MOVE.B',CR,LF,0
-0000107F                            46      END    START        ; last line of source
+00001006  B23C 0010                 17              CMP.B           #$10, D1
+0000100A  6600 002A                 18              BNE             wrongData
+0000100E  6700 0002                 19              BEQ             correctA
+00001012                            20              
+00001012  1401                      21  correctA    MOVE.B          D1, D2
+00001014  E84A                      22              LSR             #4, D2
+00001016  B43C 0001                 23              CMP.B           #%0001, D2
+0000101A  6700 000E                 24              BEQ             OP
+0000101E  43F9 00001058             25              LEA             Instruction, A1
+00001024  103C 000E                 26              MOVE.B          #14,D0
+00001028  4E4F                      27              TRAP            #15
+0000102A                            28  
+0000102A  43F9 00001070             29  OP          LEA             OPCODE, A1
+00001030  103C 000E                 30              MOVE.B          #14,D0
+00001034  4E4F                      31              TRAP            #15
+00001036                            32  
+00001036  43F9 00001046             33  wrongData   LEA             WRONG, A1
+0000103C  103C 000E                 34              MOVE.B          #14, D0
+00001040  4E4F                      35              TRAP #15
+00001042  FFFF FFFF                 36      SIMHALT             ; halt simulator
+00001046                            37  
+00001046                            38  * Put variables and constants here
+00001046                            39  
+00001046= 49 54 20 49 53 20 ...     40  WRONG        DC.B    'IT IS NOT EQUAL',CR,LF,0
+00001058= 49 54 20 49 53 20 ...     41  Instruction  DC.B    'IT IS CORRECT ADDRESS',CR,LF,0
+00001070= 49 54 20 49 53 20 ...     42  OPCODE       DC.B    'IT IS MOVE.B',CR,LF,0
+0000107F                            43      END    START        ; last line of source
 
 No errors detected
 No warnings generated
@@ -57,12 +54,12 @@ SYMBOL TABLE INFORMATION
 Symbol-name         Value
 -------------------------
 ADDRESSDATA         7000
-CORRECTA            101E
+CORRECTA            1012
 CR                  D
 INSTRUCTION         1058
 LF                  A
-OP                  1036
+OP                  102A
 OPCODE              1070
 START               1000
 WRONG               1046
-WRONGDATA           1012
+WRONGDATA           1036

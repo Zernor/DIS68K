@@ -1,6 +1,6 @@
 00000400 Starting Address
 Assembler used: EASy68K Editor/Assembler v5.15.04
-Created On: 2/20/2016 4:24:37 PM
+Created On: 2/23/2016 10:20:51 PM
 
 00000000                             1  *-----------------------------------------------------------
 00000000                             2  * Title      :  68K Disassembler
@@ -73,37 +73,45 @@ Created On: 2/20/2016 4:24:37 PM
 00000400                            69  START:                 
 00000400                            70  
 00000400                            71  * Put program code here
-00000400  43F9 00000444             72  MESSAGE     LEA         GREETING, A1    *load the greeting message
+00000400  43F9 00000454             72  MESSAGE     LEA         GREETING, A1   ;load the greeting message
 00000406  103C 000E                 73              MOVE.B      #14,D0
-0000040A  4E4F                      74              TRAP        #15
-0000040C                            75      
-0000040C  43F9 00000475             76  LOOP        LEA         PROMPT,A1       *load the message asked for starting address
-00000412  103C 000E                 77              MOVE.B      #14,D0       
-00000416  4E4F                      78              TRAP        #15
-00000418                            79              
-00000418  103C 0004                 80              MOVE.B      #4, D0          *Task 4: read a number from keyborad into D1
-0000041C  4E4F                      81              TRAP        #15
-0000041E  B27C 0FA0                 82              CMP.W       #4000,D1        *comapare number in D1 to 4000, if the value entered is 4000 
-00000422  6600 0010                 83              BNE         ERROR           *else display error
-00000426  43F9 000004BF             84              LEA         DATA, A1
-0000042C  303C 000E                 85              MOVE        #14, D0
-00000430  4E4F                      86              TRAP        #15
-00000432  60D8                      87              BRA         LOOP    
-00000434                            88              
-00000434  43F9 000004D8             89  ERROR       LEA         WRONG,A1
-0000043A  103C 000E                 90              MOVE.B      #14,D0
-0000043E  4E4F                      91              TRAP        #15       
-00000440                            92      
-00000440                            93      
-00000440  FFFF FFFF                 94      SIMHALT             ; halt simulator
-00000444                            95  
-00000444                            96  * Put variables and constants here
-00000444= 48 45 4C 4C 4F 20 ...     97  GREETING        DC.B    'HELLO THERE, WELCOME TO AWESOME DISASSEMBLER',CR,LF,CR,LF,0 
-00000475= 50 4C 45 41 53 45 ...     98  PROMPT          DC.B    'PLEASE ENTER THE STARTING ADDRESS: ',0,CR,LF
-0000049B= 50 4C 45 41 53 45 ...     99  PROMPT2         DC.B    'PLEASE ENTER THE ENDING ADDRESS: ',CR,LF,0
-000004BF= 57 45 20 41 52 45 ...    100  DATA            DC.B    'WE ARE AT ADDRESS 4000',CR,LF,0
-000004D8= 57 45 20 41 52 45 ...    101  WRONG           DC.B    'WE ARE NOT AT ADDRESS 4000',0
-000004F3                           102      END    START        ; last line of source
+0000040A  4E4F                      74              TRAP        #15 
+0000040C                            75  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+0000040C                            76  ;;;;;;;;;;;;ask the user for starting address;;;;;;;;;;;;;;;;;
+0000040C                            77  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+0000040C  43F9 00000485             78              LEA         PROMPT,A1      *load the message asked for starting address
+00000412  103C 000E                 79              MOVE.B      #14,D0       
+00000416  4E4F                      80              TRAP        #15          
+00000418  103C 0002                 81  LOOP        MOVE.B      #2, D0          *Task 4: read a number from keyborad into D1
+0000041C  4E4F                      82              TRAP        #15
+0000041E  B27C 0FA0                 83              CMP.W       #4000,D1        *comapare number in D1 to 4000, if the value entered is 4000
+00000422  6D00 000C                 84              BLT         ERROR1          //NL: nelse display WRONG1 
+00000426  6E00 0016                 85              BGT         PROMPT2         // NL: display PROMPT3
+0000042A  103C 0004                 86              MOVE.B      #4,D0           //NL store starting address at D1
+0000042E  4E4F                      87              TRAP        #15
+00000430                            88              
+00000430  43F9 000004EA             89  ERROR1      LEA        WRONG1,A1
+00000436  103C 000E                 90              MOVE.B      #14,D0
+0000043A  4E4F                      91              TRAP        #15       
+0000043C  60DA                      92              BRA         LOOP            // NEW LINE 
+0000043E                            93  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+0000043E                            94  ;;;;;;;;;;;;;ask the user for ending address;;;;;;;;;;;;;;;;;;;;;
+0000043E                            95  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+0000043E  43F9 000004C6             96  PROMPT2     LEA        PROMPT3, A1
+00000444  103C 000E                 97              MOVE.B     #14,D0          
+00000448  4E4F                      98              TRAP       #15
+0000044A  103C 0004                 99              MOVE.B     #4,D0            //Store ending address at A1
+0000044E  4E4F                     100              TRAP       #15
+00000450                           101                 
+00000450                           102      
+00000450  FFFF FFFF                103      SIMHALT             ; halt simulator
+00000454                           104  
+00000454                           105  * Put variables and constants here
+00000454= 48 45 4C 4C 4F 20 ...    106  GREETING        DC.B    'HELLO THERE, WELCOME TO AWESOME DISASSEMBLER',CR,LF,CR,LF,0 
+00000485= 50 4C 45 41 53 45 ...    107  PROMPT          DC.B    'PLEASE ENTER THE STARTING ADDRESS, MUST BE GREATER THAN 4000: ',0,CR,LF
+000004C6= 50 4C 45 41 53 45 ...    108  PROMPT3         DC.B    'PLEASE ENTER THE ENDING ADDRESS: ',CR,LF,0
+000004EA= 59 4F 55 52 20 53 ...    109  WRONG1          DC.B   'YOUR STARTING ADDRESS MUST BE GREATER THAN 4000:',0 //NEW CHANGE   
+0000051B                           110   END    START        ; last line of source
 
 No errors detected
 No warnings generated
@@ -127,9 +135,8 @@ BIN1100             C
 BIN1101             D
 BIN1110             E
 CR                  D
-DATA                4BF
-ERROR               434
-GREETING            444
+ERROR1              430
+GREETING            454
 HEX0                0
 HEX1                1
 HEX2                2
@@ -147,7 +154,7 @@ HEXD                D
 HEXE                E
 HEXF                F
 LF                  A
-LOOP                40C
+LOOP                418
 MESSAGE             400
 NUMA                A
 NUMB                B
@@ -165,9 +172,10 @@ NUMSIX              6
 NUMTHREE            3
 NUMTWO              2
 NUMZERO             0
-PROMPT              475
-PROMPT2             49B
+PROMPT              485
+PROMPT2             43E
+PROMPT3             4C6
 STACK               FFE
 START               400
 STARTLOC            7000
-WRONG               4D8
+WRONG1              4EA
