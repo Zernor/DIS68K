@@ -4,10 +4,125 @@
 * Date       :
 * Description:  Awesome 68k disassembler 
 *-----------------------------------------------------------
+CR        EQU       $0D
+LF        EQU       $0A
 
-* Global Variables -----------------------------------------
-startLoc    EQU     $7000
-stack       EQU     $0FFE       * stack pointer (SP)
+    ORG    $400
+START:  
+               
+WECOMEM     LEA         GREETING, A1    *load the greeting message
+            MOVE.B      #14,D0
+            TRAP        #15 
+            
+* Put program code here
+READ_SADDR
+        LEA         PROMPTSADDR, A1
+        MOVE.B      #14, D0
+        TRAP        #15
+        MOVE.B      #2,D0              * Read string from keyboard and store at A1
+        TRAP        #15
+        BRA         VALIDATE_STORE 
+BADSIZES
+        LEA         ERRORINPUTSIZE, A1
+        MOVE.B      #14,D0
+        TRAP        #15
+        CMP.B       #0,D3
+        BEQ         READ_SADDR
+        BRA         READ_EADDR 
+
+INVALID_CHARACTER
+        LEA         ERRORINPUTSIZE, A1
+        MOVE.B      #14,D0 
+        TRAP        #15 
+        CMP.B       #0,D3
+        BEQ         READ_SADDR 
+        
+READ_EADDR
+        LEA         PROMPTEADDR, A1
+        MOVE.B      #14, D0
+        TRAP        #15
+        MOVE.B      #2,D0              * Read string from keyboard and store at A1
+        TRAP        #15  
+        
+VALIDATE_STORE 
+        CMPI.B      #4, D1             * Check address size
+        BLT         BADSIZES 
+        CMPI.B      #8, D1 
+        BGT         BADSIZES
+        
+READHEX       
+        CMPI.B      #$30,(A1)
+        BLT         INVALID_CHARACTER   * Wrong data
+        CMPI.B      #$40,(A1)
+        BLT         NUMBER              * Is number
+        CMPI.B      #$46,(A1)
+        BLT         LETTERS             * Is Letter
+        BRA         INVALID_CHARACTER
+NUMBER      SUBI.B      #$30,(A1)           * Convert Numbers to Hex
+        BRA         STORE   
+LETTERS     SUBI.B      #$37,(A1)           * Convert Numbers to Hex
+         BRA         STORE
+STORE       ADD.B       (A1)+,D7            * Save data from A1 to D7
+        CMPI.B      #0,(A1) 
+        BEQ         STOREME     
+        LSL.L       #4,D7               * Keep reading next character
+        BRA         READHEX
+STOREME     
+        CMP.B       #0,D3
+        BNE         STORE_ENDING
+        MOVE.L      D7, STARTING_ADD      * Save in the memory address 
+        MOVE.B      #1, D3               * Counter - for VALID_STORE
+        CLR.L       D7
+        BRA         READ_EADDR    
+        
+STORE_ENDING 
+        CMP.L       (STARTING_ADD), D7
+        BLT         SGTE
+        MOVE.L      D7, ENDING_ADD
+        CLR.L       D7
+        CLR.L       D3
+        BRA         OPCODEDIS  
+        
+SGTE
+        LEA         PROMPTEADDR, A1
+        MOVE.B      #14, D0
+        TRAP        #15
+        CLR.L       D7
+        CLR.L       D3
+        BRA         READ_SADDR
+
+*-----------------------------Addressess------------------------------*  
+
+         
+
+OPCODEDIS
+        MOVE.B  #16, D2
+        MOVE.W  #$ENDING_ADD,   D1
+        MOVE.B  #15, D0
+        TRAP    #15
+        MOVE.W  #$STARTING_ADD, D1
+        MOVE.B  #15, D0
+        TRAP    #15
+        MOVE.L  #1, D0
+        MOVE.L  #4, D2
+OPCODELOOP 
+        CMP.B   D0, D2
+        BEQ     OPCODEDONE
+        LSL.L   #1, D3
+        BCS     ADDONE
+        ADDI.B  #%0, D4                 * Add 0 bit to d2
+         ASL.L   #1, D4
+         ADDQ.L  #1,D0
+         BRA     OPCODELOOP 
+ADDONE      
+        ADDI.B  #%1, D4                 * Add 1 bit to d2
+        ADDQ.L  #1,D0
+        BRA     OPCODELOOP
+OPCODEDONE            
+
+        SIMHALT             ; halt simulator
+
+* Put variables and constants here
 
 * Hex values -----------------------------------------------  
 numzero     EQU     0  
@@ -61,51 +176,20 @@ bin1100     EQU     %1100   ;AND, MULS.W
 bin1101     EQU     %1101   ;ADD, ADDA
 bin1110     EQU     %1110   ;ASR, ASL, ROL, ROR
 
-
-CR        EQU       $0D
-LF        EQU       $0A
-
-    ORG    $400
-START:                 
-
-* Put program code here
-MESSAGE     LEA         GREETING, A1    *load the greeting message
-            MOVE.B      #14,D0
-            TRAP        #15 
-     
-            LEA         PROMPT,A1      *load the message asked for starting address
-            MOVE.B      #14,D0       
-            TRAP        #15
-            
-LOOP        MOVE.B      #4, D0          *Task 4: read a number from keyborad into D1
-            TRAP        #15
-            CMP.W       #4000,D1        *comapare number in D1 to 4000, if the value entered is 4000
-            BLT         ERROR1          //NL: nelse display WRONG1 
-            BGT         PROMPT2         // NL: display PROMPT3
-            MOVE.B      #4,D0           //NL store starting address at D1
-            TRAP        #15
-            
-ERROR1      LEA        WRONG1,A1
-            MOVE.B      #14,D0
-            TRAP        #15       
-            BRA         LOOP            // NEW LINE 
-
-PROMPT2     LEA        PROMPT3, A1
-            MOVE.B     #14,D0          
-            TRAP       #15
-            MOVE.B     #4,D0            //Store ending address at A1
-            TRAP       #15
-               
-    
-    SIMHALT             ; halt simulator
-
-* Put variables and constants here
 GREETING        DC.B    'HELLO THERE, WELCOME TO AWESOME DISASSEMBLER',CR,LF,CR,LF,0 
-PROMPT          DC.B    'PLEASE ENTER THE STARTING ADDRESS, MUST BE GREATER THAN 4000: ',0,CR,LF
+PROMPTSADDR     DC.W    'PLEASE ENTER THE STARTING ADDRESS MUST BE GREATER THAN 7000: ',0,CR,LF
 PROMPT3         DC.B    'PLEASE ENTER THE ENDING ADDRESS: ',CR,LF,0
-WRONG1          DC.B   'YOUR STARTING ADDRESS MUST BE GREATER THAN 4000:',0 //NEW CHANGE   
+PROMPTEADDR     DC.W    'PLEASE ENTER THE ENDING ADDRESS AND ALL CAPITALS: ',0
+ERRORINPUTSIZE  DC.B    'ERROR: INVALID ADDRESS SIZE',CR,LF,CR,LF,0
+SGTEM           DC.B    'ERROR: STARTING ADDRESS > ENDING ADDRESS',CR,LF,0
+
+STARTING_ADD    DS.L    1
+ENDING_ADD      DS.L    1
+
+
  END    START        ; last line of source
   
+
 
 
 
