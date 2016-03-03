@@ -9,16 +9,17 @@ LF        EQU       $0A
 
     ORG    $400
 START:  
-               
-WECOMEM     LEA         GREETING, A1    *load the greeting message
-            MOVE.B      #14,D0
-            TRAP        #15 
+   
+        LEA         GREETING, A1    *load the greeting message
+        MOVE.B      #14,D0
+        TRAP        #15 
             
 * Put program code here
 READ_SADDR
         LEA         PROMPTSADDR, A1
         MOVE.B      #14, D0
         TRAP        #15
+        MOVE.L      #$0,A1             ; clear after printing message
         MOVE.B      #2,D0              * Read string from keyboard and store at A1
         TRAP        #15
         BRA         VALIDATE_STORE 
@@ -41,6 +42,8 @@ READ_EADDR
         LEA         PROMPTEADDR, A1
         MOVE.B      #14, D0
         TRAP        #15
+        
+        MOVE.L      #$0,A1             ; clear after printing message
         MOVE.B      #2,D0              * Read string from keyboard and store at A1
         TRAP        #15  
         
@@ -71,6 +74,7 @@ STOREME
         CMP.B       #0,D3
         BNE         STORE_ENDING
         MOVE.L      D7, STARTING_ADD      * Save in the memory address 
+        MOVEA.L     D7, A6                *save starting at A6
         MOVE.B      #1, D3               * Counter - for VALID_STORE
         CLR.L       D7
         BRA         READ_EADDR    
@@ -78,13 +82,14 @@ STOREME
 STORE_ENDING 
         CMP.L       (STARTING_ADD), D7
         BLT         SGTE
-        MOVE.L      D7, ENDING_ADD
+        MOVE.L      D7, ENDING_ADD  
+        MOVE.L      D7, A7                 *save starting at A7
         CLR.L       D7
         CLR.L       D3
         BRA         OPCODEDIS  
         
-SGTE
-        LEA         PROMPTEADDR, A1
+SGTE    ;starting greater then ending
+        LEA         INVALIDSADDR, A1
         MOVE.B      #14, D0
         TRAP        #15
         CLR.L       D7
@@ -95,16 +100,14 @@ SGTE
 
          
 
-OPCODEDIS
-        MOVE.B  #16, D2
-        MOVE.W  #$ENDING_ADD,   D1
-        MOVE.B  #15, D0
-        TRAP    #15
-        MOVE.W  #$STARTING_ADD, D1
-        MOVE.B  #15, D0
-        TRAP    #15
-        MOVE.L  #1, D0
+OPCODEDIS   ;fix the print of address
+        CMP.L   #$4E71,(A6)
+        BEQ     
+        
+        MOVE.L  #1, D0          ;shift 4 bit
         MOVE.L  #4, D2
+        
+
 OPCODELOOP 
         CMP.B   D0, D2
         BEQ     OPCODEDONE
@@ -120,6 +123,9 @@ ADDONE
         BRA     OPCODELOOP
 OPCODEDONE            
 
+
+PRINTADD
+        LEA     
         SIMHALT             ; halt simulator
 
 * Put variables and constants here
@@ -178,6 +184,7 @@ bin1110     EQU     %1110   ;ASR, ASL, ROL, ROR
 
 GREETING        DC.B    'HELLO THERE, WELCOME TO AWESOME DISASSEMBLER',CR,LF,CR,LF,0 
 PROMPTSADDR     DC.W    'PLEASE ENTER THE STARTING ADDRESS MUST BE GREATER THAN 7000: ',0,CR,LF
+INVALIDSADDR    DC.B    'INVALID STARTING ADDRESS VERSUS ENDING.',CR,LF,0
 PROMPT3         DC.B    'PLEASE ENTER THE ENDING ADDRESS: ',CR,LF,0
 PROMPTEADDR     DC.W    'PLEASE ENTER THE ENDING ADDRESS AND ALL CAPITALS: ',0
 ERRORINPUTSIZE  DC.B    'ERROR: INVALID ADDRESS SIZE',CR,LF,CR,LF,0
@@ -189,6 +196,7 @@ ENDING_ADD      DS.L    1
 
  END    START        ; last line of source
   
+
 
 
 
