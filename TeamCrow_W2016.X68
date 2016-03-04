@@ -83,7 +83,7 @@ STORE_ENDING
         CMP.L       (STARTING_ADD), D7
         BLT         SGTE
         MOVE.L      D7, ENDING_ADD  
-        MOVE.L      D7, A5                 *save starting at A7
+        MOVE.L      D7, A7                 *save starting at A7
         CLR.L       D7
         CLR.L       D3
         BRA         ADDR_LOOP
@@ -105,7 +105,8 @@ ADDR_LOOP
         
         JSR     CLEAR_REGISTERS
         BRA     PRINT_CURRENT_ADD           ;PRINT CURRENT ADDRESS
-
+Decode_Constant
+        JSR     CLEAR_REGISTERS
         LEA     OPCODE,A4
         JSR     UNCHANGED_CONSTANT          ;NOP
         
@@ -138,7 +139,7 @@ PRINT_CURRENT_ADD
 
 CONVERT_HEX_ASCII
     CMP.B   D5,D6
-    BEQ     CLEAR_REGISTERS
+    BEQ     Decode_Constant
 
 SET_COUNTER_4
     MOVE.B  #0,D3
@@ -189,7 +190,6 @@ CLEAR_REGISTERS
     MOVE.L  #$00000000,A2
     MOVE.L  #$00000000,A3
     MOVE.L  #$00000000,A4
-    MOVE.L  #$00000000,A7
     MOVE.L  #$00000000,A5
     RTS
 
@@ -297,6 +297,7 @@ ENDING_ADD      DS.L    1
 
  END    START        ; last line of source
   
+
 
 
 
