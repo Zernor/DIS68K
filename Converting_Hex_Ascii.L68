@@ -1,0 +1,92 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.04
+Created On: 3/3/2016 8:29:32 PM
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :
+00000000                             3  * Written by :
+00000000                             4  * Date       :
+00000000                             5  * Description:
+00000000                             6  *-----------------------------------------------------------
+00001000                             7      ORG    $1000
+00001000                             8  START:                  ; first instruction of program
+00001000                             9  
+00001000                            10  * Put program code here
+00001000  2C7C 000BCDEF             11      MOVE.L  #$BCDEF,A6
+00001006  240E                      12      MOVE.L  A6,D2
+00001008                            13      ;LEA     CURRENT_ADDRESS,A7
+00001008  1A3C 0000                 14      MOVE.B  #0,D5
+0000100C  1C3C 0008                 15      MOVE.B  #8,D6
+00001010                            16  
+00001010                            17  CONVERT_HEX_ASCII
+00001010  BC05                      18      CMP.B   D5,D6
+00001012  6700 0048                 19      BEQ     DONE
+00001016                            20  
+00001016                            21      
+00001016  163C 0000                 22      MOVE.B  #0,D3
+0000101A  183C 0004                 23      MOVE.B  #4,D4    
+0000101E                            24  Loop
+0000101E  B803                      25      CMP.B   D3,D4
+00001020  6700 0018                 26      BEQ     STORE_ONE_CHAR
+00001024  E38A                      27      LSL.L   #1,D2
+00001026  6400 0008                 28      BCC     ADDZERO
+0000102A                            29  
+0000102A  5201                      30      ADDI.B  #1,D1
+0000102C  6000 0006                 31      BRA     INCREMENT_BIT_LOOP
+00001030                            32      
+00001030                            33  ADDZERO
+00001030  0601 0000                 34      ADDI.B  #0,D1
+00001034                            35  
+00001034                            36  INCREMENT_BIT_LOOP
+00001034  5203                      37      ADDI.B  #1,D3
+00001036  E389                      38      LSL.L   #1,D1
+00001038  60E4                      39      BRA     Loop
+0000103A                            40      
+0000103A                            41  STORE_ONE_CHAR
+0000103A  E289                      42      LSR.L   #1,D1
+0000103C  B23C 0009                 43      CMP.B   #$9,D1
+00001040  6D00 000A                 44      BLT     HEX_TO_ASCII_NUMBER
+00001044                            45      
+00001044  0601 0037                 46      ADDI.B  #$37,D1     ;HEX_TO_ASCII_LETTER
+00001048  6000 0006                 47      BRA     INCREMENT_NEXT_HEX_LOOP
+0000104C                            48      
+0000104C                            49  HEX_TO_ASCII_NUMBER
+0000104C  0601 0030                 50      ADDI.B  #$30,D1
+00001050                            51  
+00001050                            52      ;MOVE.B  D7,(A7)+
+00001050                            53  INCREMENT_NEXT_HEX_LOOP
+00001050  5205                      54      ADDI.B  #1,D5
+00001052  103C 0006                 55      MOVE.B  #6,D0
+00001056  4E4F                      56      TRAP    #15
+00001058  4281                      57      CLR.L   D1
+0000105A  60B4                      58      BRA     CONVERT_HEX_ASCII
+0000105C                            59  
+0000105C                            60  DONE
+0000105C                            61      ;MOVE.B  #0,(A7)+
+0000105C                            62      ;LEA     CURRENT_ADDRESS,A1
+0000105C                            63      ;MOVE.B  #13,D0
+0000105C                            64      ;TRAP    #15
+0000105C  FFFF FFFF                 65      SIMHALT             ; halt simulator
+00001060                            66  
+00001060                            67  * Put variables and constants here
+00001060                            68  
+00001060                            69  CURRENT_ADDRESS DS.B    9
+00001069                            70      END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+ADDZERO             1030
+CONVERT_HEX_ASCII   1010
+CURRENT_ADDRESS     1060
+DONE                105C
+HEX_TO_ASCII_NUMBER  104C
+INCREMENT_BIT_LOOP  1034
+INCREMENT_NEXT_HEX_LOOP  1050
+LOOP                101E
+START               1000
+STORE_ONE_CHAR      103A

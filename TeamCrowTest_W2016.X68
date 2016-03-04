@@ -8,15 +8,15 @@
 START:                  ; first instruction of program
 
 * Put program code here
-    MOVE.B      #23,D1
-    MOVE.W      #23, D1
-    MOVE.L      #23,D1
+    NOP
+    RTS
     
     SIMHALT             ; halt simulator
 
 * Put variables and constants here
 
     END    START        ; last line of source
+
 
 
 
