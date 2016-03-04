@@ -1,5 +1,5 @@
 *-----------------------------------------------------------
-* Title      :  68K Disassembler
+* Title:  68K Disassembler
 * Written by :  Hoa, Tenzin Khando, Marco F.
 * Date       :
 * Description:  Awesome 68k disassembler 
@@ -83,10 +83,10 @@ STORE_ENDING
         CMP.L       (STARTING_ADD), D7
         BLT         SGTE
         MOVE.L      D7, ENDING_ADD  
-        MOVE.L      D7, A7                 *save starting at A7
+        MOVE.L      D7, A5                 *save starting at A7
         CLR.L       D7
         CLR.L       D3
-        BRA         OPCODEDIS  
+        BRA         ADDR_LOOP
         
 SGTE    ;starting greater then ending
         LEA         INVALIDSADDR, A1
@@ -98,11 +98,16 @@ SGTE    ;starting greater then ending
 
 *-----------------------------Addressess------------------------------*  
 
-         
+ADDR_LOOP
+        MOVE.L  ENDING_ADD,A5
+        CMP.L   A6,A5
+        BEQ     END_PROGRAM
+        
+        JSR     CLEAR_REGISTERS
+        BRA     PRINT_CURRENT_ADD           ;PRINT CURRENT ADDRESS
 
-OPCODEDIS   ;fix the print of address
-        CMP.L   #$4E71,(A6)
-        BEQ     
+        LEA     OPCODE,A4
+        JSR     UNCHANGED_CONSTANT          ;NOP
         
         MOVE.L  #1, D0          ;shift 4 bit
         MOVE.L  #4, D2
@@ -123,9 +128,103 @@ ADDONE
         BRA     OPCODELOOP
 OPCODEDONE            
 
+****************************PRINTING HEX ADDRESS TO ASCII *******************
 
-PRINTADD
-        LEA     
+PRINT_CURRENT_ADD
+    MOVE.L  A6,D2
+    ;LEA     CURRENT_ADDRESS,A7
+    MOVE.B  #0,D5
+    MOVE.B  #8,D6
+
+CONVERT_HEX_ASCII
+    CMP.B   D5,D6
+    BEQ     CLEAR_REGISTERS
+
+SET_COUNTER_4
+    MOVE.B  #0,D3
+    MOVE.B  #4,D4    
+Loop
+    CMP.B   D3,D4
+    BEQ     STORE_ONE_CHAR
+    LSL.L   #1,D2
+    BCC     ADDZERO
+
+    ADDI.B  #1,D1
+    BRA     INCREMENT_BIT_LOOP
+    
+ADDZERO
+    ADDI.B  #0,D1
+
+INCREMENT_BIT_LOOP
+    ADDI.B  #1,D3
+    LSL.L   #1,D1
+    BRA     Loop
+    
+STORE_ONE_CHAR
+    LSR.L   #1,D1
+    CMP.B   #$9,D1
+    BLT     HEX_TO_ASCII_NUMBER
+    
+    ADDI.B  #$37,D1     ;HEX_TO_ASCII_LETTER
+    BRA     INCREMENT_NEXT_HEX_LOOP
+    
+HEX_TO_ASCII_NUMBER
+    ADDI.B  #$30,D1
+
+    ;MOVE.B  D7,(A7)+
+INCREMENT_NEXT_HEX_LOOP
+    ADDI.B  #1,D5
+    MOVE.B  #6,D0
+    TRAP    #15
+    CLR.L   D1
+    BRA     CONVERT_HEX_ASCII
+
+CLEAR_REGISTERS
+    CLR.L   D5
+    CLR.L   D2
+    CLR.L   D1
+    CLR.L   D3
+    CLR.L   D4
+    MOVE.L  #$00000000,A1
+    MOVE.L  #$00000000,A2
+    MOVE.L  #$00000000,A3
+    MOVE.L  #$00000000,A4
+    MOVE.L  #$00000000,A7
+    MOVE.L  #$00000000,A5
+    RTS
+
+***********************END OF PRINTING HEX ADDRESS TO ASCII *******************
+UNCHANGED_CONSTANT
+    MOVE.B  #' ',(A4)+
+    MOVE.B  #' ',(A4)+
+    MOVE.B  #' ',(A4)+
+    MOVE.B  #' ',(A4)+
+    
+    CMP.W   #$4E71,(A6)
+    BEQ     PRINT_NOP
+    CMP.W   #$4E75,(A6)
+    BEQ     PRINT_RTS
+JUMP_BACK
+    RTS      
+PRINT_NOP
+    MOVE.B  #'N',(A4)+
+    MOVE.B  #'O',(A4)+
+    MOVE.B  #'P',(A4)+
+    MOVEA.L  #$00000000,A1
+    LEA     OPCODE,A1
+    MOVE.B  #13,D0
+    TRAP    #15
+    ADD.L   #$2,A6          ;increase by 2 bytes if it prints NOP
+    BRA     JUMP_BACK
+PRINT_RTS
+    MOVE.B  #'R',(A4)+
+    MOVE.B  #'T',(A4)+
+    MOVE.B  #'S',(A4)+
+    ADD.L   #$2,A6
+    BRA     JUMP_BACK
+
+   
+END_PROGRAM
         SIMHALT             ; halt simulator
 
 * Put variables and constants here
@@ -190,12 +289,15 @@ PROMPTEADDR     DC.W    'PLEASE ENTER THE ENDING ADDRESS AND ALL CAPITALS: ',0
 ERRORINPUTSIZE  DC.B    'ERROR: INVALID ADDRESS SIZE',CR,LF,CR,LF,0
 SGTEM           DC.B    'ERROR: STARTING ADDRESS > ENDING ADDRESS',CR,LF,0
 
-STARTING_ADD    DS.L    1
+OPCODE          DC.L    1
+
+STARTING_ADD    DS.L    1   ;1 is the size, if I change to 4 then array size changes
 ENDING_ADD      DS.L    1
 
 
  END    START        ; last line of source
   
+
 
 
 
