@@ -49,7 +49,7 @@ BADSIZES
         BEQ         READ_SADDR
         BRA         READ_EADDR 
 INVALID_CHARACTER                           * Print Invalid Character for Address
-        LEA         ERRORINPUTSIZE, A1
+        LEA         INVALIDCHAR, A1
         MOVE.B      #14,D0 
         TRAP        #15 
         CMP.B       #0,D3
@@ -61,7 +61,7 @@ READHEX
         BLT         INVALID_CHARACTER       * Wrong data
         CMPI.B      #$40,(A1)
         BLT         NUMBER                  * Is number
-        CMPI.B      #$46,(A1)
+        CMPI.B      #$47,(A1)
         BLT         LETTERS                 * Is Letter
         BRA         INVALID_CHARACTER
 NUMBER      
@@ -143,10 +143,10 @@ SGTE                                        * Starting greater then ending
 *------------------ Compare Current Address to Ending Adddres ------------------------------ 
 ADDR_LOOP
         MOVE.L      ENDING_ADD,A5           
-        CMP.L       A6,A5
-        BEQ         END_PROGRAM
+        CMP.L       A5,A6
+        BGT         END_PROGRAM
         JSR         CLEAR_REGISTERS
-        BRA         PRINT_CURRENT_ADD           * PRINT CURRENT ADDRESS
+        JSR         PRINT_CURRENT_ADD           * PRINT CURRENT ADDRESS
         
 *-------------------------------------------------------------------------------------------  
 *------------------ NOP & RTS ADDRESS ------------------------------------------------------
@@ -165,7 +165,8 @@ PRINT_CURRENT_ADD
 
 CONVERT_HEX_ASCII
     CMP.B   D5,D6
-    BEQ     Decode_Constant
+    BNE     SET_COUNTER_4
+    RTS
 
 SET_COUNTER_4
     MOVE.B  #0,D3
@@ -207,11 +208,13 @@ INCREMENT_NEXT_HEX_LOOP
     BRA     CONVERT_HEX_ASCII
 
 CLEAR_REGISTERS
+    CLR.L   D0
     CLR.L   D5
     CLR.L   D2
     CLR.L   D1
     CLR.L   D3
     CLR.L   D4
+    CLR.L   D6
     MOVE.L  #$00000000,A1
     MOVE.L  #$00000000,A2
     MOVE.L  #$00000000,A3
@@ -234,13 +237,16 @@ UNCHANGED_CONSTANT
     CMP.W   #$4E71,(A6)
     BEQ     PRINT_NOP
     CMP.W   #$4E75,(A6)
-    BEQ     PRINT_RTS    
+    BEQ     PRINT_RTS
+    CMP.W   #$FFFF,(A6)
+    BEQ     PRINT_NO_CODE    
     RTS  
     
 PRINT_NOP
     MOVE.B  #'N',(A4)+
     MOVE.B  #'O',(A4)+
     MOVE.B  #'P',(A4)+
+    MOVE.B  #$00,(A4)+
     *MOVEA.L  #$00000000,A1
     LEA     OPCODE,A1
     MOVE.B  #13,D0
@@ -251,17 +257,206 @@ PRINT_RTS
     MOVE.B  #'R',(A4)+
     MOVE.B  #'T',(A4)+
     MOVE.B  #'S',(A4)+
+    MOVE.B  #$00,(A4)+
     LEA     OPCODE,A1
     MOVE.B  #13,D0
     TRAP    #15
     ADD.L   #$2,A6
     BRA     ADDR_LOOP
-
+PRINT_NO_CODE
+    MOVE.B  #'N',(A4)+
+    MOVE.B  #'O',(A4)+
+    MOVE.B  #' ',(A4)+
+    MOVE.B  #'D',(A4)+
+    MOVE.B  #'A',(A4)+
+    MOVE.B  #'T',(A4)+
+    MOVE.B  #'A',(A4)+
+    MOVE.B  #' ',(A4)+
+    MOVE.B  #'$',(A4)+
+    MOVE.B  #0,D2                   ;Setting counter for print Must be word size
+    MOVE.B  #4,D3
+    JSR     PRINT_IMMIDIATE_DATA
+    MOVE.B  #$00,(A4)+
+    LEA     OPCODE,A1
+    MOVE.B  #13,D0
+    TRAP    #15
+    ADD.L   #$2,A6
+    BRA     ADDR_LOOP
    
 END_PROGRAM
         SIMHALT             ; halt simulator
 
+*-------------------------------------------------------------------------------------------
+* PRINT_IMMIDIATE_DATA---------------------------------------------------------------------
 
+PRINT_IMMIDIATE_DATA
+    CMP.B   #2,D3
+    BEQ     BYTE_SIZE
+    CMP.B   #4,D3
+    BEQ     WORD_SIZE
+    CMP.B   #8,D3
+    BEQ     LONG_SIZE
+
+BYTE_SIZE
+    MOVE.B  (A6),D0
+    MOVE.B  #1,SIZE
+    BRA     LOOP_IMMIDIATE_DATA
+WORD_SIZE
+    MOVE.W  (A6),D0
+    MOVE.B  #3,SIZE
+    BRA     LOOP_IMMIDIATE_DATA
+LONG_SIZE
+    MOVE.L  (A6),D0
+    MOVE.B  #3,SIZE
+    BRA     LOOP_IMMIDIATE_DATA
+    
+LOOP_IMMIDIATE_DATA    
+    CMP.B   D2,D3               ;D3 WIIL BE 8 FOR BYTE, 16 FOR WORD, 32 FOR LONG
+    BNE     CONTINUE_SHIFT
+    CLR.L   D2
+    CLR.L   D3       
+    RTS
+    
+CONTINUE_SHIFT
+    JSR     SHIFT_4_BIT         ;SHIFT 4 BIT TO SEE WHAT TYPE OF 
+
+;HEX_D    
+    ;CMP.B   #hexD,D1
+    ;BEQ     PRINT_F
+   
+
+;HEX_E    
+    ;CMP.B   #hexE,D1
+    ;BEQ     PRINT_E
+
+HEX_F    
+    CMP.B   #hexF,D1
+    BEQ     PRINT_F
+    
+ADD_COUNTER
+    ADDI.B  #1,D2
+    CLR.L   D1
+    BRA     LOOP_IMMIDIATE_DATA
+
+*-------------------------------------------------------------------------------------------
+* SHIFT_4_BIT--------------------------------------------------------------------
+
+SHIFT_4_BIT
+    MOVE.B   #0,D4
+    MOVE.B   #4,D5              ;SHIFTS FROM 
+    
+START_SHIFT_4_BIT   
+    CMP.B    D4,D5
+    BNE      SHIFT_SIZE 
+    LSR.L    #1,D1
+    RTS
+
+SHIFT_SIZE 
+    CMP.B   #2,D3
+    BEQ     SHIFT_SIZE_BYTE
+    CMP.B   #4,D3
+    BEQ     SHIFT_SIZE_WORD
+    CMP.B   #8,D3
+    BEQ     SHIFT_SIZE_LONG
+
+SHIFT_SIZE_BYTE
+    LSL.B   #1, D0              ;COPY OF THE DATA WE NEED TO SHIFT
+    BCS     ADDONE
+    BRA     ADD_ZERO
+SHIFT_SIZE_WORD
+    LSL.W   #1, D0              ;COPY OF THE DATA WE NEED TO SHIFT
+    BCS     ADDONE
+    BRA     ADD_ZERO
+SHIFT_SIZE_LONG
+    LSL.L   #1, D0              ;COPY OF THE DATA WE NEED TO SHIFT
+    BCS     ADDONE
+
+ADD_ZERO        
+    ADDI.B  #%0, D1                    * add 0 bit to d2
+    ASL.L   #1, D1     
+    BRA     COUNTER_SHIFT_4_BIT
+         
+ADDONE        
+    ADDI.B  #%1, D1                    * add 1 bit to d2
+    ASL.L   #1, D1
+    BRA     COUNTER_SHIFT_4_BIT 
+
+COUNTER_SHIFT_4_BIT
+    ADDI.L  #1,D4
+    BRA     START_SHIFT_4_BIT
+
+    
+
+
+*-------------------------------------------------------------------------------------------
+* SHIFT_4_BIT--------------------------------------------------------------------
+
+
+*-------------------------------------------------------------------------------------------
+* PRINT_ASCCI_HEX---------------------------------------------------------------------
+PRINT_0
+    MOVE.B  #'0',(A4)+
+    BRA     ADD_COUNTER
+
+PRINT_1
+    MOVE.B  #'1',(A4)+
+    BRA     ADD_COUNTER
+
+PRINT_2
+    MOVE.B  #'2',(A4)+
+    BRA     ADD_COUNTER
+
+PRINT_3
+    MOVE.B  #'3',(A4)+
+    BRA     ADD_COUNTER
+
+PRINT_4
+    MOVE.B  #'4',(A4)+
+    BRA     ADD_COUNTER
+
+PRINT_5
+    MOVE.B  #'5',(A4)+
+    BRA     ADD_COUNTER
+
+PRINT_6
+    MOVE.B  #'6',(A4)+
+    BRA     ADD_COUNTER
+
+PRINT_7
+    MOVE.B  #'7',(A4)+
+    BRA     ADD_COUNTER
+
+PRINT_8
+    MOVE.B  #'8',(A4)+
+    BRA     ADD_COUNTER
+
+PRINT_9
+    MOVE.B  #'9',(A4)+
+    BRA     ADD_COUNTER
+
+PRINT_A
+    MOVE.B  #'A',(A4)+
+    BRA     ADD_COUNTER
+
+PRINT_B
+    MOVE.B  #'B',(A4)+
+    BRA     ADD_COUNTER
+
+PRINT_C
+    MOVE.B  #'C',(A4)+
+    BRA     ADD_COUNTER
+
+PRINT_D
+    MOVE.B  #'D',(A4)+
+    BRA     ADD_COUNTER
+
+PRINT_E
+    MOVE.B  #'E',(A4)+
+    BRA     ADD_COUNTER
+
+PRINT_F
+    MOVE.B  #'F',(A4)+
+    BRA     ADD_COUNTER
 
 *-------------------------------------------------------------------------------------------
 * VARIABLES & MESSAGES ---------------------------------------------------------------------
@@ -331,20 +526,21 @@ PROMPTEADDR     DC.W    'ENTER A ENDING ADDRESS   (ON CAPS): ',0
 *ERROR MSG-------------------------------------------------------------------------------------------
 INVALIDSADDR        DC.B    'ERROR: INVALID STARTING ADDRESS VERSUS ENDING.',CR,LF,CR,LF,0
 ERRORINPUTSIZE      DC.B    'ERROR: INVALID ADDRESS SIZE',CR,LF,CR,LF,0
+INVALIDCHAR         DC.B    'ERROR: INVALID ADDRESS CHARACTER',CR,LF,CR,LF,0
 SGTEM               DC.B    'ERROR: STARTING ADDRESS > ENDING ADDRESS',CR,LF,CR,LF,0
 ODD_ADD_MSG         DC.B    'ERROR: ODD ADDRESS',CR,LF,CR,LF,0
 STARTING_ADDR_7     DC.B    'ERROR: Invalid starting adress - must be greater than 7000',CR,LF,CR,LF,0
 
 *-------------------------------------------------------------------------------------------
 * VARIABLES --------------------------------------------------------------------------------
-
-OPCODE          DC.L    1
+SIZE            DS.B    1
 INPUT_HEX       DS.L    1   * Use to temp hold starting and ending address
 STARTING_ADD    DS.L    1   ;1 is the size, if I change to 4 then array size changes
 ENDING_ADD      DS.L    1
-
+OPCODE          DC.L    1
 
  END    START        ; last line of source
+
 
 
 *~Font name~Courier New~
