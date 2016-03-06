@@ -9,8 +9,10 @@ START:
         LEA         GREETING, A1            * Load the greeting message
         MOVE.B      #14,D0
         TRAP        #15 
-            
-*-------------------------------------------------------------------------------------------
+   		MOVE.B      #0, LINE_COUNT          * Initilize the LINE_COUNTER variable 
+    
+********************************************************************************************
+* DESCRIPTION: Reading Addresses
 *------------------ STARTING ADDRESS -------------------------------------------------------
 READ_SADDR
         CLR.L       D7
@@ -21,7 +23,7 @@ READ_SADDR
         MOVE.B      #2,D0                   * Read string from keyboard and store at A1
         TRAP        #15
         BRA         VALIDATE_STORE 
-*------------------ STARTING ADDRESS -------------------------------------------------------
+*------------------ ENDING ADDRESS -------------------------------------------------------
 READ_EADDR
         LEA         PROMPTEADDR, A1
         MOVE.B      #14, D0
@@ -31,7 +33,8 @@ READ_EADDR
         TRAP        #15  
         BRA         VALIDATE_STORE 
 
-*-------------------------------------------------------------------------------------------
+********************************************************************************************
+* Validating and storing addresses
 *------------------ VALIDATE & STORE  ADDRESS ----------------------------------------------
 VALIDATE_STORE 
 
@@ -124,12 +127,11 @@ CONTINUE_STORE
 STORE_ENDING 
         CMP.L       (STARTING_ADD), D7
         BLT         SGTE
-        *BEQ         SGTE
-        *JSR         ODD_TEST
+
 STORE_E             
         MOVE.L      D7, ENDING_ADD  
-        *MOVE.L      D7, A7                  * Save starting at A7
         CLR.L       D7
+        JSR         OPCODESETUP
         BRA         ADDR_LOOP
 SGTE                                        * Starting greater then ending
         LEA         INVALIDSADDR, A1
@@ -138,332 +140,335 @@ SGTE                                        * Starting greater then ending
         CLR.L       D7
         CLR.L       D3
         BRA         READ_SADDR
+  
         
-*-------------------------------------------------------------------------------------------
+********************************************************************************************
+*------------------ OPCODE READ ------------------------------------------------------------
+* Description:
+*
 *------------------ Compare Current Address to Ending Adddres ------------------------------ 
 ADDR_LOOP
-        MOVE.L      ENDING_ADD,A5           
+        MOVE.L      ENDING_ADD,A5               * Check current address against ending adress           
         CMP.L       A5,A6
-        BGT         END_PROGRAM
-        JSR         CLEAR_REGISTERS
+        BGT         END_PROGRAM    
+        CMP.B       #25, LINE_COUNT             * Check line counter
+        BNE         CONTINUE_ADDR_LOOP
+        JSR         GETKEY        
+CONTINUE_ADDR_LOOP        
+        ADD.B       #1, LINE_COUNT              * Update Line counter
+        JSR         CLEAR_REGISTERS             * Clear registers
         JSR         PRINT_CURRENT_ADD           * PRINT CURRENT ADDRESS
-        
-*-------------------------------------------------------------------------------------------  
+       
 *------------------ NOP & RTS ADDRESS ------------------------------------------------------
-Decode_Constant                             * Check for NOP & RTS
-        JSR     CLEAR_REGISTERS
-        LEA     OPCODE, A4                  * Load opcode to A4
-        JSR     UNCHANGED_CONSTANT          * NOP & RTS
+Decode_Constant                                 * Check for NOP & RTS
+        JSR         CLEAR_REGISTERS
+        LEA         OPCODE, A4                  * Load opcode to A4
+        JSR         UNCHANGED_CONSTANT          * NOP & RTS
 
-****************************PRINTING HEX ADDRESS TO ASCII *******************
 
+********************************************************************************************
+*------------------ PRINT CURRENT ADDRESS IN ASCII -----------------------------------------
 PRINT_CURRENT_ADD
-    MOVE.L  A6,D2
-    ;LEA     CURRENT_ADDRESS,A7
-    MOVE.B  #0,D5
-    MOVE.B  #8,D6
-
+        MOVE.L      A6,D2
+        MOVE.B      #0,D5
+        MOVE.B      #8,D6
 CONVERT_HEX_ASCII
-    CMP.B   D5,D6
-    BNE     SET_COUNTER_4
-    RTS
-
+        CMP.B       D5,D6
+        BNE         SET_COUNTER_4
+        RTS
 SET_COUNTER_4
-    MOVE.B  #0,D3
-    MOVE.B  #4,D4    
+        MOVE.B      #0,D3
+        MOVE.B      #4,D4    
 Loop
-    CMP.B   D3,D4
-    BEQ     STORE_ONE_CHAR
-    LSL.L   #1,D2
-    BCC     ADDZERO
-
-    ADDI.B  #1,D1
-    BRA     INCREMENT_BIT_LOOP
-    
+        CMP.B       D3,D4
+        BEQ         STORE_ONE_CHAR
+        LSL.L       #1,D2
+        BCC         ADDZERO
+        ADDI.B      #1,D1
+        BRA         INCREMENT_BIT_LOOP
 ADDZERO
-    ADDI.B  #0,D1
-
+        ADDI.B  #0,D1
 INCREMENT_BIT_LOOP
-    ADDI.B  #1,D3
-    LSL.L   #1,D1
-    BRA     Loop
-    
+        ADDI.B  #1,D3
+        LSL.L   #1,D1
+        BRA     Loop
 STORE_ONE_CHAR
-    LSR.L   #1,D1
-    CMP.B   #$9,D1
-    BLT     HEX_TO_ASCII_NUMBER
-    
-    ADDI.B  #$37,D1     ;HEX_TO_ASCII_LETTER
-    BRA     INCREMENT_NEXT_HEX_LOOP
-    
+        LSR.L   #1,D1
+        CMP.B   #$9,D1
+        BLT     HEX_TO_ASCII_NUMBER
+        ADDI.B  #$37,D1                 * HEX_TO_ASCII_LETTER
+        BRA     INCREMENT_NEXT_HEX_LOOP
 HEX_TO_ASCII_NUMBER
-    ADDI.B  #$30,D1
-
-    ;MOVE.B  D7,(A7)+
+        ADDI.B  #$30,D1
 INCREMENT_NEXT_HEX_LOOP
-    ADDI.B  #1,D5
-    MOVE.B  #6,D0
-    TRAP    #15
-    CLR.L   D1
-    BRA     CONVERT_HEX_ASCII
-
-CLEAR_REGISTERS
-    CLR.L   D0
-    CLR.L   D5
-    CLR.L   D2
-    CLR.L   D1
-    CLR.L   D3
-    CLR.L   D4
-    CLR.L   D6
-    MOVE.L  #$00000000,A1
-    MOVE.L  #$00000000,A2
-    MOVE.L  #$00000000,A3
-    MOVE.L  #$00000000,A4
-    MOVE.L  #$00000000,A5
-    RTS
-
+        ADDI.B  #1,D5
+        MOVE.B  #6,D0
+        TRAP    #15
+        CLR.L   D1
+        BRA     CONVERT_HEX_ASCII
 ***********************END OF PRINTING HEX ADDRESS TO ASCII *******************
 
 
 *-------------------------------------------------------------------------------------------
 * PRINT NOP OR RTS -------------------------------------------------------------------------
-
 UNCHANGED_CONSTANT
-    MOVE.B  #' ',(A4)+
-    MOVE.B  #' ',(A4)+
-    MOVE.B  #' ',(A4)+
-    MOVE.B  #' ',(A4)+
-    
-    CMP.W   #$4E71,(A6)
-    BEQ     PRINT_NOP
-    CMP.W   #$4E75,(A6)
-    BEQ     PRINT_RTS
-    CMP.W   #$FFFF,(A6)
-    BEQ     PRINT_NO_CODE    
-    RTS  
-    
+        MOVE.B      #' ',(A4)+
+        MOVE.B      #' ',(A4)+
+        MOVE.B      #' ',(A4)+
+        MOVE.B      #' ',(A4)+
+        CMP.W       #$4E71,(A6)
+        BEQ         PRINT_NOP
+        CMP.W       #$4E75,(A6)
+        BEQ         PRINT_RTS
+        CMP.W       #$FFFF,(A6)
+        BEQ         PRINT_NO_CODE    
+        RTS  
 PRINT_NOP
-    MOVE.B  #'N',(A4)+
-    MOVE.B  #'O',(A4)+
-    MOVE.B  #'P',(A4)+
-    MOVE.B  #$00,(A4)+
-    *MOVEA.L  #$00000000,A1
-    LEA     OPCODE,A1
-    MOVE.B  #13,D0
-    TRAP    #15
-    ADD.L   #$2,A6          ;increase by 2 bytes if it prints NOP
-    BRA     ADDR_LOOP
+        MOVE.B  #'N',(A4)+
+        MOVE.B  #'O',(A4)+
+        MOVE.B  #'P',(A4)+
+        MOVE.B  #$00,(A4)+
+        LEA     OPCODE,A1
+        MOVE.B  #13,D0
+        TRAP    #15
+        ADD.L   #$2,A6          ;increase by 2 bytes if it prints NOP
+        BRA     ADDR_LOOP
 PRINT_RTS
-    MOVE.B  #'R',(A4)+
-    MOVE.B  #'T',(A4)+
-    MOVE.B  #'S',(A4)+
-    MOVE.B  #$00,(A4)+
-    LEA     OPCODE,A1
-    MOVE.B  #13,D0
-    TRAP    #15
-    ADD.L   #$2,A6
-    BRA     ADDR_LOOP
+        MOVE.B  #'R',(A4)+
+        MOVE.B  #'T',(A4)+
+        MOVE.B  #'S',(A4)+
+        MOVE.B  #$00,(A4)+
+        LEA     OPCODE,A1
+        MOVE.B  #13,D0
+        TRAP    #15
+        ADD.L   #$2,A6
+        BRA     ADDR_LOOP
 PRINT_NO_CODE
-    MOVE.B  #'N',(A4)+
-    MOVE.B  #'O',(A4)+
-    MOVE.B  #' ',(A4)+
-    MOVE.B  #'D',(A4)+
-    MOVE.B  #'A',(A4)+
-    MOVE.B  #'T',(A4)+
-    MOVE.B  #'A',(A4)+
-    MOVE.B  #' ',(A4)+
-    MOVE.B  #'$',(A4)+
-    MOVE.B  #0,D2                   ;Setting counter for print Must be word size
-    MOVE.B  #4,D3
-    JSR     PRINT_IMMIDIATE_DATA
-    MOVE.B  #$00,(A4)+
-    LEA     OPCODE,A1
-    MOVE.B  #13,D0
-    TRAP    #15
-    ADD.L   #$2,A6
-    BRA     ADDR_LOOP
-   
-END_PROGRAM
-        SIMHALT             ; halt simulator
+        MOVE.B  #'N',(A4)+
+        MOVE.B  #'O',(A4)+
+        MOVE.B  #' ',(A4)+
+        MOVE.B  #'D',(A4)+
+        MOVE.B  #'A',(A4)+
+        MOVE.B  #'T',(A4)+
+        MOVE.B  #'A',(A4)+
+        MOVE.B  #' ',(A4)+
+        MOVE.B  #'$',(A4)+
+        MOVE.B  #0,D2                   ;Setting counter for print Must be word size
+        MOVE.B  #4,D3
+        JSR     PRINT_IMMIDIATE_DATA
+        MOVE.B  #$00,(A4)+
+        LEA     OPCODE,A1
+        MOVE.B  #13,D0
+        TRAP    #15
+        ADD.L   #$2,A6
+        BRA     ADDR_LOOP   
+
 
 *-------------------------------------------------------------------------------------------
 * PRINT_IMMIDIATE_DATA---------------------------------------------------------------------
-
 PRINT_IMMIDIATE_DATA
-    CMP.B   #2,D3
-    BEQ     BYTE_SIZE
-    CMP.B   #4,D3
-    BEQ     WORD_SIZE
-    CMP.B   #8,D3
-    BEQ     LONG_SIZE
-
+        CMP.B   #2,D3
+        BEQ     BYTE_SIZE
+        CMP.B   #4,D3
+        BEQ     WORD_SIZE
+        CMP.B   #8,D3
+        BEQ     LONG_SIZE
 BYTE_SIZE
-    MOVE.B  (A6),D0
-    MOVE.B  #1,SIZE
-    BRA     LOOP_IMMIDIATE_DATA
+        MOVE.B  (A6),D0
+        MOVE.B  #1,SIZE
+        BRA     LOOP_IMMIDIATE_DATA
 WORD_SIZE
-    MOVE.W  (A6),D0
-    MOVE.B  #3,SIZE
-    BRA     LOOP_IMMIDIATE_DATA
+        MOVE.W  (A6),D0
+        MOVE.B  #3,SIZE
+        BRA     LOOP_IMMIDIATE_DATA
 LONG_SIZE
-    MOVE.L  (A6),D0
-    MOVE.B  #3,SIZE
-    BRA     LOOP_IMMIDIATE_DATA
-    
+        MOVE.L  (A6),D0
+        MOVE.B  #3,SIZE
+        BRA     LOOP_IMMIDIATE_DATA  
 LOOP_IMMIDIATE_DATA    
-    CMP.B   D2,D3               ;D3 WIIL BE 8 FOR BYTE, 16 FOR WORD, 32 FOR LONG
-    BNE     CONTINUE_SHIFT
-    CLR.L   D2
-    CLR.L   D3       
-    RTS
-    
+        CMP.B   D2,D3               ;D3 WIIL BE 8 FOR BYTE, 16 FOR WORD, 32 FOR LONG
+        BNE     CONTINUE_SHIFT
+        CLR.L   D2
+        CLR.L   D3       
+        RTS  
 CONTINUE_SHIFT
-    JSR     SHIFT_4_BIT         ;SHIFT 4 BIT TO SEE WHAT TYPE OF 
-
-;HEX_D    
-    ;CMP.B   #hexD,D1
-    ;BEQ     PRINT_F
-   
-
-;HEX_E    
-    ;CMP.B   #hexE,D1
-    ;BEQ     PRINT_E
-
+        JSR     SHIFT_4_BIT         ;SHIFT 4 BIT TO SEE WHAT TYPE OF 
 HEX_F    
-    CMP.B   #hexF,D1
-    BEQ     PRINT_F
-    
+        CMP.B   #hexF,D1
+        BEQ     PRINT_F  
 ADD_COUNTER
-    ADDI.B  #1,D2
-    CLR.L   D1
-    BRA     LOOP_IMMIDIATE_DATA
+        ADDI.B  #1,D2
+        CLR.L   D1
+        BRA     LOOP_IMMIDIATE_DATA
 
 *-------------------------------------------------------------------------------------------
 * SHIFT_4_BIT--------------------------------------------------------------------
-
 SHIFT_4_BIT
-    MOVE.B   #0,D4
-    MOVE.B   #4,D5              ;SHIFTS FROM 
-    
+        MOVE.B   #0,D4
+        MOVE.B   #4,D5              ;SHIFTS FROM 
 START_SHIFT_4_BIT   
-    CMP.B    D4,D5
-    BNE      SHIFT_SIZE 
-    LSR.L    #1,D1
-    RTS
-
+        CMP.B    D4,D5
+        BNE      SHIFT_SIZE 
+        LSR.L    #1,D1
+        RTS
 SHIFT_SIZE 
-    CMP.B   #2,D3
-    BEQ     SHIFT_SIZE_BYTE
-    CMP.B   #4,D3
-    BEQ     SHIFT_SIZE_WORD
-    CMP.B   #8,D3
-    BEQ     SHIFT_SIZE_LONG
-
+        CMP.B   #2,D3
+        BEQ     SHIFT_SIZE_BYTE
+        CMP.B   #4,D3
+        BEQ     SHIFT_SIZE_WORD
+        CMP.B   #8,D3
+        BEQ     SHIFT_SIZE_LONG
 SHIFT_SIZE_BYTE
-    LSL.B   #1, D0              ;COPY OF THE DATA WE NEED TO SHIFT
-    BCS     ADDONE
-    BRA     ADD_ZERO
+        LSL.B   #1, D0              ;COPY OF THE DATA WE NEED TO SHIFT
+        BCS     ADDONE
+        BRA     ADD_ZERO
 SHIFT_SIZE_WORD
-    LSL.W   #1, D0              ;COPY OF THE DATA WE NEED TO SHIFT
-    BCS     ADDONE
-    BRA     ADD_ZERO
+        LSL.W   #1, D0              ;COPY OF THE DATA WE NEED TO SHIFT
+        BCS     ADDONE
+        BRA     ADD_ZERO
 SHIFT_SIZE_LONG
-    LSL.L   #1, D0              ;COPY OF THE DATA WE NEED TO SHIFT
-    BCS     ADDONE
-
+        LSL.L   #1, D0              ;COPY OF THE DATA WE NEED TO SHIFT
+        BCS     ADDONE
 ADD_ZERO        
-    ADDI.B  #%0, D1                    * add 0 bit to d2
-    ASL.L   #1, D1     
-    BRA     COUNTER_SHIFT_4_BIT
-         
+        ADDI.B  #%0, D1                    * add 0 bit to d2
+        ASL.L   #1, D1     
+        BRA     COUNTER_SHIFT_4_BIT 
 ADDONE        
-    ADDI.B  #%1, D1                    * add 1 bit to d2
-    ASL.L   #1, D1
-    BRA     COUNTER_SHIFT_4_BIT 
-
+        ADDI.B  #%1, D1                    * add 1 bit to d2
+        ASL.L   #1, D1
+        BRA     COUNTER_SHIFT_4_BIT 
 COUNTER_SHIFT_4_BIT
-    ADDI.L  #1,D4
-    BRA     START_SHIFT_4_BIT
-
-    
-
-
-*-------------------------------------------------------------------------------------------
-* SHIFT_4_BIT--------------------------------------------------------------------
-
+        ADDI.L  #1,D4
+        BRA     START_SHIFT_4_BIT
 
 *-------------------------------------------------------------------------------------------
 * PRINT_ASCCI_HEX---------------------------------------------------------------------
 PRINT_0
     MOVE.B  #'0',(A4)+
     BRA     ADD_COUNTER
-
 PRINT_1
     MOVE.B  #'1',(A4)+
     BRA     ADD_COUNTER
-
 PRINT_2
     MOVE.B  #'2',(A4)+
     BRA     ADD_COUNTER
-
 PRINT_3
     MOVE.B  #'3',(A4)+
     BRA     ADD_COUNTER
-
 PRINT_4
     MOVE.B  #'4',(A4)+
     BRA     ADD_COUNTER
-
 PRINT_5
     MOVE.B  #'5',(A4)+
     BRA     ADD_COUNTER
-
 PRINT_6
     MOVE.B  #'6',(A4)+
     BRA     ADD_COUNTER
-
 PRINT_7
     MOVE.B  #'7',(A4)+
     BRA     ADD_COUNTER
-
 PRINT_8
     MOVE.B  #'8',(A4)+
     BRA     ADD_COUNTER
-
 PRINT_9
     MOVE.B  #'9',(A4)+
     BRA     ADD_COUNTER
-
 PRINT_A
     MOVE.B  #'A',(A4)+
     BRA     ADD_COUNTER
-
 PRINT_B
     MOVE.B  #'B',(A4)+
     BRA     ADD_COUNTER
-
 PRINT_C
     MOVE.B  #'C',(A4)+
     BRA     ADD_COUNTER
-
 PRINT_D
     MOVE.B  #'D',(A4)+
     BRA     ADD_COUNTER
-
 PRINT_E
     MOVE.B  #'E',(A4)+
     BRA     ADD_COUNTER
-
 PRINT_F
     MOVE.B  #'F',(A4)+
     BRA     ADD_COUNTER
 
-*-------------------------------------------------------------------------------------------
+    
+********************************************************************************************
+*------------------ KEY -  -----------------------------------------------------------------
+* Desctiption:
+* Expect:       DO, D1, A1 to be empty
+* 
+*------------------ Prompt User for Enter, R, or Q -----------------------------------------
+GETKEY
+        LEA         PROMPTOPTIONS, A1            * Load the greeting message
+        MOVE.B      #14,D0
+        TRAP        #15 
+        MOVE.B      #$00, LINE_COUNT        * Reset Line Count
+        MOVE.B      #12,D0                  * Use keyboard echo trap
+        MOVE.B      #0,D1                   * Reset Keyboard input
+        TRAP        #15                 
+        MOVE.B      #5, D0                  * Log keyboard input
+        TRAP        #15                 
+        CMP.B       #$D, D1                 * Compare the key press with ENTER
+        BEQ         OPCODESETUP         
+        CMP.B       #$72, D1                * Compare the key press with R
+        BEQ         RESTART             
+        CMP.B       #$52, D1                * Compare the key press with r
+        BEQ         RESTART             
+        CMP.B       #$71, D1                * Compare the key press with q
+        BEQ         END_PROGRAM             
+        CMP.B       #$51, D1                * Compare the key press with Q
+        BEQ         END_PROGRAM            
+        CMP.B       #$5D, D1                * Check the key press with ENTER
+        BNE         GETKEY              
+OPCODESETUP
+        MOVE.B  #11, D0                     * Task 11 - Clear screen
+        MOVE.W  #$FF00, D1          
+        TRAP    #15                 
+        CLR.L   D1
+        CLR.L   D0
+        RTS                 
+*------------------ RESTART ----------------------------------------------------------------
+RESTART
+        JSR         OPCODESETUP
+        JSR         CLEAR_REGISTERS
+        MOVEA.L     #$01000000,A7       Reset stack pointer
+        MOVEA.L     #$01000000,A6       Reset stack pointer
+        BRA         START
+        
+********************************************************************************************
+*------------------ CLEAR REGISTERS --------------------------------------------------------
+* Desctiption:
+* 
+CLEAR_REGISTERS
+        CLR.L   D0
+        CLR.L   D5
+        CLR.L   D2
+        CLR.L   D1
+        CLR.L   D3
+        CLR.L   D4
+        CLR.L   D6
+        MOVE.L  #$00000000,A1
+        MOVE.L  #$00000000,A2
+        MOVE.L  #$00000000,A3
+        MOVE.L  #$00000000,A4
+        MOVE.L  #$00000000,A5
+        RTS
+
+********************************************************************************************
+********************************************************************************************
+********************************************************************************************
+END_PROGRAM
+        SIMHALT             ; halt simulator
+********************************************************************************************
+********************************************************************************************
+********************************************************************************************
+
+
+********************************************************************************************
 * VARIABLES & MESSAGES ---------------------------------------------------------------------
 CR        EQU       $0D
 LF        EQU       $0A
-
-*-------------------------------------------------------------------------------------------
 * Hex values -------------------------------------------------------------------------------  
 numzero     EQU     0  
 numone      EQU     1
@@ -481,7 +486,6 @@ numC        EQU     12
 numD        EQU     13
 numE        EQU     $E
 numF        EQU     15
-*-------------------------------------------------------------------------------------------
 * Binary Hex Values ------------------------------------------------------------------------
 hex0        EQU     %0000   
 hex1        EQU     %0001   
@@ -499,7 +503,6 @@ hexC        EQU     %1100
 hexD        EQU     %1101   
 hexE        EQU     %1110   
 hexF        EQU     %1111   
-*-------------------------------------------------------------------------------------------
 * OP Codes ---------------------------------------------------------------------------------
 bin0000     EQU     %0000   ;ADDI, ANDI, EORI, BCHG, CMPI
 bin0001     EQU     %0001   ;MOVE.B
@@ -515,31 +518,31 @@ bin1011     EQU     %1011   ;CMP, CMPA, EOR
 bin1100     EQU     %1100   ;AND, MULS.W
 bin1101     EQU     %1101   ;ADD, ADDA
 bin1110     EQU     %1110   ;ASR, ASL, ROL, ROR
-
+* MESSAGES ---------------------------------------------------------------------------------------------
 GREETING        DC.B    '       HELLO THERE, WELCOME TO AWESOME DISASSEMBLER'
                 DC.B    CR,LF,'Note: Addressess must be in HEX'
                 DC.B    CR,LF,'Note: Addressess must be in caps'
                 DC.B    CR,LF,'    : Starting Address must be greater than 70000',CR,LF,CR,LF,CR,LF,0 
 PROMPTSADDR     DC.W    'ENTER A STARTING ADDRESS (ON CAPS): ',0
 PROMPTEADDR     DC.W    'ENTER A ENDING ADDRESS   (ON CAPS): ',0
-
-*ERROR MSG-------------------------------------------------------------------------------------------
+PROMPTOPTIONS    DC.B    'Press: ENTER to Continue || Q or q to Quit || R OR r to Restart',CR,LF,CR,LF,0
+* ERROR MSG --------------------------------------------------------------------------------------------
 INVALIDSADDR        DC.B    'ERROR: INVALID STARTING ADDRESS VERSUS ENDING.',CR,LF,CR,LF,0
 ERRORINPUTSIZE      DC.B    'ERROR: INVALID ADDRESS SIZE',CR,LF,CR,LF,0
 INVALIDCHAR         DC.B    'ERROR: INVALID ADDRESS CHARACTER',CR,LF,CR,LF,0
 SGTEM               DC.B    'ERROR: STARTING ADDRESS > ENDING ADDRESS',CR,LF,CR,LF,0
 ODD_ADD_MSG         DC.B    'ERROR: ODD ADDRESS',CR,LF,CR,LF,0
 STARTING_ADDR_7     DC.B    'ERROR: Invalid starting adress - must be greater than 7000',CR,LF,CR,LF,0
-
-*-------------------------------------------------------------------------------------------
-* VARIABLES --------------------------------------------------------------------------------
+* VARIABLES --------------------------------------------------------------------------------------------
+LINE_COUNT      DS.L    1
 SIZE            DS.B    1
 INPUT_HEX       DS.L    1   * Use to temp hold starting and ending address
 STARTING_ADD    DS.L    1   ;1 is the size, if I change to 4 then array size changes
 ENDING_ADD      DS.L    1
 OPCODE          DC.L    1
+        
+        END    START        ; last line of source
 
- END    START        ; last line of source
 
 
 
