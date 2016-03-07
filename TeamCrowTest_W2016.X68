@@ -10,12 +10,14 @@ START:                  ; first instruction of program
 * Put program code here
     NOP
     RTS
+    JSR     (A1)
     
     SIMHALT             ; halt simulator
 
 * Put variables and constants here
 
     END    START        ; last line of source
+
 
 
 
