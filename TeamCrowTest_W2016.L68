@@ -1,6 +1,6 @@
 00007000 Starting Address
 Assembler used: EASy68K Editor/Assembler v5.15.04
-Created On: 3/6/2016 4:34:13 PM
+Created On: 3/6/2016 7:34:03 PM
 
 00000000                             1  *-----------------------------------------------------------
 00000000                             2  * Title      :
@@ -12,15 +12,20 @@ Created On: 3/6/2016 4:34:13 PM
 00007000                             8  START:                  ; first instruction of program
 00007000                             9  
 00007000                            10  * Put program code here
-00007000  4E71                      11      NOP
-00007002  4E75                      12      RTS
-00007004  4E91                      13      JSR     (A1)
-00007006                            14      
-00007006  FFFF FFFF                 15      SIMHALT             ; halt simulator
-0000700A                            16  
-0000700A                            17  * Put variables and constants here
-0000700A                            18  
-0000700A                            19      END    START        ; last line of source
+00007000  2279 12345678             11      MOVEA.L      $12345678, A1
+00007006  4E71                      12      NOP
+00007008  4E75                      13      RTS
+0000700A  4E91                      14      JSR     (A1)
+0000700C  4E92                      15      JSR     (A2)
+0000700E  4E93                      16      JSR     (A3)
+00007010  4E94                      17      JSR     (A4)
+00007012  4E95                      18      JSR     (A5)
+00007014                            19      
+00007014  FFFF FFFF                 20      SIMHALT             ; halt simulator
+00007018                            21  
+00007018                            22  * Put variables and constants here
+00007018                            23  
+00007018                            24      END    START        ; last line of source
 
 No errors detected
 No warnings generated

@@ -189,14 +189,13 @@ SETUPOPCODE
         MOVE.B  #' ',(A3)+
         MOVE.B  #' ',(A3)+
         MOVE.B  #' ',(A3)+
-        MOVE.B  #' ',(A3)+
-        MOVE.B  #' ',(A3)+
         RTS
         
 *---------------------------------------------------------------------------------------
 SETUPBADDATA
         *MOVE.L  #$00000000, A4
-
+        MOVE.B  #' ',(A4)+
+        MOVE.B  #' ',(A4)+
         MOVE.B  #' ',(A4)+
         MOVE.B	#'B',(A4)+			Insert B into the output
         MOVE.B	#'A',(A4)+			Insert A into the output
@@ -207,6 +206,8 @@ SETUPBADDATA
         MOVE.B	#'T',(A4)+			Insert T into output
         MOVE.B	#'A',(A4)+			Insert A into output
         MOVE.B	#' ',(A4)+			Insert a space into output
+        MOVE.B  #' ',(A4)+
+        MOVE.B  #' ',(A4)+
         MOVE.B	#'$',(A4)+			Insert a $ into output
 GETBADDATA            
         MOVEQ	#4,D0               Move counter to D0
@@ -255,12 +256,18 @@ OPCODE_JMP_TABLE
     RTS
     JSR     INSTR0100                           * - MOVEM, LEA, JSR, CLR, RTS, NOP
     RTS
+    JSR     INSTR0101                           * - BAD DATA
+    RTS   
     JSR     INSTR0110                           * - BCC, BLE, BGT
     RTS
     JSR     INSTR0111                           * - MOVEQ
     RTS
+    JSR     INSTR1000                           * - DIVU
+    RTS 
     JSR     INSTR1001                           * - SUB
     RTS
+    JSR     INSTR1010                           * - BAD DATA
+    RTS  
     JSR     INSTR1011                           * - CMP
     RTS
     JSR     INSTR1100                           * - ADD, MULS
@@ -268,14 +275,7 @@ OPCODE_JMP_TABLE
     JSR     INSTR1101                           * - ADDA, AND, 
     RTS
     JSR     INSTR1110                           * - ASR, LSL, ROL
-    RTS
-    JSR     INSTR1000                           * - DIVU
-    RTS   
-    
-    JSR     INSTR0101                           * - BAD DATA
-    RTS   
-    JSR     INSTR1010                           * - BAD DATA
-    RTS   
+    RTS  
     JSR     INSTR1111                           * - BAD DATA
     RTS   
 
@@ -1225,19 +1225,6 @@ NEXT_LONGWORD_CHAR1
     RTS                        				If so, return
 
 
-
-
-
-
-       
-*------------------ NOP & RTS ADDRESS ------------------------------------------------------
-Decode_Constant                                 * Check for NOP & RTS
-        JSR         CLEAR_REGISTERS
-        LEA         OPCODE, A4                  * Load opcode to A4
-        JSR         UNCHANGED_CONSTANT          * NOP & RTS
-        RTS
-
-
 ********************************************************************************************
 *------------------ PRINT CURRENT ADDRESS IN ASCII -----------------------------------------
 PRINT_CURRENT_ADD
@@ -1423,10 +1410,11 @@ SIZE            DS.B    1
 INPUT_HEX       DS.L    1   * Use to temp hold starting and ending address
 STARTING_ADD    DS.L    1   ;1 is the size, if I change to 4 then array size changes
 ENDING_ADD      DS.L    1
-BADCODE         DS.L    1  
+BADCODE         DS.L    5  
 OPCODE          DC.L    1
         
         END    START        ; last line of source
+
 
 
 
