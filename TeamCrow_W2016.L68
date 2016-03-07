@@ -1,6 +1,6 @@
 00000400 Starting Address
 Assembler used: EASy68K Editor/Assembler v5.15.04
-Created On: 3/5/2016 4:10:12 PM
+Created On: 3/6/2016 4:24:36 PM
 
 00000000                             1  *------------------------------------------------------------------------------------------
 00000000                             2  * Title:  68K Disassembler
@@ -10,29 +10,29 @@ Created On: 3/5/2016 4:10:12 PM
 00000000                             6  *------------------------------------------------------------------------------------------
 00000400                             7      ORG    $400
 00000400                             8  START:  
-00000400  43F9 00000892              9          LEA         GREETING, A1            * Load the greeting message
+00000400  43F9 00001236              9          LEA         GREETING, A1            * Load the greeting message
 00000406  103C 000E                 10          MOVE.B      #14,D0
 0000040A  4E4F                      11          TRAP        #15 
-0000040C  13FC 0000 00000ACE        12          MOVE.B      #0, LINE_COUNT          * Initilize the LINE_COUNTER variable 
+0000040C  13FC 0000 00001472        12          MOVE.B      #0, LINE_COUNT          * Initilize the LINE_COUNTER variable 
 00000414                            13      
 00000414                            14  ********************************************************************************************
 00000414                            15  * DESCRIPTION: Reading Addresses
 00000414                            16  *------------------ STARTING ADDRESS -------------------------------------------------------
 00000414                            17  READ_SADDR
 00000414  4287                      18          CLR.L       D7
-00000416  43F9 00000942             19          LEA         PROMPTSADDR, A1
+00000416  43F9 000012E6             19          LEA         PROMPTSADDR, A1
 0000041C  103C 000E                 20          MOVE.B      #14, D0
 00000420  4E4F                      21          TRAP        #15
-00000422  43F9 00000AD4             22          LEA         INPUT_HEX,A1            * Temp hold starting address
+00000422  43F9 00001478             22          LEA         INPUT_HEX,A1            * Temp hold starting address
 00000428  103C 0002                 23          MOVE.B      #2,D0                   * Read string from keyboard and store at A1
 0000042C  4E4F                      24          TRAP        #15
 0000042E  6000 001E                 25          BRA         VALIDATE_STORE 
 00000432                            26  *------------------ ENDING ADDRESS -------------------------------------------------------
 00000432                            27  READ_EADDR
-00000432  43F9 00000968             28          LEA         PROMPTEADDR, A1
+00000432  43F9 0000130C             28          LEA         PROMPTEADDR, A1
 00000438  103C 000E                 29          MOVE.B      #14, D0
 0000043C  4E4F                      30          TRAP        #15
-0000043E  43F9 00000AD4             31          LEA         INPUT_HEX,A1            * Temp hold ending address
+0000043E  43F9 00001478             31          LEA         INPUT_HEX,A1            * Temp hold ending address
 00000444  103C 0002                 32          MOVE.B      #2,D0                   * Read string from keyboard and store at A1
 00000448  4E4F                      33          TRAP        #15  
 0000044A  6000 0002                 34          BRA         VALIDATE_STORE 
@@ -49,14 +49,14 @@ Created On: 3/5/2016 4:10:12 PM
 0000045A  6E00 0006                 45          BGT         BADSIZES
 0000045E  6000 002A                 46          BRA         READHEX
 00000462                            47  BADSIZES
-00000462  43F9 00000A05             48          LEA         ERRORINPUTSIZE, A1      * Print Bad Size Error
+00000462  43F9 000013A9             48          LEA         ERRORINPUTSIZE, A1      * Print Bad Size Error
 00000468  103C 000E                 49          MOVE.B      #14,D0
 0000046C  4E4F                      50          TRAP        #15
 0000046E  B63C 0000                 51          CMP.B       #0,D3                   * D3 - HOLDS 0 if starting address has not being stored yet
 00000472  67A0                      52          BEQ         READ_SADDR
 00000474  60BC                      53          BRA         READ_EADDR 
 00000476                            54  INVALID_CHARACTER                           * Print Invalid Character for Address
-00000476  43F9 00000A25             55          LEA         INVALIDCHAR, A1
+00000476  43F9 000013C9             55          LEA         INVALIDCHAR, A1
 0000047C  103C 000E                 56          MOVE.B      #14,D0 
 00000480  4E4F                      57          TRAP        #15 
 00000482  B63C 0000                 58          CMP.B       #0,D3
@@ -96,7 +96,7 @@ Created On: 3/5/2016 4:10:12 PM
 000004D4                            92              
 000004D4  6000 001E                 93          BRA         STORE_ADDRESS                           
 000004D8                            94  ODD_TEST_FAIL   
-000004D8  43F9 00000A77             95          LEA         ODD_ADD_MSG,A1          * Load ODD_ADD_MSG to A1
+000004D8  43F9 0000141B             95          LEA         ODD_ADD_MSG,A1          * Load ODD_ADD_MSG to A1
 000004DE  103C 000E                 96          MOVE.B      #14,D0                  * Print odd address error message
 000004E2  4E4F                      97          TRAP        #15                     
 000004E4  4286                      98          CLR.L       D6
@@ -117,28 +117,28 @@ Created On: 3/5/2016 4:10:12 PM
 0000050C                           113      
 0000050C  4286                     114          CLR.L       D6
 0000050E  4287                     115          CLR.L       D7
-00000510  43F9 00000A8E            116          LEA         STARTING_ADDR_7, A1         * Load ODD_ADD_MSG to A1
+00000510  43F9 00001432            116          LEA         STARTING_ADDR_7, A1         * Load ODD_ADD_MSG to A1
 00000516  103C 000E                117          MOVE.B      #14,D0                  * Print odd address error message
 0000051A  4E4F                     118          TRAP        #15  
 0000051C  6000 FEF6                119          BRA         READ_SADDR
 00000520                           120          
 00000520                           121  CONTINUE_STORE        
-00000520  23C7 00000AD8            122          MOVE.L      D7, STARTING_ADD        * Save in the memory address 
+00000520  23C7 0000147C            122          MOVE.L      D7, STARTING_ADD        * Save in the memory address 
 00000526  2C47                     123          MOVEA.L     D7, A6                  * Save starting at A6
 00000528  163C 0001                124          MOVE.B      #1, D3                  * Counter - for VALID_STORE
 0000052C  4287                     125          CLR.L       D7
 0000052E  6000 FF02                126          BRA         READ_EADDR    
 00000532                           127  STORE_ENDING 
-00000532  BEB9 00000AD8            128          CMP.L       (STARTING_ADD), D7
+00000532  BEB9 0000147C            128          CMP.L       (STARTING_ADD), D7
 00000538  6D00 0014                129          BLT         SGTE
 0000053C                           130  
 0000053C                           131  STORE_E             
-0000053C  23C7 00000ADC            132          MOVE.L      D7, ENDING_ADD  
+0000053C  23C7 00001480            132          MOVE.L      D7, ENDING_ADD  
 00000542  4287                     133          CLR.L       D7
-00000544  4EB9 00000836            134          JSR         OPCODESETUP
+00000544  4EB9 000011DA            134          JSR         OPCODESETUP
 0000054A  6000 0016                135          BRA         ADDR_LOOP
 0000054E                           136  SGTE                                        * Starting greater then ending
-0000054E  43F9 000009D2            137          LEA         INVALIDSADDR, A1
+0000054E  43F9 00001376            137          LEA         INVALIDSADDR, A1
 00000554  103C 000E                138          MOVE.B      #14, D0
 00000558  4E4F                     139          TRAP        #15
 0000055A  4287                     140          CLR.L       D7
@@ -152,453 +152,1451 @@ Created On: 3/5/2016 4:10:12 PM
 00000562                           148  *
 00000562                           149  *------------------ Compare Current Address to Ending Adddres ------------------------------ 
 00000562                           150  ADDR_LOOP
-00000562  2A79 00000ADC            151          MOVE.L      ENDING_ADD,A5               * Check current address against ending adress           
-00000568  BDCD                     152          CMP.L       A5,A6
-0000056A  6E00 0322                153          BGT         END_PROGRAM    
-0000056E  0C39 0019 00000ACE       154          CMP.B       #25, LINE_COUNT             * Check line counter
-00000576  6600 0008                155          BNE         CONTINUE_ADDR_LOOP
-0000057A  4EB9 000007E4            156          JSR         GETKEY        
-00000580                           157  CONTINUE_ADDR_LOOP        
-00000580  5239 00000ACE            158          ADD.B       #1, LINE_COUNT              * Update Line counter
-00000586  4EB9 00000860            159          JSR         CLEAR_REGISTERS             * Clear registers
-0000058C  4EB9 000005A4            160          JSR         PRINT_CURRENT_ADD           * PRINT CURRENT ADDRESS
-00000592                           161         
-00000592                           162  *------------------ NOP & RTS ADDRESS ------------------------------------------------------
-00000592                           163  Decode_Constant                                 * Check for NOP & RTS
-00000592  4EB9 00000860            164          JSR         CLEAR_REGISTERS
-00000598  49F9 00000AE0            165          LEA         OPCODE, A4                  * Load opcode to A4
-0000059E  4EB9 000005FC            166          JSR         UNCHANGED_CONSTANT          * NOP & RTS
-000005A4                           167  
-000005A4                           168          
-000005A4                           169  ****************************PRINTING HEX ADDRESS TO ASCII *******************
-000005A4                           170  PRINT_CURRENT_ADD
-000005A4  240E                     171          MOVE.L      A6,D2
-000005A6  1A3C 0000                172          MOVE.B      #0,D5
-000005AA  1C3C 0008                173          MOVE.B      #8,D6
-000005AE                           174  
-000005AE                           175  CONVERT_HEX_ASCII
-000005AE  BC05                     176          CMP.B       D5,D6
-000005B0  6600 0004                177          BNE         SET_COUNTER_4
-000005B4  4E75                     178          RTS
-000005B6                           179  
-000005B6                           180  SET_COUNTER_4
-000005B6  163C 0000                181          MOVE.B      #0,D3
-000005BA  183C 0004                182          MOVE.B      #4,D4    
-000005BE                           183  Loop
-000005BE  B803                     184          CMP.B       D3,D4
-000005C0  6700 0018                185          BEQ         STORE_ONE_CHAR
-000005C4  E38A                     186          LSL.L       #1,D2
-000005C6  6400 0008                187          BCC         ADDZERO
-000005CA                           188  
-000005CA  5201                     189          ADDI.B      #1,D1
-000005CC  6000 0006                190          BRA         INCREMENT_BIT_LOOP
-000005D0                           191      
-000005D0                           192  ADDZERO
-000005D0  0601 0000                193          ADDI.B  #0,D1
-000005D4                           194  
-000005D4                           195  INCREMENT_BIT_LOOP
-000005D4  5203                     196          ADDI.B  #1,D3
-000005D6  E389                     197          LSL.L   #1,D1
-000005D8  60E4                     198          BRA     Loop
-000005DA                           199      
-000005DA                           200  STORE_ONE_CHAR
-000005DA  E289                     201          LSR.L   #1,D1
-000005DC  B23C 0009                202          CMP.B   #$9,D1
-000005E0  6D00 000A                203          BLT     HEX_TO_ASCII_NUMBER
-000005E4                           204      
-000005E4  0601 0037                205          ADDI.B  #$37,D1                 * HEX_TO_ASCII_LETTER
-000005E8  6000 0006                206          BRA     INCREMENT_NEXT_HEX_LOOP
-000005EC                           207      
-000005EC                           208  HEX_TO_ASCII_NUMBER
-000005EC  0601 0030                209          ADDI.B  #$30,D1
-000005F0                           210  
-000005F0                           211  INCREMENT_NEXT_HEX_LOOP
-000005F0  5205                     212          ADDI.B  #1,D5
-000005F2  103C 0006                213          MOVE.B  #6,D0
-000005F6  4E4F                     214          TRAP    #15
-000005F8  4281                     215          CLR.L   D1
-000005FA  60B2                     216          BRA     CONVERT_HEX_ASCII
-000005FC                           217  
-000005FC                           218  
-000005FC                           219  
-000005FC                           220  ***********************END OF PRINTING HEX ADDRESS TO ASCII *******************
-000005FC                           221  
-000005FC                           222  
-000005FC                           223  *-------------------------------------------------------------------------------------------
-000005FC                           224  * PRINT NOP OR RTS -------------------------------------------------------------------------
-000005FC                           225  
-000005FC                           226  UNCHANGED_CONSTANT
-000005FC  18FC 0020                227      MOVE.B  #' ',(A4)+
-00000600  18FC 0020                228      MOVE.B  #' ',(A4)+
-00000604  18FC 0020                229      MOVE.B  #' ',(A4)+
-00000608  18FC 0020                230      MOVE.B  #' ',(A4)+
-0000060C                           231      
-0000060C  0C56 4E71                232      CMP.W   #$4E71,(A6)
-00000610  6700 0014                233      BEQ     PRINT_NOP
-00000614  0C56 4E75                234      CMP.W   #$4E75,(A6)
-00000618  6700 002E                235      BEQ     PRINT_RTS
-0000061C  0C56 FFFF                236      CMP.W   #$FFFF,(A6)
-00000620  6700 0048                237      BEQ     PRINT_NO_CODE    
-00000624  4E75                     238      RTS  
-00000626                           239      
-00000626                           240  PRINT_NOP
-00000626  18FC 004E                241      MOVE.B  #'N',(A4)+
-0000062A  18FC 004F                242      MOVE.B  #'O',(A4)+
-0000062E  18FC 0050                243      MOVE.B  #'P',(A4)+
-00000632  18FC 0000                244      MOVE.B  #$00,(A4)+
-00000636                           245      *MOVEA.L  #$00000000,A1
-00000636  43F9 00000AE0            246      LEA     OPCODE,A1
-0000063C  103C 000D                247      MOVE.B  #13,D0
-00000640  4E4F                     248      TRAP    #15
-00000642  548E                     249      ADD.L   #$2,A6          ;increase by 2 bytes if it prints NOP
-00000644  6000 FF1C                250      BRA     ADDR_LOOP
-00000648                           251  PRINT_RTS
-00000648  18FC 0052                252      MOVE.B  #'R',(A4)+
-0000064C  18FC 0054                253      MOVE.B  #'T',(A4)+
-00000650  18FC 0053                254      MOVE.B  #'S',(A4)+
-00000654  18FC 0000                255      MOVE.B  #$00,(A4)+
-00000658  43F9 00000AE0            256      LEA     OPCODE,A1
-0000065E  103C 000D                257      MOVE.B  #13,D0
-00000662  4E4F                     258      TRAP    #15
-00000664  548E                     259      ADD.L   #$2,A6
-00000666  6000 FEFA                260      BRA     ADDR_LOOP
-0000066A                           261  PRINT_NO_CODE
-0000066A  18FC 004E                262      MOVE.B  #'N',(A4)+
-0000066E  18FC 004F                263      MOVE.B  #'O',(A4)+
-00000672  18FC 0020                264      MOVE.B  #' ',(A4)+
-00000676  18FC 0044                265      MOVE.B  #'D',(A4)+
-0000067A  18FC 0041                266      MOVE.B  #'A',(A4)+
-0000067E  18FC 0054                267      MOVE.B  #'T',(A4)+
-00000682  18FC 0041                268      MOVE.B  #'A',(A4)+
-00000686  18FC 0020                269      MOVE.B  #' ',(A4)+
-0000068A  18FC 0024                270      MOVE.B  #'$',(A4)+
-0000068E  143C 0000                271      MOVE.B  #0,D2                   ;Setting counter for print Must be word size
-00000692  163C 0004                272      MOVE.B  #4,D3
-00000696  4EB9 000006B2            273      JSR     PRINT_IMMIDIATE_DATA
-0000069C  18FC 0000                274      MOVE.B  #$00,(A4)+
-000006A0  43F9 00000AE0            275      LEA     OPCODE,A1
-000006A6  103C 000D                276      MOVE.B  #13,D0
-000006AA  4E4F                     277      TRAP    #15
-000006AC  548E                     278      ADD.L   #$2,A6
-000006AE  6000 FEB2                279      BRA     ADDR_LOOP
-000006B2                           280     
-000006B2                           281  
-000006B2                           282  
-000006B2                           283  *-------------------------------------------------------------------------------------------
-000006B2                           284  * PRINT_IMMIDIATE_DATA---------------------------------------------------------------------
-000006B2                           285  
-000006B2                           286  PRINT_IMMIDIATE_DATA
-000006B2  B63C 0002                287      CMP.B   #2,D3
-000006B6  6700 0012                288      BEQ     BYTE_SIZE
-000006BA  B63C 0004                289      CMP.B   #4,D3
-000006BE  6700 0018                290      BEQ     WORD_SIZE
-000006C2  B63C 0008                291      CMP.B   #8,D3
-000006C6  6700 001E                292      BEQ     LONG_SIZE
-000006CA                           293  
-000006CA                           294  BYTE_SIZE
-000006CA  1016                     295      MOVE.B  (A6),D0
-000006CC  13FC 0001 00000AD2       296      MOVE.B  #1,SIZE
-000006D4  6000 001E                297      BRA     LOOP_IMMIDIATE_DATA
-000006D8                           298  WORD_SIZE
-000006D8  3016                     299      MOVE.W  (A6),D0
-000006DA  13FC 0003 00000AD2       300      MOVE.B  #3,SIZE
-000006E2  6000 0010                301      BRA     LOOP_IMMIDIATE_DATA
-000006E6                           302  LONG_SIZE
-000006E6  2016                     303      MOVE.L  (A6),D0
-000006E8  13FC 0003 00000AD2       304      MOVE.B  #3,SIZE
-000006F0  6000 0002                305      BRA     LOOP_IMMIDIATE_DATA
-000006F4                           306      
-000006F4                           307  LOOP_IMMIDIATE_DATA    
-000006F4  B602                     308      CMP.B   D2,D3               ;D3 WIIL BE 8 FOR BYTE, 16 FOR WORD, 32 FOR LONG
-000006F6  6600 0008                309      BNE     CONTINUE_SHIFT
-000006FA  4282                     310      CLR.L   D2
-000006FC  4283                     311      CLR.L   D3       
-000006FE  4E75                     312      RTS
-00000700                           313      
-00000700                           314  CONTINUE_SHIFT
-00000700  4EB9 00000714            315      JSR     SHIFT_4_BIT         ;SHIFT 4 BIT TO SEE WHAT TYPE OF 
+00000562  4EB9 00001204            151          JSR         CLEAR_REGISTERS             * Clear registers
+00000568  2A79 00001480            152          MOVE.L      ENDING_ADD,A5               * Check current address against ending adress           
+0000056E  BDCD                     153          CMP.L       A5,A6
+00000570  6E00 0CC0                154          BGT         END_PROGRAM    
+00000574  0C39 0019 00001472       155          CMP.B       #25, LINE_COUNT             * Check line counter
+0000057C  6600 0008                156          BNE         CONTINUE_ADDR_LOOP
+00000580  4EB9 00001192            157          JSR         GETKEY        
+00000586                           158  CONTINUE_ADDR_LOOP        
+00000586  5239 00001472            159          ADD.B       #1, LINE_COUNT              * Update Line counter
+0000058C  4EB9 00001204            160          JSR         CLEAR_REGISTERS             * Clear registers
+00000592  4EB9 00000F52            161          JSR         PRINT_CURRENT_ADD           * PRINT CURRENT ADDRESS
+00000598  47F9 00001488            162          LEA         OPCODE, A3                  * initialize good buffer
+0000059E  49F9 00001484            163          LEA         BADCODE, A4                 * initialize bad buffer
+000005A4                           164          
+000005A4  4EB9 000005FC            165          JSR         SETUPBADDATA                * Setup the bad data printing
+000005AA  3C1E                     166          MOVE.W      (A6)+, D6
+000005AC  4EB9 000005E6            167          JSR         SETUPOPCODE
+000005B2  4EB9 00000656            168          JSR         GET_INSTRUCTION
+000005B8                           169  
+000005B8  BE38 00FF                170          CMP.B       $FF,D7                      * Is the instruction bad data?
+000005BC  6700 0014                171          BEQ         PRINTBADDATA                    It is! Print it out
+000005C0                           172          
+000005C0  16FC 0000                173          MOVE.B      #$00,(A3)+                  * Add 00 to opcode printer
+000005C4  43F9 00001488            174          LEA         OPCODE, A1                  * Print good data
+000005CA  700D                     175          MOVEQ       #13,D0              
+000005CC  4E4F                     176          TRAP        #15                 
+000005CE  4286                     177          CLR.L       D6
+000005D0  6090                     178          BRA         ADDR_LOOP
+000005D2                           179  PRINTBADDATA
+000005D2  18FC 0000                180          MOVE.B  #$00,(A4)+          Add 00 BAD_BUFFER so we can end the line.
+000005D6  43F9 00001484            181          LEA     BADCODE,A1      Load the bad data into A1
+000005DC  700D                     182          MOVEQ   #13,D0              set print trap
+000005DE  4E4F                     183          TRAP    #15                 Call trap
+000005E0  4287                     184          CLR.L   D7                  Clear the bad data flag
+000005E2  6000 FF7E                185          BRA     ADDR_LOOP       Go back to main loop
+000005E6                           186          
+000005E6                           187          
+000005E6                           188  SETUPOPCODE
+000005E6  16FC 0020                189          MOVE.B  #' ',(A3)+
+000005EA  16FC 0020                190          MOVE.B  #' ',(A3)+
+000005EE  16FC 0020                191          MOVE.B  #' ',(A3)+
+000005F2  16FC 0020                192          MOVE.B  #' ',(A3)+
+000005F6  16FC 0020                193          MOVE.B  #' ',(A3)+
+000005FA  4E75                     194          RTS
+000005FC                           195          
+000005FC                           196  *---------------------------------------------------------------------------------------
+000005FC                           197  SETUPBADDATA
+000005FC  18FC 0042                198          MOVE.B  #'B',(A4)+          Insert B into the output
+00000600  18FC 0041                199          MOVE.B  #'A',(A4)+          Insert A into the output
+00000604  18FC 0044                200          MOVE.B  #'D',(A4)+          Insert D into the output
+00000608  18FC 0020                201          MOVE.B  #' ',(A4)+          Insert a space into the output
+0000060C  18FC 0044                202          MOVE.B  #'D',(A4)+          Insert D into output
+00000610  18FC 0041                203          MOVE.B  #'A',(A4)+          Insert A into output
+00000614  18FC 0054                204          MOVE.B  #'T',(A4)+          Insert T into output
+00000618  18FC 0041                205          MOVE.B  #'A',(A4)+          Insert A into output
+0000061C  18FC 0020                206          MOVE.B  #' ',(A4)+          Insert a space into output
+00000620  18FC 0024                207          MOVE.B  #'$',(A4)+          Insert a $ into output
+00000624                           208  GETBADDATA            
+00000624  7004                     209          MOVEQ   #4,D0               Move counter to D0
+00000626  3806                     210          MOVE.W  D6,D4               Move longword address into D4
+00000628                           211  DATA_PREP9                          
+00000628  E95C                     212          ROL.W  #4,D4                Move the MSB to LSB
+0000062A  2A04                     213          MOVE.L D4,D5                Move longword address to D5
+0000062C  0285 0000000F            214          ANDI.L #$0000000F,D5        Clear everything except for MSB
+00000632                           215  DATA_ASC9
+00000632  0C05 0009                216          CMPI.B #$09,D5              Is the character a number?
+00000636  6F00 000A                217          BLE    DATA_NUM9            Branch if yes.
+0000063A                           218  DATA_LET9
+0000063A  0605 0037                219          ADDI.B #$37,D5              Convert into a prinatble ascii letter
+0000063E  6000 000A                220          BRA    DATA_CHAR9
+00000642                           221  DATA_NUM9 
+00000642  0605 0030                222          ADDI.B #$30,D5              Convert into a prinatble ascii number
+00000646  6000 0002                223          BRA    DATA_CHAR9
+0000064A                           224  DATA_CHAR9
+0000064A  5300                     225          SUBI.B #1,D0                Decrement counter
+0000064C  18C5                     226          MOVE.B D5,(A4)+             Move ascii into bad buffer also
+0000064E  0C00 0000                227          CMPI.B #0,D0                Have we moved all characters?
+00000652  6ED4                     228          BGT    DATA_PREP9           if not, repeat loop
+00000654  4E75                     229          RTS
+00000656                           230  *---------------------------------------------------------------------------------
+00000656                           231  
+00000656                           232  GET_INSTRUCTION
+00000656  4201                     233          CLR.B   D1                              * Clear D1 so other tests don't get bugged
+00000658  3A06                     234          MOVE.W  D6, D5                          * Move the instruction so we can shift it
+0000065A  E04D                     235          LSR.W   #8, D5                          * Shift 8 bits to the right
+0000065C  E84D                     236          LSR.W   #4, D5                          * Shift 4 biths to the right
+0000065E  CAFC 0008                237          MULU    #8, D5                          * Offset D5 to show the word binary for the instruction
+00000662  41F9 0000066E            238          LEA     OPCODE_JMP_TABLE, A0            * Set the table to A0 so we know where to jump to
+00000668  4EB0 5000                239          JSR     0(A0,D5)                        
+0000066C  4E75                     240          RTS        
+0000066E                           241  
+0000066E                           242  ********************************************************************************************
+0000066E                           243  * OP CODE                                              
+0000066E                           244  OPCODE_JMP_TABLE
+0000066E  4EB9 000006D6            245      JSR     INSTR0000                           * - ADDI
+00000674  4E75                     246      RTS
+00000676  4EB9 000006D8            247      JSR     INSTR0001                           * - MOVE.B
+0000067C  4E75                     248      RTS
+0000067E  4EB9 000006DA            249      JSR     INSTR0010                           * - MOVE.L
+00000684  4E75                     250      RTS
+00000686  4EB9 000006DC            251      JSR     INSTR0011                           * - MOVE.W
+0000068C  4E75                     252      RTS
+0000068E  4EB9 000006DE            253      JSR     INSTR0100                           * - MOVEM, LEA, JSR, CLR, RTS, NOP
+00000694  4E75                     254      RTS
+00000696  4EB9 000006F6            255      JSR     INSTR0110                           * - BCC, BLE, BGT
+0000069C  4E75                     256      RTS
+0000069E  4EB9 000006F8            257      JSR     INSTR0111                           * - MOVEQ
+000006A4  4E75                     258      RTS
+000006A6  4EB9 000006FA            259      JSR     INSTR1001                           * - SUB
+000006AC  4E75                     260      RTS
+000006AE  4EB9 000006FC            261      JSR     INSTR1011                           * - CMP
+000006B4  4E75                     262      RTS
+000006B6  4EB9 000006FE            263      JSR     INSTR1100                           * - ADD, MULS
+000006BC  4E75                     264      RTS
+000006BE  4EB9 00000700            265      JSR     INSTR1101                           * - ADDA, AND, 
+000006C4  4E75                     266      RTS
+000006C6  4EB9 00000702            267      JSR     INSTR1110                           * - ASR, LSL, ROL
+000006CC  4E75                     268      RTS
+000006CE  4EB9 00000704            269      JSR     INSTR1000                           * - DIVU
+000006D4  4E75                     270      RTS       
+000006D6                           271  ********************************************************
+000006D6                           272  
+000006D6                           273  
+000006D6                           274  
+000006D6                           275  
+000006D6                           276  
+000006D6                           277  
+000006D6                           278  
+000006D6                           279  
+000006D6                           280  INSTR0000
+000006D6  4E75                     281      RTS
+000006D8                           282  INSTR0001
+000006D8  4E75                     283      RTS
+000006DA                           284  INSTR0010
+000006DA  4E75                     285      RTS
+000006DC                           286  INSTR0011
+000006DC  4E75                     287      RTS
+000006DE                           288  INSTR0100
+000006DE  3A06                     289      MOVE.W  D6, D5                      Move instruction for shifting
+000006E0  E04D                     290      LSR.W   #$8, D5
+000006E2  0245 000F                291      ANDI.W  #$000F, D5
+000006E6  CAFC 0008                292      MULU    #8, D5
+000006EA  41F9 00000706            293      LEA     FOURTABLE, A0
+000006F0  4EB0 5000                294      JSR     00(A0,D5)   
+000006F4  4E75                     295      RTS
+000006F6                           296  INSTR0110
+000006F6  4E75                     297      RTS
+000006F8                           298  INSTR0111
+000006F8  4E75                     299      RTS
+000006FA                           300  INSTR1001
+000006FA  4E75                     301      RTS
+000006FC                           302  INSTR1011
+000006FC  4E75                     303      RTS  
+000006FE                           304  INSTR1100
+000006FE  4E75                     305      RTS
+00000700                           306  INSTR1101
+00000700  4E75                     307      RTS  
+00000702                           308  INSTR1110
+00000702  4E75                     309      RTS
+00000704                           310  INSTR1000
+00000704  4E75                     311      RTS
+00000706                           312      
+00000706                           313  
+00000706                           314  
+00000706                           315  
 00000706                           316  
-00000706                           317  ;HEX_D    
-00000706                           318      ;CMP.B   #hexD,D1
-00000706                           319      ;BEQ     PRINT_F
-00000706                           320     
-00000706                           321  
-00000706                           322  ;HEX_E    
-00000706                           323      ;CMP.B   #hexE,D1
-00000706                           324      ;BEQ     PRINT_E
-00000706                           325  
-00000706                           326  HEX_F    
-00000706  B23C 000F                327      CMP.B   #hexF,D1
-0000070A  6700 00D0                328      BEQ     PRINT_F
-0000070E                           329      
-0000070E                           330  ADD_COUNTER
-0000070E  5202                     331      ADDI.B  #1,D2
-00000710  4281                     332      CLR.L   D1
-00000712  60E0                     333      BRA     LOOP_IMMIDIATE_DATA
-00000714                           334  
-00000714                           335  *-------------------------------------------------------------------------------------------
-00000714                           336  * SHIFT_4_BIT--------------------------------------------------------------------
-00000714                           337  SHIFT_4_BIT
-00000714  183C 0000                338          MOVE.B   #0,D4
-00000718  1A3C 0004                339          MOVE.B   #4,D5              ;SHIFTS FROM 
-0000071C                           340      
-0000071C                           341  START_SHIFT_4_BIT   
-0000071C  BA04                     342          CMP.B    D4,D5
-0000071E  6600 0006                343          BNE      SHIFT_SIZE 
-00000722  E289                     344          LSR.L    #1,D1
-00000724  4E75                     345          RTS
-00000726                           346  
-00000726                           347  SHIFT_SIZE 
-00000726  B63C 0002                348      CMP.B   #2,D3
-0000072A  6700 0012                349      BEQ     SHIFT_SIZE_BYTE
-0000072E  B63C 0004                350      CMP.B   #4,D3
-00000732  6700 0014                351      BEQ     SHIFT_SIZE_WORD
-00000736  B63C 0008                352      CMP.B   #8,D3
-0000073A  6700 0016                353      BEQ     SHIFT_SIZE_LONG
-0000073E                           354  
-0000073E                           355  SHIFT_SIZE_BYTE
-0000073E  E308                     356      LSL.B   #1, D0              ;COPY OF THE DATA WE NEED TO SHIFT
-00000740  6500 0020                357      BCS     ADDONE
-00000744  6000 0012                358      BRA     ADD_ZERO
-00000748                           359  SHIFT_SIZE_WORD
-00000748  E348                     360      LSL.W   #1, D0              ;COPY OF THE DATA WE NEED TO SHIFT
-0000074A  6500 0016                361      BCS     ADDONE
-0000074E  6000 0008                362      BRA     ADD_ZERO
-00000752                           363  SHIFT_SIZE_LONG
-00000752  E388                     364      LSL.L   #1, D0              ;COPY OF THE DATA WE NEED TO SHIFT
-00000754  6500 000C                365      BCS     ADDONE
-00000758                           366  
-00000758                           367  ADD_ZERO        
-00000758  0601 0000                368      ADDI.B  #%0, D1                    * add 0 bit to d2
-0000075C  E381                     369      ASL.L   #1, D1     
-0000075E  6000 000A                370      BRA     COUNTER_SHIFT_4_BIT
-00000762                           371           
-00000762                           372  ADDONE        
-00000762  5201                     373      ADDI.B  #%1, D1                    * add 1 bit to d2
-00000764  E381                     374      ASL.L   #1, D1
-00000766  6000 0002                375      BRA     COUNTER_SHIFT_4_BIT 
-0000076A                           376  
-0000076A                           377  COUNTER_SHIFT_4_BIT
-0000076A  5284                     378      ADDI.L  #1,D4
-0000076C  60AE                     379      BRA     START_SHIFT_4_BIT
-0000076E                           380  
-0000076E                           381  *-------------------------------------------------------------------------------------------
-0000076E                           382  * PRINT_ASCCI_HEX---------------------------------------------------------------------
-0000076E                           383  PRINT_0
-0000076E  18FC 0030                384      MOVE.B  #'0',(A4)+
-00000772  609A                     385      BRA     ADD_COUNTER
-00000774                           386  
-00000774                           387  PRINT_1
-00000774  18FC 0031                388      MOVE.B  #'1',(A4)+
-00000778  6094                     389      BRA     ADD_COUNTER
-0000077A                           390  
-0000077A                           391  PRINT_2
-0000077A  18FC 0032                392      MOVE.B  #'2',(A4)+
-0000077E  608E                     393      BRA     ADD_COUNTER
-00000780                           394  
-00000780                           395  PRINT_3
-00000780  18FC 0033                396      MOVE.B  #'3',(A4)+
-00000784  6088                     397      BRA     ADD_COUNTER
-00000786                           398  
-00000786                           399  PRINT_4
-00000786  18FC 0034                400      MOVE.B  #'4',(A4)+
-0000078A  6082                     401      BRA     ADD_COUNTER
-0000078C                           402  
-0000078C                           403  PRINT_5
-0000078C  18FC 0035                404      MOVE.B  #'5',(A4)+
-00000790  6000 FF7C                405      BRA     ADD_COUNTER
-00000794                           406  
-00000794                           407  PRINT_6
-00000794  18FC 0036                408      MOVE.B  #'6',(A4)+
-00000798  6000 FF74                409      BRA     ADD_COUNTER
-0000079C                           410  
-0000079C                           411  PRINT_7
-0000079C  18FC 0037                412      MOVE.B  #'7',(A4)+
-000007A0  6000 FF6C                413      BRA     ADD_COUNTER
-000007A4                           414  
-000007A4                           415  PRINT_8
-000007A4  18FC 0038                416      MOVE.B  #'8',(A4)+
-000007A8  6000 FF64                417      BRA     ADD_COUNTER
-000007AC                           418  
-000007AC                           419  PRINT_9
-000007AC  18FC 0039                420      MOVE.B  #'9',(A4)+
-000007B0  6000 FF5C                421      BRA     ADD_COUNTER
-000007B4                           422  
-000007B4                           423  PRINT_A
-000007B4  18FC 0041                424      MOVE.B  #'A',(A4)+
-000007B8  6000 FF54                425      BRA     ADD_COUNTER
-000007BC                           426  
-000007BC                           427  PRINT_B
-000007BC  18FC 0042                428      MOVE.B  #'B',(A4)+
-000007C0  6000 FF4C                429      BRA     ADD_COUNTER
-000007C4                           430  
-000007C4                           431  PRINT_C
-000007C4  18FC 0043                432      MOVE.B  #'C',(A4)+
-000007C8  6000 FF44                433      BRA     ADD_COUNTER
-000007CC                           434  
-000007CC                           435  PRINT_D
-000007CC  18FC 0044                436      MOVE.B  #'D',(A4)+
-000007D0  6000 FF3C                437      BRA     ADD_COUNTER
-000007D4                           438  
-000007D4                           439  PRINT_E
-000007D4  18FC 0045                440      MOVE.B  #'E',(A4)+
-000007D8  6000 FF34                441      BRA     ADD_COUNTER
-000007DC                           442  
-000007DC                           443  PRINT_F
-000007DC  18FC 0046                444      MOVE.B  #'F',(A4)+
-000007E0  6000 FF2C                445      BRA     ADD_COUNTER
-000007E4                           446  
-000007E4                           447  
-000007E4                           448      
-000007E4                           449  ********************************************************************************************
-000007E4                           450  *------------------ KEY -  -----------------------------------------------------------------
-000007E4                           451  * Desctiption:
-000007E4                           452  * Expect:       DO, D1, A1 to be empty
-000007E4                           453  * 
-000007E4                           454  *------------------ Prompt User for Enter, R, or Q -----------------------------------------
-000007E4                           455  GETKEY
-000007E4  43F9 0000098E            456          LEA         PROMPTOPTIONS, A1            * Load the greeting message
-000007EA  103C 000E                457          MOVE.B      #14,D0
-000007EE  4E4F                     458          TRAP        #15 
-000007F0  13FC 0000 00000ACE       459          MOVE.B      #$00, LINE_COUNT        * Reset Line Count
-000007F8  103C 000C                460          MOVE.B      #12,D0                  * Use keyboard echo trap
-000007FC  123C 0000                461          MOVE.B      #0,D1                   * Reset Keyboard input
-00000800  4E4F                     462          TRAP        #15                 
-00000802  103C 0005                463          MOVE.B      #5, D0                  * Log keyboard input
-00000806  4E4F                     464          TRAP        #15                 
-00000808  B23C 000D                465          CMP.B       #$D, D1                 * Compare the key press with ENTER
-0000080C  6700 0028                466          BEQ         OPCODESETUP         
-00000810  B23C 0072                467          CMP.B       #$72, D1                * Compare the key press with R
-00000814  6700 0030                468          BEQ         RESTART             
-00000818  B23C 0052                469          CMP.B       #$52, D1                * Compare the key press with r
-0000081C  6700 0028                470          BEQ         RESTART             
-00000820  B23C 0071                471          CMP.B       #$71, D1                * Compare the key press with q
-00000824  6700 0068                472          BEQ         END_PROGRAM             
-00000828  B23C 0051                473          CMP.B       #$51, D1                * Compare the key press with Q
-0000082C  6700 0060                474          BEQ         END_PROGRAM            
-00000830  B23C 005D                475          CMP.B       #$5D, D1                * Check the key press with ENTER
-00000834  66AE                     476          BNE         GETKEY              
-00000836                           477  OPCODESETUP
-00000836  103C 000B                478          MOVE.B  #11, D0                     * Task 11 - Clear screen
-0000083A  323C FF00                479          MOVE.W  #$FF00, D1          
-0000083E  4E4F                     480          TRAP    #15                 
-00000840  4281                     481          CLR.L   D1
-00000842  4280                     482          CLR.L   D0
-00000844  4E75                     483          RTS                 
-00000846                           484  *------------------ RESTART ----------------------------------------------------------------
-00000846                           485  RESTART
-00000846  4EB8 0836                486          JSR         OPCODESETUP
-0000084A  4EB9 00000860            487          JSR         CLEAR_REGISTERS
-00000850  2E7C 01000000            488          MOVEA.L     #$01000000,A7       Reset stack pointer
-00000856  2C7C 01000000            489          MOVEA.L     #$01000000,A6       Reset stack pointer
-0000085C  6000 FBA2                490          BRA         START
-00000860                           491          
-00000860                           492  ********************************************************************************************
-00000860                           493  *------------------ CLEAR REGISTERS --------------------------------------------------------
-00000860                           494  * Desctiption:
-00000860                           495  * 
-00000860                           496  CLEAR_REGISTERS
-00000860  4280                     497          CLR.L   D0
-00000862  4285                     498          CLR.L   D5
-00000864  4282                     499          CLR.L   D2
-00000866  4281                     500          CLR.L   D1
-00000868  4283                     501          CLR.L   D3
-0000086A  4284                     502          CLR.L   D4
-0000086C  4286                     503          CLR.L   D6
-0000086E  227C 00000000            504          MOVE.L  #$00000000,A1
-00000874  247C 00000000            505          MOVE.L  #$00000000,A2
-0000087A  267C 00000000            506          MOVE.L  #$00000000,A3
-00000880  287C 00000000            507          MOVE.L  #$00000000,A4
-00000886  2A7C 00000000            508          MOVE.L  #$00000000,A5
-0000088C  4E75                     509          RTS
-0000088E                           510  
-0000088E                           511  ********************************************************************************************
-0000088E                           512  ********************************************************************************************
-0000088E                           513  ********************************************************************************************
-0000088E                           514  END_PROGRAM
-0000088E  FFFF FFFF                515          SIMHALT             ; halt simulator
-00000892                           516  ********************************************************************************************
-00000892                           517  ********************************************************************************************
-00000892                           518  ********************************************************************************************
-00000892                           519  
-00000892                           520  
-00000892                           521  ********************************************************************************************
-00000892                           522  * VARIABLES & MESSAGES ---------------------------------------------------------------------
-00000892  =0000000D                523  CR        EQU       $0D
-00000892  =0000000A                524  LF        EQU       $0A
-00000892                           525  * Hex values -------------------------------------------------------------------------------  
-00000892  =00000000                526  numzero     EQU     0  
-00000892  =00000001                527  numone      EQU     1
-00000892  =00000002                528  numtwo      EQU     2
-00000892  =00000003                529  numthree    EQU     3
-00000892  =00000004                530  numfour     EQU     4
-00000892  =00000005                531  numfive     EQU     5
-00000892  =00000006                532  numsix      EQU     6
-00000892  =00000007                533  numseven    EQU     7
-00000892  =00000008                534  numeight    EQU     8
-00000892  =00000009                535  numnine     EQU     9
-00000892  =0000000A                536  numA        EQU     10
-00000892  =0000000B                537  numB        EQU     11
-00000892  =0000000C                538  numC        EQU     12
-00000892  =0000000D                539  numD        EQU     13
-00000892  =0000000E                540  numE        EQU     $E
-00000892  =0000000F                541  numF        EQU     15
-00000892                           542  * Binary Hex Values ------------------------------------------------------------------------
-00000892  =00000000                543  hex0        EQU     %0000   
-00000892  =00000001                544  hex1        EQU     %0001   
-00000892  =00000002                545  hex2        EQU     %0010   
-00000892  =00000003                546  hex3        EQU     %0011   
-00000892  =00000004                547  hex4        EQU     %0100   
-00000892  =00000005                548  hex5        EQU     %0101   
-00000892  =00000006                549  hex6        EQU     %0110   
-00000892  =00000007                550  hex7        EQU     %0111   
-00000892  =00000008                551  hex8        EQU     %1000   
-00000892  =00000009                552  hex9        EQU     %1001   
-00000892  =0000000A                553  hexA        EQU     %1010   
-00000892  =0000000B                554  hexB        EQU     %1011   
-00000892  =0000000C                555  hexC        EQU     %1100   
-00000892  =0000000D                556  hexD        EQU     %1101   
-00000892  =0000000E                557  hexE        EQU     %1110   
-00000892  =0000000F                558  hexF        EQU     %1111   
-00000892                           559  * OP Codes ---------------------------------------------------------------------------------
-00000892  =00000000                560  bin0000     EQU     %0000   ;ADDI, ANDI, EORI, BCHG, CMPI
-00000892  =00000001                561  bin0001     EQU     %0001   ;MOVE.B
-00000892  =00000002                562  bin0010     EQU     %0010   ;MOVE.L
-00000892  =00000003                563  bin0011     EQU     %0011   ;MOVE.W
-00000892  =00000004                564  bin0100     EQU     %0100   ;MOVEM, MULS.L, DIVU.L, LEA, CLR, JSR, RTS
-00000892  =00000005                565  bin0101     EQU     %0101   ;SUBQ
-00000892  =00000006                566  bin0110     EQU     %0110   ;Bcc
-00000892  =00000007                567  bin0111     EQU     %0111   ;MOVEQ
-00000892  =00000008                568  bin1000     EQU     %1000   ;DIVU.W
-00000892  =00000009                569  bin1001     EQU     %1001   ;SUB, SUBA
-00000892  =0000000B                570  bin1011     EQU     %1011   ;CMP, CMPA, EOR
-00000892  =0000000C                571  bin1100     EQU     %1100   ;AND, MULS.W
-00000892  =0000000D                572  bin1101     EQU     %1101   ;ADD, ADDA
-00000892  =0000000E                573  bin1110     EQU     %1110   ;ASR, ASL, ROL, ROR
-00000892                           574  * MESSAGES ---------------------------------------------------------------------------------------------
-00000892= 20 20 20 20 20 20 ...    575  GREETING        DC.B    '       HELLO THERE, WELCOME TO AWESOME DISASSEMBLER'
-000008C5= 0D 0A 4E 6F 74 65 ...    576                  DC.B    CR,LF,'Note: Addressess must be in HEX'
-000008E6= 0D 0A 4E 6F 74 65 ...    577                  DC.B    CR,LF,'Note: Addressess must be in caps'
-00000908= 0D 0A 20 20 20 20 ...    578                  DC.B    CR,LF,'    : Starting Address must be greater than 70000',CR,LF,CR,LF,CR,LF,0 
-00000942= 454E 5445 5220 4...      579  PROMPTSADDR     DC.W    'ENTER A STARTING ADDRESS (ON CAPS): ',0
-00000968= 454E 5445 5220 4...      580  PROMPTEADDR     DC.W    'ENTER A ENDING ADDRESS   (ON CAPS): ',0
-0000098E= 50 72 65 73 73 3A ...    581  PROMPTOPTIONS    DC.B    'Press: ENTER to Continue || Q or q to Quit || R OR r to Restart',CR,LF,CR,LF,0
-000009D2                           582  * ERROR MSG --------------------------------------------------------------------------------------------
-000009D2= 45 52 52 4F 52 3A ...    583  INVALIDSADDR        DC.B    'ERROR: INVALID STARTING ADDRESS VERSUS ENDING.',CR,LF,CR,LF,0
-00000A05= 45 52 52 4F 52 3A ...    584  ERRORINPUTSIZE      DC.B    'ERROR: INVALID ADDRESS SIZE',CR,LF,CR,LF,0
-00000A25= 45 52 52 4F 52 3A ...    585  INVALIDCHAR         DC.B    'ERROR: INVALID ADDRESS CHARACTER',CR,LF,CR,LF,0
-00000A4A= 45 52 52 4F 52 3A ...    586  SGTEM               DC.B    'ERROR: STARTING ADDRESS > ENDING ADDRESS',CR,LF,CR,LF,0
-00000A77= 45 52 52 4F 52 3A ...    587  ODD_ADD_MSG         DC.B    'ERROR: ODD ADDRESS',CR,LF,CR,LF,0
-00000A8E= 45 52 52 4F 52 3A ...    588  STARTING_ADDR_7     DC.B    'ERROR: Invalid starting adress - must be greater than 7000',CR,LF,CR,LF,0
-00000ACD                           589  * VARIABLES --------------------------------------------------------------------------------------------
-00000ACE                           590  LINE_COUNT      DS.L    1
-00000AD2                           591  SIZE            DS.B    1
-00000AD4                           592  INPUT_HEX       DS.L    1   * Use to temp hold starting and ending address
-00000AD8                           593  STARTING_ADD    DS.L    1   ;1 is the size, if I change to 4 then array size changes
-00000ADC                           594  ENDING_ADD      DS.L    1
-00000AE0= 00000001                 595  OPCODE          DC.L    1
-00000AE4                           596          
-00000AE4                           597          END    START        ; last line of source
+00000706                           317  
+00000706                           318  
+00000706                           319  
+00000706                           320  
+00000706                           321  * 1011 - CMP INSTRUCTION TABLES             *                   
+00000706                           322  *BINSTTABLE
+00000706                           323  *    JSR     BTABLE000                       CMP.B Instruction
+00000706                           324  *    RTS
+00000706                           325  *    JSR     BTABLE001                       CMP.W Instruction
+00000706                           326  *    RTS
+00000706                           327  *    JSR     BTABLE010                       CMP.L Instruction
+00000706                           328  *    RTS
+00000706                           329  
+00000706                           330  *********************************************************
+00000706                           331  * 0100 Jump Table CLR, JSR, LEA, MOVEM, RTS INSTRUCTIONS
+00000706                           332  FOURTABLE     
+00000706  4EB9 00000804            333      JSR     FOUR0000                    Illegal Instruction
+0000070C  4E75                     334      RTS                                 Return Bad Instruction
+0000070E  4EB9 0000080A            335      JSR     FOUR0001                    LEA instruction with An = 0
+00000714  4E75                     336      RTS                                 Return full instruction
+00000716  4EB9 0000081E            337      JSR     FOUR0010                    CLR instruction
+0000071C  4E75                     338      RTS                                 Return full instruction
+0000071E  4EB9 00000876            339      JSR     FOUR0011                    LEA instruction with An = 1
+00000724  4E75                     340      RTS                                 Return full instruction
+00000726  4EB9 0000088A            341      JSR     FOUR0100                    Illegal Instruction
+0000072C  4E75                     342      RTS                                 Return Bad Instruction
+0000072E  4EB9 00000890            343      JSR     FOUR0101                    LEA instruction with An = 2
+00000734  4E75                     344      RTS                                 Return full instruction
+00000736  4EB9 000008A4            345      JSR     FOUR0110                    Illegal Instruction
+0000073C  4E75                     346      RTS                                 Return Bad Instruction
+0000073E  4EB9 000008AA            347      JSR     FOUR0111                    LEA instruction with An = 3
+00000744  4E75                     348      RTS                                 Return full instruction
+00000746  4EB9 000008BE            349      JSR     FOUR1000                    MOVEM instruction for Register to Memory
+0000074C  4E75                     350      RTS                                 Return full instruction
+0000074E  4EB9 00000AD0            351      JSR     FOUR1001                    LEA instruction with An = 3
+00000754  4E75                     352      RTS                                 Return full instruction
+00000756  4EB9 00000AE4            353      JSR     FOUR1010                    Illegal Instruction
+0000075C  4E75                     354      RTS                                 Return Bad Instruction
+0000075E  4EB9 00000AEA            355      JSR     FOUR1011                    LEA instruction with An = 4
+00000764  4E75                     356      RTS                                 Return full instruction
+00000766  4EB9 00000AFE            357      JSR     FOUR1100                    MOVEM instruction for Memory to Register
+0000076C  4E75                     358      RTS                                 Return full instruction
+0000076E  4EB9 00000C4A            359      JSR     FOUR1101                    LEA instruction with An = 5
+00000774  4E75                     360      RTS                                 Return full instruction
+00000776  4EB9 00000C5E            361      JSR     FOUR1110                    JSR and RTS instructions
+0000077C  4E75                     362      RTS                                 Return full instruction
+0000077E  4EB9 00000CA2            363      JSR     FOUR1111                    LEA instruction with An = 6
+00000784  4E75                     364      RTS
+00000786                           365  *********************************************************
+00000786                           366  FORMAT
+00000786  4EF9 00000CEE            367      JMP    FORMAT000            Call function with EA mode of 000
+0000078C  4EF9 00000D00            368      JMP    FORMAT001            Call function with EA mode of 001
+00000792  4EF9 00000D12            369      JMP    FORMAT010            Call function with EA mode of 010
+00000798  4EF9 00000D2C            370      JMP    FORMAT011            Call function with EA mode of 011
+0000079E  4EF9 00000D4A            371      JMP    FORMAT100            Call function with EA mode of 100
+000007A4  4EF9 00000D68            372      JMP    FORMAT101            Call function with EA mode of 101
+000007AA  4EF9 00000D70            373      JMP    FORMAT110            Call function with EA mode of 110
+000007B0  4EF9 00000D76            374      JMP    FORMAT111            Call function with EA mode of 111
+000007B6                           375  *********************************************************   
+000007B6                           376  REGISTER
+000007B6  4EF9 00000D84            377      JMP    REGISTER000          Call function with EA register of 000
+000007BC  4EF9 00000D8A            378      JMP    REGISTER001          Call function with EA register of 001
+000007C2  4EF9 00000D90            379      JMP    REGISTER010          Call function with EA register of 010
+000007C8  4EF9 00000D96            380      JMP    REGISTER011          Call function with EA register of 011
+000007CE  4EF9 00000D9C            381      JMP    REGISTER100          Call function with EA register of 100
+000007D4  4EF9 00000DA2            382      JMP    REGISTER101          Call function with EA register of 101
+000007DA  4EF9 00000DA8            383      JMP    REGISTER110          Call function with EA register of 110
+000007E0  4EF9 00000DAE            384      JMP    REGISTER111          Call function with EA register of 111
+000007E6                           385  *********************************************************   
+000007E6                           386  ABSOLUTE
+000007E6  4EF9 00000DB4            387      JMP    ABSOLUTE000          Call function with absolute register of 000
+000007EC  4EF9 00000E0A            388      JMP    ABSOLUTE001          Call function with absolute register of 001
+000007F2  4EF9 00000E62            389      JMP    ABSOLUTE010          Call function with absolute register of 100
+000007F8  4EF9 00000E6A            390      JMP    ABSOLUTE011          Call function with absolute register of 100
+000007FE  4EF9 00000E72            391      JMP    ABSOLUTE100          Call function with absolute register of 100
+00000804                           392  
+00000804                           393  ********************************************************
+00000804                           394  * Illegal Instruction                                  *     
+00000804                           395  ********************************************************
+00000804                           396  FOUR0000
+00000804  1E38 0011                397      MOVE.B  $11, D7                         Create bad data flag
+00000808  4E75                     398      RTS                                     Return the instruction
+0000080A                           399  ********************************************************
+0000080A                           400  * 0100 0001 - LEA instruction with An = 0              *     
+0000080A                           401  ********************************************************
+0000080A                           402  FOUR0001
+0000080A  4EB9 00000CB6            403      JSR     LEAMAIN
+00000810  16FC 002C                404      MOVE.B  #',',(A3)+                      Move a comma into the output
+00000814  16FC 0041                405      MOVE.B  #'A',(A3)+                      Move A into the output
+00000818  16FC 0030                406      MOVE.B  #'0',(A3)+                      Move 0 into the output
+0000081C  4E75                     407      RTS                                     Return the instruction
+0000081E                           408  ********************************************************
+0000081E                           409  * 0100 0010 - CLR                                      *     
+0000081E                           410  ********************************************************
+0000081E                           411  FOUR0010
+0000081E  16FC 0043                412      MOVE.B  #'C',(A3)+                      Move C into output
+00000822  16FC 004C                413      MOVE.B  #'L',(A3)+                      Move L into output
+00000826  16FC 0052                414      MOVE.B  #'R',(A3)+                      MOVE R into output
+0000082A  16FC 002E                415      MOVE.B  #'.',(A3)+                      MOVE . into output
+0000082E  4EB9 00000EF6            416      JSR     GETSIZE                         Get the size of CLR
+00000834  B63C 0000                417      CMP.B   #%00, D3                        Is it Byte data?
+00000838  6700 0018                418      BEQ     BYTEDATA                        If so go to BYTEDATA
+0000083C  B63C 0001                419      CMP.B   #$01, D3                        Is it Word data?
+00000840  6700 0018                420      BEQ     WORDDATA                        If so go to WORDDATA
+00000844  B63C 0002                421      CMP.B   #$02, D3                        Is it Long data?
+00000848  6700 0018                422      BEQ     LONGDATA                        If so go to LONGDATA
+0000084C  1E38 0011                423      MOVE.B  $11, D7                         It's not a byte, word or long, so it's bad data
+00000850  4E75                     424      RTS                                     Return bad data
+00000852                           425  BYTEDATA
+00000852  16FC 0042                426      MOVE.B  #'B',(A3)+                      Move B into output
+00000856  6000 0012                427      BRA     FINISHCLR                       Finish the CLR instruction
+0000085A                           428  WORDDATA
+0000085A  16FC 0057                429      MOVE.B  #'W',(A3)+                      Move W into output
+0000085E  6000 000A                430      BRA     FINISHCLR                       Finish the CLR instruction
+00000862                           431  LONGDATA
+00000862  16FC 004C                432      MOVE.B  #'L',(A3)+                      Move L into output
+00000866  6000 0002                433      BRA     FINISHCLR                       Finish the CLR instruction
+0000086A                           434  FINISHCLR    
+0000086A  16FC 0020                435      MOVE.B  #' ',(A3)+                      Move a space into the output
+0000086E  4EB9 00000CCE            436      JSR     EACODE                          Call EA code
+00000874  4E75                     437      RTS                                     Return the instruction
+00000876                           438  
+00000876                           439  ********************************************************
+00000876                           440  * 0100 0011 - LEA instruction with An = 1              *     
+00000876                           441  ********************************************************
+00000876                           442  FOUR0011
+00000876  4EB9 00000CB6            443      JSR     LEAMAIN                         Jump to main output printing routine
+0000087C  16FC 002C                444      MOVE.B  #',',(A3)+                      Move a comma into the output
+00000880  16FC 0041                445      MOVE.B  #'A',(A3)+                      Move A into the output
+00000884  16FC 0031                446      MOVE.B  #'1',(A3)+                      Move 1 into the output
+00000888  4E75                     447      RTS                                     Return the instruction
+0000088A                           448  ********************************************************
+0000088A                           449  * Illegal Instruction                                  *     
+0000088A                           450  ********************************************************
+0000088A                           451  FOUR0100
+0000088A  1E38 0011                452      MOVE.B  $11, D7                         Set bad data flag
+0000088E  4E75                     453      RTS                                     Return the instruction
+00000890                           454  ********************************************************
+00000890                           455  * 0100 0101 - LEA instruction with An = 2              *     
+00000890                           456  ********************************************************
+00000890                           457  FOUR0101
+00000890  4EB9 00000CB6            458      JSR     LEAMAIN
+00000896  16FC 002C                459      MOVE.B  #',',(A3)+                      Move a comma into the output
+0000089A  16FC 0041                460      MOVE.B  #'A',(A3)+                      Move A into the output
+0000089E  16FC 0032                461      MOVE.B  #'2',(A3)+                      Move 2 into the output
+000008A2  4E75                     462      RTS                                     Return the instruction
+000008A4                           463  ********************************************************
+000008A4                           464  * Illegal Instruction                                  *     
+000008A4                           465  ********************************************************
+000008A4                           466  FOUR0110
+000008A4  1E38 0011                467      MOVE.B  $11, D7
+000008A8  4E75                     468      RTS                                     Return the instruction
+000008AA                           469  ********************************************************
+000008AA                           470  * 0100 1001 - LEA instruction with An = 3              *     
+000008AA                           471  ********************************************************
+000008AA                           472  FOUR0111
+000008AA  4EB9 00000CB6            473      JSR     LEAMAIN                         Jump to main output printing routine
+000008B0  16FC 002C                474      MOVE.B  #',',(A3)+                      Move a comma into the output
+000008B4  16FC 0041                475      MOVE.B  #'A',(A3)+                      Move A into the output
+000008B8  16FC 0033                476      MOVE.B  #'3',(A3)+                      Move 3 into the output
+000008BC  4E75                     477      RTS                                     Return the instruction
+000008BE                           478  ********************************************************
+000008BE                           479  * 0100 1000 - MOVEM: Register to Memory                *     
+000008BE                           480  ********************************************************
+000008BE                           481  FOUR1000
+000008BE  16FC 004D                482      MOVE.B  #'M',(A3)+                      Move M to the output
+000008C2  16FC 004F                483      MOVE.B  #'O',(A3)+                      Move O to the output
+000008C6  16FC 0056                484      MOVE.B  #'V',(A3)+                      Move V to the output
+000008CA  16FC 0045                485      MOVE.B  #'E',(A3)+                      Move E to the output
+000008CE  16FC 004D                486      MOVE.B  #'M',(A3)+                      Move M to the output
+000008D2  16FC 002E                487      MOVE.B  #'.',(A3)+                      Move . to the output
+000008D6  4EB9 00000EFC            488      JSR     GETSIZEONEBIT                   Check size of the instruction
+000008DC  B63C 0000                489      CMP.B   #%0, D3                         Is it Word data?
+000008E0  6700 01DE                490      BEQ     WORDDATAR2M                     If so go to MWORDDATA
+000008E4  B63C 0001                491      CMP.B   #$1, D3                         Is it Long data?
+000008E8  6700 01DE                492      BEQ     LONGDATAR2M                     If so go to LONGDATA
+000008EC  1E3C 0011                493      MOVE.B  #$11, D7                        It's not a byte, word or long, so it's bad data
+000008F0  4E75                     494      RTS                                     Return bad data
+000008F2                           495  FINDLIST2M
+000008F2  16FC 0020                496      MOVE.B  #' ',(A3)+                      Move a space into the output
+000008F6  3A1D                     497      MOVE.W  (A5)+,D5                        Load next word in memory
+000008F8  3805                     498      MOVE.W  D5,D4 
+000008FA  4201                     499      CLR.B   D1                              Clear D1 register (reset counter)
+000008FC  4283                     500      CLR.L   D3                              Clear D3 register
+000008FE  1606                     501      MOVE.B  D6,D3                           Used to find EA
+00000900  0203 0038                502      ANDI.B  #$38,D3                         Isolate EA mode
+00000904  0C03 0020                503      CMPI.B  #$20,D3
+00000908  6700 00D4                504      BEQ     FINDDATAREG_PREDEC              It is a predecremnt do the algorithm with differently
+0000090C                           505  FINDDATAREG
+0000090C  E20D                     506      LSR.B   #1,D5                           Shift to the right
+0000090E  6500 000E                507      BCS     FOUNDFIRSTDATA                  Is there at least 1 data register?
+00000912  5201                     508      ADDI.B  #1,D1                           Increment counter
+00000914  0C01 0008                509      CMPI.B  #8,D1                           Have we compared all the data register list?
+00000918  6700 0060                510      BEQ     FINDADDRESSREG                  If so, time to compare address register
+0000091C  60EE                     511      BRA     FINDDATAREG  
+0000091E                           512  FOUNDFIRSTDATA
+0000091E  16FC 0044                513      MOVE.B  #'D',(A3)+                      Add D to goodbuffer
+00000922  1001                     514      MOVE.B  D1,D0                           Move register number to D0.
+00000924  0600 0030                515      ADDI.B  #$30,D0                          Convert hex to ascii
+00000928  16C0                     516      MOVE.B  D0,(A3)+                        Move ascii number to good buffer
+0000092A                           517  LISTDATALOOP1
+0000092A  5201                     518      ADDI.B  #1,D1                           Increment counter
+0000092C  0C01 0008                519      CMPI.B  #8,D1                           Have we compared all the data register list?
+00000930  6700 0014                520      BEQ     PRINTLISTDATA1                  If so, print  
+00000934  E20D                     521      LSR.B   #1,D5                           Shift to the right
+00000936  6500 0016                522      BCS     FOUNDSECONDDATA                 Are there more data registers?
+0000093A  5201                     523      ADDI.B  #1,D1                           Increment counter
+0000093C  0C01 0008                524      CMPI.B  #8,D1                           Have we compared all in the data register list?
+00000940  6700 0004                525      BEQ     PRINTLISTDATA1                  If so, print
+00000944  60E4                     526      BRA     LISTDATALOOP1                   If not, repeat loop
+00000946                           527  PRINTLISTDATA1
+00000946  16FC 002F                528      MOVE.B  #'/',(A3)+                      Add / to goodbuffer
+0000094A  6000 002E                529      BRA     FINDADDRESSREG                  Time to compare address register
+0000094E                           530  FOUNDSECONDDATA  
+0000094E  16FC 002D                531      MOVE.B  #'-',(A3)+
+00000952                           532  LISTDATALOOP2
+00000952  E20D                     533      LSR.B   #1,D5                           Shift to the right
+00000954  6400 000E                534      BCC     PRINTLISTDATA2
+00000958  0C01 0007                535      CMPI.B  #7,D1                           Have we compared all in the data register list?
+0000095C  6700 0006                536      BEQ     PRINTLISTDATA2                  If so, time to compare address register
+00000960  5201                     537      ADDI.B  #1,D1                           Increment counter
+00000962  60EE                     538      BRA     LISTDATALOOP2    
+00000964                           539  PRINTLISTDATA2
+00000964  16FC 0044                540      MOVE.B  #'D',(A3)+                      Add D to goodbuffer
+00000968  1001                     541      MOVE.B  D1,D0                           Move register number to D0.
+0000096A  0600 0030                542      ADDI.B  #$30,D0                         Convert hex to ascii
+0000096E  16C0                     543      MOVE.B  D0,(A3)+                        Move ascii number to good buffer
+00000970  16FC 002F                544      MOVE.B  #'/',(A3)+                      Add D to goodbuffer
+00000974  7208                     545      MOVEQ   #8,D1
+00000976  6000 0002                546      BRA     FINDADDRESSREG        
+0000097A                           547  FINDADDRESSREG
+0000097A  E34D                     548      LSL.W   #1,D5                           Shift to the left
+0000097C  6500 000E                549      BCS     FOUNDFIRSTADDRESS               Is there at least 1 address register?
+00000980  5301                     550      SUBI.B  #1,D1                           Decrement counter
+00000982  0C01 0000                551      CMPI.B  #0,D1                           Have we compared all in the address register list?
+00000986  6700 012A                552      BEQ     FINISHMOVEMR2M                  If so, branch to finish
+0000098A  60EE                     553      BRA     FINDADDRESSREG  
+0000098C                           554  FOUNDFIRSTADDRESS
+0000098C  16FC 0041                555      MOVE.B  #'A',(A3)+                      Add D to goodbuffer
+00000990  1001                     556      MOVE.B  D1,D0                           Move register number to D0.
+00000992  5300                     557      SUBI.B  #1,D0
+00000994  0600 0030                558      ADDI.B  #$30,D0                         Convert hex to ascii
+00000998  16C0                     559      MOVE.B  D0,(A3)+                        Move ascii number to good buffer
+0000099A                           560  ADDRESSLOOP1
+0000099A  5301                     561      SUBI.B  #1,D1                           Decrement counter
+0000099C  0C01 0000                562      CMPI.B  #0,D1                           Have we compared all in the address register list?
+000009A0  6700 0110                563      BEQ     FINISHMOVEMR2M                  If so, branch to finish 
+000009A4  E34D                     564      LSL.W   #1,D5                           Shift to the right
+000009A6  6500 000E                565      BCS     FOUNDSECONDADDRESS              Are there more address registers?
+000009AA  5301                     566      SUBI.B  #1,D1                           Increment counter
+000009AC  0C01 0000                567      CMPI.B  #0,D1                           Have we compared all in the address register list?
+000009B0  6700 0100                568      BEQ     FINISHMOVEMR2M                  If so, branch to finish 
+000009B4  60E4                     569      BRA     ADDRESSLOOP1                    If not, repeat loop   
+000009B6                           570  FOUNDSECONDADDRESS 
+000009B6  16FC 002D                571      MOVE.B  #'-',(A3)+
+000009BA                           572  LISTADDRESSLOOP2
+000009BA  E34D                     573      LSL.W   #1,D5                           Shift to the left
+000009BC  6400 000E                574      BCC     PRINTLISTADDRESS2
+000009C0  5301                     575      SUBI.B  #1,D1                           Increment counter
+000009C2  0C01 0000                576      CMPI.B  #0,D1                           Have we compared all in the address register list?
+000009C6  6700 0004                577      BEQ     PRINTLISTADDRESS2
+000009CA  60EE                     578      BRA     LISTADDRESSLOOP2    
+000009CC                           579  PRINTLISTADDRESS2
+000009CC  16FC 0041                580      MOVE.B  #'A',(A3)+                      Add D to goodbuffer
+000009D0  1001                     581      MOVE.B  D1,D0                           Move register number to D0.
+000009D2  5300                     582      SUBI.B  #1,D0
+000009D4  0600 0030                583      ADDI.B  #$30,D0                          Convert hex to ascii
+000009D8  16C0                     584      MOVE.B  D0,(A3)+                        Move ascii number to good buffer
+000009DA  6000 00D6                585      BRA     FINISHMOVEMR2M  
+000009DE                           586      ************************
+000009DE                           587  FINDDATAREG_PREDEC 
+000009DE  E34D                     588      LSL.W   #1,D5                           Shift to the right
+000009E0  6500 000E                589      BCS     FOUNDFIRSTDATA_PREDEC           Is there at least 1 data register?
+000009E4  5201                     590      ADDI.B  #1,D1                           Increment counter
+000009E6  0C01 0008                591      CMPI.B  #8,D1                           Have we compared all the data register list?
+000009EA  6700 0060                592      BEQ     FINDADDRESSREG_PREDEC           If so, time to compare address register
+000009EE  60EE                     593      BRA     FINDDATAREG_PREDEC   
+000009F0                           594  FOUNDFIRSTDATA_PREDEC
+000009F0  16FC 0044                595      MOVE.B  #'D',(A3)+                      Add D to goodbuffer
+000009F4  1001                     596      MOVE.B  D1,D0                           Move register number to D0.
+000009F6  0600 0030                597      ADDI.B  #$30,D0                         Convert hex to ascii
+000009FA  16C0                     598      MOVE.B  D0,(A3)+                        Move ascii number to good buffer
+000009FC                           599  LISTDATALOOP1_PREDEC
+000009FC  5201                     600      ADDI.B  #1,D1                           Increment counter
+000009FE  0C01 0008                601      CMPI.B  #8,D1                           Have we compared all the data register list?
+00000A02  6700 0014                602      BEQ     PRINTLISTDATA1_PREDEC           If so, print  
+00000A06  E34D                     603      LSL.W   #1,D5                           Shift to the right
+00000A08  6500 0016                604      BCS     FOUNDSECONDDATA_PREDEC          Are there more data registers?
+00000A0C  5201                     605      ADDI.B  #1,D1                           Increment counter
+00000A0E  0C01 0008                606      CMPI.B  #8,D1                           Have we compared all in the data register list?
+00000A12  6700 0004                607      BEQ     PRINTLISTDATA1_PREDEC           If so, print
+00000A16  60E4                     608      BRA     LISTDATALOOP1_PREDEC            If not, repeat loop
+00000A18                           609  PRINTLISTDATA1_PREDEC
+00000A18  16FC 002F                610      MOVE.B  #'/',(A3)+                      Add / to goodbuffer
+00000A1C  6000 002E                611      BRA     FINDADDRESSREG_PREDEC           Time to compare address register
+00000A20                           612  FOUNDSECONDDATA_PREDEC  
+00000A20  16FC 002D                613      MOVE.B  #'-',(A3)+
+00000A24                           614  LISTDATALOOP2_PREDEC
+00000A24  E34D                     615      LSL.W   #1,D5                           Shift to the right
+00000A26  6400 000E                616      BCC     PRINTLISTDATA2_PREDEC
+00000A2A  0C01 0007                617      CMPI.B  #7,D1                           Have we compared all in the data register list?
+00000A2E  6700 0006                618      BEQ     PRINTLISTDATA2_PREDEC           If so, time to compare address register
+00000A32  5201                     619      ADDI.B  #1,D1                           Increment counter
+00000A34  60EE                     620      BRA     LISTDATALOOP2_PREDEC    
+00000A36                           621  PRINTLISTDATA2_PREDEC
+00000A36  16FC 0044                622      MOVE.B  #'D',(A3)+                      Add D to goodbuffer
+00000A3A  1001                     623      MOVE.B  D1,D0                           Move register number to D0.
+00000A3C  0600 0030                624      ADDI.B  #$30,D0                         Convert hex to ascii
+00000A40  16C0                     625      MOVE.B  D0,(A3)+                        Move ascii number to good buffer
+00000A42  16FC 002F                626      MOVE.B  #'/',(A3)+                      Add D to goodbuffer
+00000A46  7208                     627      MOVEQ   #8,D1
+00000A48  6000 0002                628      BRA     FINDADDRESSREG_PREDEC        
+00000A4C                           629  FINDADDRESSREG_PREDEC
+00000A4C  1A04                     630      MOVE.B  D4,D5
+00000A4E                           631  FINDADDRESSREG_LOOP
+00000A4E  E20D                     632      LSR.B   #1,D5                           Shift to the left
+00000A50  6500 000E                633      BCS     FOUNDFIRSTADDRESS_PREDEC        Is there at least 1 address register?
+00000A54  5301                     634      SUBI.B  #1,D1                           Decrement counter
+00000A56  0C01 0000                635      CMPI.B  #0,D1                           Have we compared all in the address register list?
+00000A5A  6700 0056                636      BEQ     FINISHMOVEMR2M                  If so, branch to finish
+00000A5E  60EE                     637      BRA     FINDADDRESSREG_LOOP  
+00000A60                           638  FOUNDFIRSTADDRESS_PREDEC
+00000A60  16FC 0041                639      MOVE.B  #'A',(A3)+                      Add D to goodbuffer
+00000A64  1001                     640      MOVE.B  D1,D0                           Move register number to D0.
+00000A66  5300                     641      SUBI.B  #1,D0
+00000A68  0600 0030                642      ADDI.B  #$30,D0                         Convert hex to ascii
+00000A6C  16C0                     643      MOVE.B  D0,(A3)+                        Move ascii number to good buffer
+00000A6E                           644  ADDRESSLOOP1_PREDEC
+00000A6E  5301                     645      SUBI.B  #1,D1                           Decrement counter
+00000A70  0C01 0000                646      CMPI.B  #0,D1                           Have we compared all in the address register list?
+00000A74  6700 003C                647      BEQ     FINISHMOVEMR2M                  If so, branch to finish 
+00000A78  E20D                     648      LSR.B   #1,D5                           Shift to the right
+00000A7A  6500 000E                649      BCS     FOUNDSECONDADDRESS_PREDEC       Are there more address registers?
+00000A7E  5301                     650      SUBI.B  #1,D1                           Increment counter
+00000A80  0C01 0000                651      CMPI.B  #0,D1                           Have we compared all in the address register list?
+00000A84  6700 002C                652      BEQ     FINISHMOVEMR2M                  If so, branch to finish 
+00000A88  60E4                     653      BRA     ADDRESSLOOP1_PREDEC             If not, repeat loop   
+00000A8A                           654  FOUNDSECONDADDRESS_PREDEC 
+00000A8A  16FC 002D                655      MOVE.B  #'-',(A3)+
+00000A8E                           656  LISTADDRESSLOOP2_PREDEC 
+00000A8E  E20D                     657      LSR.B   #1,D5                           Shift to the left
+00000A90  6400 000E                658      BCC     PRINTLISTADDRESS2_PREDEC 
+00000A94  5301                     659      SUBI.B  #1,D1                           Increment counter
+00000A96  0C01 0000                660      CMPI.B  #0,D1                           Have we compared all in the address register list?
+00000A9A  6700 0004                661      BEQ     PRINTLISTADDRESS2_PREDEC
+00000A9E  60EE                     662      BRA     LISTADDRESSLOOP2_PREDEC     
+00000AA0                           663  PRINTLISTADDRESS2_PREDEC 
+00000AA0  16FC 0041                664      MOVE.B  #'A',(A3)+                      Add D to goodbuffer
+00000AA4  1001                     665      MOVE.B  D1,D0                           Move register number to D0.
+00000AA6  5300                     666      SUBI.B  #1,D0
+00000AA8  0600 0030                667      ADDI.B  #$30,D0                          Convert hex to ascii
+00000AAC  16C0                     668      MOVE.B  D0,(A3)+                        Move ascii number to good buffer
+00000AAE  6000 0002                669      BRA     FINISHMOVEMR2M  
+00000AB2                           670  FINISHMOVEMR2M
+00000AB2  4201                     671      CLR.B   D1
+00000AB4  16FC 002C                672      MOVE.B  #',',(A3)+                      Move a comma into the output
+00000AB8  4EB9 00000CCE            673      JSR     EACODE                          Go to EA Code to finish instruction
+00000ABE  4E75                     674      RTS                                     Return the instruction
+00000AC0                           675  WORDDATAR2M
+00000AC0  16FC 0057                676      MOVE.B  #'W',(A3)+                      Move W to the output
+00000AC4  6000 FE2C                677      BRA     FINDLIST2M                      Finish the instruction
+00000AC8                           678  LONGDATAR2M
+00000AC8  16FC 004C                679      MOVE.B  #'L',(A3)+                      Move L to the output
+00000ACC  6000 FE24                680      BRA     FINDLIST2M                      Finish the instruction
+00000AD0                           681  
+00000AD0                           682  ********************************************************
+00000AD0                           683  * 0100 1001 - LEA instruction with An = 4              *     
+00000AD0                           684  ********************************************************
+00000AD0                           685  FOUR1001
+00000AD0  4EB9 00000CB6            686      JSR     LEAMAIN
+00000AD6  16FC 002C                687      MOVE.B  #',',(A3)+                      Move a comma into the output
+00000ADA  16FC 0041                688      MOVE.B  #'A',(A3)+                      Move A into the output
+00000ADE  16FC 0034                689      MOVE.B  #'4',(A3)+                      Move 4 into the output
+00000AE2  4E75                     690      RTS                                     Return the instruction
+00000AE4                           691  ********************************************************
+00000AE4                           692  * Illegal Instruction                                  *     
+00000AE4                           693  ********************************************************
+00000AE4                           694  FOUR1010
+00000AE4  1E38 0011                695      MOVE.B  $11, D7                         Flag bad data
+00000AE8  4E75                     696      RTS                                     Return the instruction
+00000AEA                           697  ********************************************************
+00000AEA                           698  * 0100 1011 - LEA instruction with An = 5              *     
+00000AEA                           699  ********************************************************
+00000AEA                           700  FOUR1011
+00000AEA  4EB9 00000CB6            701      JSR     LEAMAIN                         Jump to main output printing routine
+00000AF0  16FC 002C                702      MOVE.B  #',',(A3)+                      Move a comma into the output
+00000AF4  16FC 0041                703      MOVE.B  #'A',(A3)+                      Move A into the output
+00000AF8  16FC 0035                704      MOVE.B  #'5',(A3)+                      Move 5 into the output
+00000AFC  4E75                     705      RTS                                     Return the instruction
+00000AFE                           706  ********************************************************
+00000AFE                           707  * 0100 1100 - MOVEM: Memory to Register                *     
+00000AFE                           708  ********************************************************
+00000AFE                           709  FOUR1100
+00000AFE  16FC 004D                710      MOVE.B  #'M',(A3)+                      Move M to the output
+00000B02  16FC 004F                711      MOVE.B  #'O',(A3)+                      Move O to the output
+00000B06  16FC 0056                712      MOVE.B  #'V',(A3)+                      Move V to the output
+00000B0A  16FC 0045                713      MOVE.B  #'E',(A3)+                      Move E to the output
+00000B0E  16FC 004D                714      MOVE.B  #'M',(A3)+                      Move M to the output
+00000B12  16FC 002E                715      MOVE.B  #'.',(A3)+                      Move . to the output
+00000B16  4EB9 00000EFC            716      JSR     GETSIZEONEBIT                   Check size of the instruction
+00000B1C  B63C 0000                717      CMP.B   #%0, D3                         Is it Word data?
+00000B20  6700 00F6                718      BEQ     MWORDDATAM2R                    If so go to MWORDDATA
+00000B24  B63C 0001                719      CMP.B   #$1, D3                         Is it Long data?
+00000B28  6700 00F6                720      BEQ     MLONGDATAM2R                    If so go to LONGDATA
+00000B2C  1E3C 0011                721      MOVE.B  #$11, D7                        It's not a byte, word or long, so it's bad data
+00000B30  4E75                     722      RTS                                     Return bad data
+00000B32                           723  FINDLIST2R
+00000B32  16FC 0020                724      MOVE.B  #' ',(A3)+                      Move a space into the output
+00000B36  7E01                     725      MOVEQ   #1,D7
+00000B38  4203                     726      CLR.B   D3
+00000B3A  4EB9 00000CCE            727      JSR     EACODE                          Go to EA Code to finish instruction
+00000B40  16FC 002C                728      MOVE.B  #',',(A3)+                      Move a space into the output
+00000B44  3A1D                     729      MOVE.W  (A5)+,D5                        Load next word in memory 
+00000B46  4201                     730      CLR.B   D1                              Clear D1 register (reset counter)
+00000B48                           731  FINDDATAREG_
+00000B48  E20D                     732      LSR.B   #1,D5                           Shift to the right
+00000B4A  6500 000E                733      BCS     FOUNDFIRSTDATA_                  Is there at least 1 data register?
+00000B4E  5201                     734      ADDI.B  #1,D1                           Increment counter
+00000B50  0C01 0008                735      CMPI.B  #8,D1                           Have we compared all the data register list?
+00000B54  6700 0060                736      BEQ     FINDADDRESSREG_                  If so, time to compare address register
+00000B58  60EE                     737      BRA     FINDDATAREG_  
+00000B5A                           738  FOUNDFIRSTDATA_
+00000B5A  16FC 0044                739      MOVE.B  #'D',(A3)+                      Add D to goodbuffer
+00000B5E  1001                     740      MOVE.B  D1,D0                           Move register number to D0.
+00000B60  0600 0030                741      ADDI.B  #$30,D0                          Convert hex to ascii
+00000B64  16C0                     742      MOVE.B  D0,(A3)+                        Move ascii number to good buffer
+00000B66                           743  LISTDATALOOP1_
+00000B66  5201                     744      ADDI.B  #1,D1                           Increment counter
+00000B68  0C01 0008                745      CMPI.B  #8,D1                           Have we compared all the data register list?
+00000B6C  6700 0014                746      BEQ     PRINTLISTDATA1_                  If so, print  
+00000B70  E20D                     747      LSR.B   #1,D5                           Shift to the right
+00000B72  6500 0016                748      BCS     FOUNDSECONDDATA_                 Are there more data registers?
+00000B76  5201                     749      ADDI.B  #1,D1                           Increment counter
+00000B78  0C01 0008                750      CMPI.B  #8,D1                           Have we compared all in the data register list?
+00000B7C  6700 0004                751      BEQ     PRINTLISTDATA1_                  If so, print
+00000B80  60E4                     752      BRA     LISTDATALOOP1_                   If not, repeat loop
+00000B82                           753  PRINTLISTDATA1_
+00000B82  16FC 002F                754      MOVE.B  #'/',(A3)+                      Add / to goodbuffer
+00000B86  6000 002E                755      BRA     FINDADDRESSREG_                  Time to compare address register
+00000B8A                           756  FOUNDSECONDDATA_  
+00000B8A  16FC 002D                757      MOVE.B  #'-',(A3)+
+00000B8E                           758  LISTDATALOOP2_
+00000B8E  E20D                     759      LSR.B   #1,D5                           Shift to the right
+00000B90  6400 000E                760      BCC     PRINTLISTDATA2_
+00000B94  0C01 0007                761      CMPI.B  #7,D1                           Have we compared all in the data register list?
+00000B98  6700 001C                762      BEQ     FINDADDRESSREG_                  If so, time to compare address register
+00000B9C  5201                     763      ADDI.B  #1,D1                           Increment counter
+00000B9E  60EE                     764      BRA     LISTDATALOOP2_    
+00000BA0                           765  PRINTLISTDATA2_
+00000BA0  16FC 0044                766      MOVE.B  #'D',(A3)+                      Add D to goodbuffer
+00000BA4  1001                     767      MOVE.B  D1,D0                           Move register number to D0.
+00000BA6  0600 0030                768      ADDI.B  #$30,D0                         Convert hex to ascii
+00000BAA  16C0                     769      MOVE.B  D0,(A3)+                        Move ascii number to good buffer
+00000BAC  16FC 002F                770      MOVE.B  #'/',(A3)+                      Add D to goodbuffer
+00000BB0  7208                     771      MOVEQ   #8,D1
+00000BB2  6000 0002                772      BRA     FINDADDRESSREG_        
+00000BB6                           773  FINDADDRESSREG_
+00000BB6  E34D                     774      LSL.W   #1,D5                           Shift to the left
+00000BB8  6500 000E                775      BCS     FOUNDFIRSTADDRESS_               Is there at least 1 address register?
+00000BBC  5301                     776      SUBI.B  #1,D1                           Decrement counter
+00000BBE  0C01 0000                777      CMPI.B  #0,D1                           Have we compared all in the address register list?
+00000BC2  6700 0064                778      BEQ     FINISHMOVEM2R                  If so, branch to finish
+00000BC6  60EE                     779      BRA     FINDADDRESSREG_  
+00000BC8                           780  FOUNDFIRSTADDRESS_
+00000BC8  16FC 0041                781      MOVE.B  #'A',(A3)+                      Add D to goodbuffer
+00000BCC  1001                     782      MOVE.B  D1,D0                           Move register number to D0.
+00000BCE  5300                     783      SUBI.B  #1,D0
+00000BD0  0600 0030                784      ADDI.B  #$30,D0                         Convert hex to ascii
+00000BD4  16C0                     785      MOVE.B  D0,(A3)+                        Move ascii number to good buffer
+00000BD6                           786  ADDRESSLOOP1_
+00000BD6  5301                     787      SUBI.B  #1,D1                           Decrement counter
+00000BD8  0C01 0000                788      CMPI.B  #0,D1                           Have we compared all in the address register list?
+00000BDC  6700 004A                789      BEQ     FINISHMOVEM2R                  If so, branch to finish 
+00000BE0  E34D                     790      LSL.W   #1,D5                           Shift to the right
+00000BE2  6500 000E                791      BCS     FOUNDSECONDADDRESS_              Are there more address registers?
+00000BE6  5301                     792      SUBI.B  #1,D1                           Increment counter
+00000BE8  0C01 0000                793      CMPI.B  #0,D1                           Have we compared all in the address register list?
+00000BEC  6700 003A                794      BEQ     FINISHMOVEM2R                  If so, branch to finish 
+00000BF0  60E4                     795      BRA     ADDRESSLOOP1_                    If not, repeat loop   
+00000BF2                           796  FOUNDSECONDADDRESS_ 
+00000BF2  16FC 002D                797      MOVE.B  #'-',(A3)+    
+00000BF6                           798  LISTADDRESSLOOP2_
+00000BF6  E34D                     799      LSL.W   #1,D5                           Shift to the left
+00000BF8  6400 000C                800      BCC     PRINTLISTADDRESS2_
+00000BFC  5301                     801      SUBI.B  #1,D1                           Increment counter
+00000BFE  0C01 0000                802      CMPI.B  #0,D1                           Have we compared all in the address register list?
+00000C02  67B2                     803      BEQ     FINDADDRESSREG_                  If so, time to compare address register
+00000C04  60F0                     804      BRA     LISTADDRESSLOOP2_    
+00000C06                           805  PRINTLISTADDRESS2_
+00000C06  16FC 0041                806      MOVE.B  #'A',(A3)+                      Add D to goodbuffer
+00000C0A  1001                     807      MOVE.B  D1,D0                           Move register number to D0.
+00000C0C  5300                     808      SUBI.B  #1,D0
+00000C0E  0600 0030                809      ADDI.B  #$30,D0                         Convert hex to ascii
+00000C12  16C0                     810      MOVE.B  D0,(A3)+                        Move ascii number to good buffer
+00000C14  6000 0012                811      BRA     FINISHMOVEM2R   
+00000C18                           812      
+00000C18                           813  MWORDDATAM2R
+00000C18  16FC 0057                814      MOVE.B  #'W',(A3)+                      Move W to the output
+00000C1C  6000 FF14                815      BRA     FINDLIST2R                  Finish the instruction
+00000C20                           816  MLONGDATAM2R
+00000C20  16FC 004C                817      MOVE.B  #'L',(A3)+                      Move L to the output
+00000C24  6000 FF0C                818      BRA     FINDLIST2R                  Finish the instruction
+00000C28                           819  FINISHMOVEM2R
+00000C28  0C03 0001                820      CMPI.B  #1,D3
+00000C2C  6700 000E                821      BEQ     ADDADDRESSWORD
+00000C30  0C03 0002                822      CMPI.B  #2,D3
+00000C34  6700 000C                823      BEQ     ADDADDRESSLONGWORD
+00000C38  6000 000E                824      BRA     RTN
+00000C3C                           825  ADDADDRESSWORD
+00000C3C  548D                     826      ADDA.L  #2,A5
+00000C3E  6000 0008                827      BRA     RTN
+00000C42                           828  ADDADDRESSLONGWORD
+00000C42  588D                     829      ADDA.L  #4,A5
+00000C44  6000 0002                830      BRA     RTN
+00000C48                           831  RTN
+00000C48  4E75                     832      RTS                                     Return the instruction
+00000C4A                           833  ********************************************************
+00000C4A                           834  * 0100 1101 - LEA instruction with An = 6              *     
+00000C4A                           835  ********************************************************
+00000C4A                           836  FOUR1101
+00000C4A  4EB9 00000CB6            837      JSR     LEAMAIN                         Jump to main output printing routine
+00000C50  16FC 002C                838      MOVE.B  #',',(A3)+                      Move a comma into the output
+00000C54  16FC 0041                839      MOVE.B  #'A',(A3)+                      Move A into the output
+00000C58  16FC 0036                840      MOVE.B  #'6',(A3)+                      Move 6 into the output
+00000C5C  4E75                     841      RTS                                     Return the ins
+00000C5E                           842  
+00000C5E                           843  
+00000C5E                           844  ********************************************************
+00000C5E                           845  *0100 1110 - JSR & RTS                                 *     
+00000C5E                           846  ********************************************************
+00000C5E                           847  FOUR1110
+00000C5E  BC7C 4E75                848      CMP.W   #$4E75, D6                      Is this an RTS function
+00000C62  6700 0030                849      BEQ     ITSARTS                         If so go to the ITSARTS function
+00000C66  BC7C 4E71                850      CMP.W   #$4E71, D6
+00000C6A  6700 001A                851      BEQ     ITSNOP
+00000C6E  16FC 004A                852      MOVE.B  #'J',(A3)+                      Move J into the output
+00000C72  16FC 0053                853      MOVE.B  #'S',(A3)+                      Move S into the output
+00000C76  16FC 0052                854      MOVE.B  #'R',(A3)+                      Move R into the output
+00000C7A  16FC 0020                855      MOVE.B  #' ',(A3)+                      Move a space into the output
+00000C7E  4EB9 00000CCE            856      JSR     EACODE                          call the EA code
+00000C84  4E75                     857      RTS                                     Return instruction
+00000C86                           858  ITSNOP
+00000C86  16FC 004E                859      MOVE.B  #'N',(A3)+                      Insert R into output
+00000C8A  16FC 004F                860      MOVE.B  #'O',(A3)+                      Insert T into output
+00000C8E  16FC 0050                861      MOVE.B  #'P',(A3)+                      Insert S into output
+00000C92  4E75                     862      RTS  
+00000C94                           863  
+00000C94                           864  ITSARTS
+00000C94  16FC 0052                865      MOVE.B  #'R',(A3)+                      Insert R into output
+00000C98  16FC 0054                866      MOVE.B  #'T',(A3)+                      Insert T into output
+00000C9C  16FC 0053                867      MOVE.B  #'S',(A3)+                      Insert S into output
+00000CA0  4E75                     868      RTS                                     Return the instruction
+00000CA2                           869  ********************************************************
+00000CA2                           870  * 0100 1111 - LEA instruction with An = 7              *     
+00000CA2                           871  ********************************************************
+00000CA2                           872  FOUR1111
+00000CA2  4EB9 00000CB6            873      JSR     LEAMAIN                         Jump to main output printing routine
+00000CA8  16FC 002C                874      MOVE.B  #',',(A3)+                      Move a comma into the output
+00000CAC  16FC 0041                875      MOVE.B  #'A',(A3)+                      Move A into the output
+00000CB0  16FC 0037                876      MOVE.B  #'7',(A3)+                      Move 7 into the output
+00000CB4  4E75                     877      RTS                                     
+00000CB6                           878  
+00000CB6                           879  
+00000CB6                           880  ********************************************************
+00000CB6                           881  * LEA instruction                                      *     
+00000CB6                           882  ********************************************************
+00000CB6                           883  LEAMAIN
+00000CB6  16FC 004C                884      MOVE.B  #'L',(A3)+                      Move L into the ouput
+00000CBA  16FC 0045                885      MOVE.B  #'E',(A3)+                      Move E into the ouput
+00000CBE  16FC 0041                886      MOVE.B  #'A',(A3)+                      Move A into the ouput
+00000CC2  16FC 0020                887      MOVE.B  #' ',(A3)+                      Move a space into the ouput
+00000CC6  4EB9 00000CCE            888      JSR     EACODE                          Call EACODE to grab the only EA
+00000CCC  4E75                     889      RTS      
+00000CCE                           890  ********************************************************
+00000CCE                           891  * EA FOR ALL OPCODE                                    *
+00000CCE                           892  ********************************************************
+00000CCE                           893  EACODE
+00000CCE  4244                     894      CLR.W  D4                   Clear previous data in D4
+00000CD0  4245                     895      CLR.W  D5                   Clear the D5 register
+00000CD2  1A06                     896      MOVE.B D6,D5                Move to isolate register
+00000CD4  1806                     897      MOVE.B D6,D4                Move to isolate mode
+00000CD6  0205 0007                898      ANDI.B #$07,D5              Isolate regster
+00000CDA  E60C                     899      LSR.B  #3,D4                Shift to isolate mode
+00000CDC  0204 0007                900      ANDI.B #$07,D4              Isolate mode
+00000CE0  C8FC 0006                901      MULU   #$6,D4               Find offset for mode
+00000CE4  41F8 0786                902      LEA    FORMAT,A0            Set the table to A0
+00000CE8  4EB0 4000                903      JSR    00(A0,D4)            Set jumptable
+00000CEC  4E75                     904      RTS 
+00000CEE                           905  
+00000CEE                           906  
+00000CEE                           907  
+00000CEE                           908  
+00000CEE                           909  *******************************FORMAT*************************
+00000CEE                           910  * 000 - Dn INSTRUCTION                                 *               
+00000CEE                           911  FORMAT000
+00000CEE  16FC 0044                912      MOVE.B #'D',(A3)+           Move D into good buffer
+00000CF2  CAFC 0006                913      MULU   #$6,D5               Find offset for register number
+00000CF6  43F8 07B6                914      LEA    REGISTER,A1          Set the table to A0
+00000CFA  4EB1 5000                915      JSR    00(A1,D5)            Set jumptable
+00000CFE  4E75                     916      RTS
+00000D00                           917  * 001 - An INSTRUCTION                                 *               
+00000D00                           918  FORMAT001
+00000D00  16FC 0041                919      MOVE.B #'A',(A3)+           Move D into good buffer
+00000D04  CAFC 0006                920      MULU   #$6,D5               Find offset for register number
+00000D08  43F8 07B6                921      LEA    REGISTER,A1          Set the table to A0
+00000D0C  4EB1 5000                922      JSR    00(A1,D5)            Set jumptable  
+00000D10  4E75                     923      RTS
+00000D12                           924  * 010 - (An) INSTRUCTION                               *               
+00000D12                           925  FORMAT010  
+00000D12  16FC 0028                926      MOVE.B #'(',(A3)+           Move (A) into good buffer
+00000D16  16FC 0041                927      MOVE.B #'A',(A3)+           Move (A) into good buffer
+00000D1A  CAFC 0006                928      MULU   #$6,D5               Find offset for register number
+00000D1E  43F8 07B6                929      LEA    REGISTER,A1          Set the table to A0
+00000D22  4EB1 5000                930      JSR    00(A1,D5)            Set jumptable
+00000D26  16FC 0029                931      MOVE.B #')',(A3)+           Move (A) into good buffer
+00000D2A  4E75                     932      RTS
+00000D2C                           933  * 011 - (An)+ INSTRUCTION                              *               
+00000D2C                           934  FORMAT011 
+00000D2C                           935      *CMP.B  #7, D5              If's a 7 it's the SP which you can't do
+00000D2C                           936      *BEQ        BADDATA             Return bad data
+00000D2C  16FC 0028                937      MOVE.B #'(',(A3)+           Move (An)+ into good buffer
+00000D30  16FC 0041                938      MOVE.B #'A',(A3)+           Move (An)+ into good buffer
+00000D34  CAFC 0006                939      MULU   #$6,D5               Find offset for register number
+00000D38  43F8 07B6                940      LEA    REGISTER,A1          Set the table to A0
+00000D3C  4EB1 5000                941      JSR    00(A1,D5)            Set jumptable 
+00000D40  16FC 0029                942      MOVE.B #')',(A3)+           Move (An)+ into good buffer 
+00000D44  16FC 002B                943      MOVE.B #'+',(A3)+           Move (An)+ into good buffer
+00000D48  4E75                     944      RTS
+00000D4A                           945  * 100 - -(An) INSTRUCTION                              *               
+00000D4A                           946  FORMAT100  
+00000D4A                           947      *CMP.B  #7, D5              If's a 7 it's the SP which you can't do
+00000D4A                           948      *BEQ        BADDATA             Return bad data
+00000D4A  16FC 002D                949      MOVE.B  #'-',(A3)+          Move -(An) into good buffer
+00000D4E  16FC 0028                950      MOVE.B  #'(',(A3)+          Move -(An) into good buffer
+00000D52  16FC 0041                951      MOVE.B  #'A',(A3)+          Move -(An) into good buffer
+00000D56  CAFC 0006                952      MULU    #$6,D5              Find offset for register number
+00000D5A  43F8 07B6                953      LEA     REGISTER,A1         Set the table to A0
+00000D5E  4EB1 5000                954      JSR     00(A1,D5)           Set jumptable 
+00000D62  16FC 0029                955      MOVE.B  #')',(A3)+          Move -(An) into good buffer
+00000D66  4E75                     956      RTS
+00000D68                           957  * 101 - (d16,An) INSTRUCTION                           *               
+00000D68                           958  FORMAT101  
+00000D68  1E38 0011                959      MOVE.B  $11, D7             This is bad data
+00000D6C  6000 0196                960      BRA     GETWORDFORBADDATA   Branch to bad data that has word
+00000D70                           961  * 110 - (d8,An,Xn) INSTRUCTION                         *               
+00000D70                           962  FORMAT110 
+00000D70  1E38 0011                963      MOVE.B  $11, D7             This is bad data 
+00000D74  4E75                     964      RTS                         return bad data
+00000D76                           965  * 111 - XXX.W,XXX.L, #<data> INSTRUCTION               *               
+00000D76                           966  FORMAT111
+00000D76  CAFC 0006                967      MULU   #$6,D5               Find offset for register number
+00000D7A  43F8 07E6                968      LEA    ABSOLUTE,A1          Set the table to A0 
+00000D7E  4EB1 5000                969      JSR    00(A1,D5)            Set jumptable 
+00000D82  4E75                     970      RTS
+00000D84                           971  
+00000D84                           972  ********************************REGISTER************************
+00000D84                           973  * 000- Register number of 0                            *               
+00000D84                           974  REGISTER000
+00000D84  16FC 0030                975      MOVE.B #'0',(A3)+           Move 0 into good buffer
+00000D88  4E75                     976      RTS
+00000D8A                           977  * 001- Register number of 1                            *               
+00000D8A                           978  REGISTER001
+00000D8A  16FC 0031                979      MOVE.B #'1',(A3)+           Move 1 into good buffer
+00000D8E  4E75                     980      RTS
+00000D90                           981  * 010- Register number of 2                            *               
+00000D90                           982  REGISTER010
+00000D90  16FC 0032                983      MOVE.B #'2',(A3)+           Move 2 into good buffer
+00000D94  4E75                     984      RTS
+00000D96                           985  * 011- Register number of 3                            *               
+00000D96                           986  REGISTER011
+00000D96  16FC 0033                987      MOVE.B #'3',(A3)+           Move 3 into good buffer
+00000D9A  4E75                     988      RTS
+00000D9C                           989  * 100- Register number of 4                            *               
+00000D9C                           990  REGISTER100
+00000D9C  16FC 0034                991      MOVE.B #'4',(A3)+           Move 4 into good buffer
+00000DA0  4E75                     992      RTS
+00000DA2                           993  * 101- Register number of 5                            *               
+00000DA2                           994  REGISTER101
+00000DA2  16FC 0035                995      MOVE.B #'5',(A3)+           Move 5 into good buffer
+00000DA6  4E75                     996      RTS
+00000DA8                           997  * 110- Register number of 6                            *               
+00000DA8                           998  REGISTER110
+00000DA8  16FC 0036                999      MOVE.B #'6',(A3)+           Move 6 into good buffer
+00000DAC  4E75                    1000      RTS
+00000DAE                          1001  * 111- Register number of 7                            *               
+00000DAE                          1002  REGISTER111
+00000DAE  16FC 0037               1003      MOVE.B #'7',(A3)+           Move 7 into good buffer
+00000DB2  4E75                    1004      RTS
+00000DB4                          1005  ********************************REGISTER************************
+00000DB4                          1006  
+00000DB4                          1007  ********************************************************
+00000DB4                          1008  * 000- (XXX).W                                         *               
+00000DB4                          1009  ********************************************************
+00000DB4                          1010  ABSOLUTE000
+00000DB4  16FC 0024               1011      MOVE.B  #'$',(A3)+          Move $ into good buffer
+00000DB8  18FC 0020               1012      MOVE.B  #' ',(A4)+          Move a space into bad buffer
+00000DBC  18FC 0024               1013      MOVE.B  #'$',(A4)+          Move $ into bad buffer
+00000DC0  7004                    1014      MOVEQ   #4,D0            Move counter to D0
+00000DC2  0C07 0001               1015      CMPI.B  #1,D7            For MOVEM
+00000DC6  6700 0006               1016      BEQ     ADDWORD          We have to skip over a word.
+00000DCA  6000 000C               1017      BRA     MOVEWORD
+00000DCE                          1018  ADDWORD
+00000DCE  244D                    1019      MOVEA.L A5,A2
+00000DD0  548A                    1020      ADDA.L  #$2,A2
+00000DD2  381A                    1021      MOVE.W  (A2)+,D4
+00000DD4  6000 0004               1022      BRA     WORD_PREP
+00000DD8                          1023  MOVEWORD
+00000DD8  381D                    1024      MOVE.W (A5)+,D4         Move word address into D4
+00000DDA                          1025  WORD_PREP
+00000DDA  E95C                    1026      ROL.W  #4,D4                Move the MSB
+00000DDC  3A04                    1027      MOVE.W D4,D5                Move word address to D5
+00000DDE  0245 000F               1028      ANDI.W #$000F,D5            Clear everything except for MSB
+00000DE2                          1029  WORD_ASC
+00000DE2  0C05 0009               1030      CMPI.B #$09,D5              Is the character a number?
+00000DE6  6F00 000A               1031      BLE    WORD_NUM             Branch if yes.
+00000DEA                          1032  WORD_LET
+00000DEA  0605 0037               1033      ADDI.B #$37,D5          
+00000DEE  6000 000A               1034      BRA    NEXT_WORD_CHAR       Convert into a prinatble ascii letter
+00000DF2                          1035  
+00000DF2                          1036  WORD_NUM
+00000DF2  0605 0030               1037      ADDI.B #$30,D5
+00000DF6  6000 0002               1038      BRA    NEXT_WORD_CHAR       Convert into a prinatble ascii number
+00000DFA                          1039  NEXT_WORD_CHAR
+00000DFA  5300                    1040      SUBI.B #1,D0                Decrement counter
+00000DFC  16C5                    1041      MOVE.B D5,(A3)+             Move ascii into good buffer
+00000DFE  18C5                    1042      MOVE.B D5,(A4)+             Move ascii into bad buffer
+00000E00  0C00 0000               1043      CMPI.B #0,D0                Have we moved all characters?
+00000E04  6ED4                    1044      BGT    WORD_PREP            If not, repeat loop
+00000E06  7601                    1045      MOVEQ  #1,D3
+00000E08  4E75                    1046      RTS                         If so, return
+00000E0A                          1047  ********************************************************
+00000E0A                          1048  * 001- (XXX).L                                         *               
+00000E0A                          1049  ********************************************************
+00000E0A                          1050  ABSOLUTE001
+00000E0A  16FC 0024               1051      MOVE.B  #'$',(A3)+          Move $ into good buffer
+00000E0E  18FC 0020               1052      MOVE.B  #' ',(A4)+
+00000E12  18FC 0024               1053      MOVE.B  #'$',(A4)+          Move $ into bad buffer
+00000E16  7008                    1054      MOVEQ  #8,D0                Move counter to D0
+00000E18  0C07 0001               1055      CMPI.B #1,D7                For MOVEM
+00000E1C  6700 0006               1056      BEQ    ADDLONGWORD          We have to skip over a word.
+00000E20  6000 000C               1057      BRA    MOVELONGWORD
+00000E24                          1058  ADDLONGWORD
+00000E24  244D                    1059      MOVEA.L A5,A2
+00000E26  548A                    1060      ADDA.L #$2,A2
+00000E28  281A                    1061      MOVE.L (A2)+,D4
+00000E2A  6000 0004               1062      BRA LONGWORD_PREP
+00000E2E                          1063  MOVELONGWORD
+00000E2E  281D                    1064      MOVE.L (A5)+,D4             Move longword address into D4
+00000E30                          1065  LONGWORD_PREP                  
+00000E30  E99C                    1066      ROL.L  #4,D4                Move the MSB
+00000E32  2A04                    1067      MOVE.L D4,D5                Move longword address to D5
+00000E34  0285 0000000F           1068      ANDI.L #$0000000F,D5        Clear everything except for MSB
+00000E3A                          1069  LONGWORD_ASC
+00000E3A  0C05 0009               1070      CMPI.B #$09,D5              Is the character a number?
+00000E3E  6F00 000A               1071      BLE    LONGWORD_NUM         Branch if yes.
+00000E42                          1072  LONGWORD_LET
+00000E42  0605 0037               1073      ADDI.B #$37,D5              Convert into a prinatble ascii letter
+00000E46  6000 000A               1074      BRA    NEXT_LONGWORD_CHAR
+00000E4A                          1075  LONGWORD_NUM 
+00000E4A  0605 0030               1076      ADDI.B #$30,D5              Convert into a prinatble ascii number
+00000E4E  6000 0002               1077      BRA    NEXT_LONGWORD_CHAR
+00000E52                          1078  NEXT_LONGWORD_CHAR
+00000E52  5300                    1079      SUBI.B #1,D0                Decrement counter
+00000E54  16C5                    1080      MOVE.B  D5,(A3)+            Move ascii into good buffer
+00000E56  18C5                    1081      MOVE.B  D5,(A4)+
+00000E58  0C00 0000               1082      CMPI.B #0,D0                Have we moved all characters?
+00000E5C  6ED2                    1083      BGT    LONGWORD_PREP        If not, repeat loop
+00000E5E  7602                    1084      MOVEQ  #2,D3
+00000E60  4E75                    1085      RTS                         If so, return
+00000E62                          1086  ********************************************************
+00000E62                          1087  * 010- (d16, PC)                                      *               
+00000E62                          1088  ********************************************************
+00000E62                          1089  ABSOLUTE010
+00000E62  1E38 0011               1090      MOVE.B  $11, D7             This is bad data
+00000E66  6000 009C               1091      BRA     GETWORDFORBADDATA   Branch to bad data with word
+00000E6A                          1092  ********************************************************
+00000E6A                          1093  * 011- (d8,PC,Xn)                                      *               
+00000E6A                          1094  ********************************************************
+00000E6A                          1095  ABSOLUTE011
+00000E6A  1E38 0011               1096      MOVE.B  $11, D7             This is bad data
+00000E6E  6000 0094               1097      BRA     GETWORDFORBADDATA   Branch to bad data with word
+00000E72                          1098  ********************************************************
+00000E72                          1099  * 100- #<data>                                         *               
+00000E72                          1100  ********************************************************
+00000E72                          1101  ABSOLUTE100
+00000E72  16FC 0023               1102      MOVE.B #'#',(A3)+           Move # into good buffer
+00000E76  16FC 0024               1103      MOVE.B #'$',(A3)+           Move # into good buffer
+00000E7A  18FC 0020               1104      MOVE.B #' ',(A4)+           Insert a space into bad buffer
+00000E7E  18FC 0023               1105      MOVE.B #'#',(A4)+           Insert a # into bad buffer
+00000E82  18FC 0024               1106      MOVE.B #'$',(A4)+           Insert a $ into bad buffer
+00000E86  0C01 0001               1107      CMPI.B #1,D1                Do we need to specifically pull a longword of data?
+00000E8A  6700 0036               1108      BEQ    LONGWORD_DATA        If yes, branch.
+00000E8E                          1109  WORD_DATA
+00000E8E  7004                    1110      MOVEQ  #4,D0                Move counter to D0
+00000E90  381D                    1111      MOVE.W (A5)+,D4             Move word address into D4
+00000E92                          1112  DATA_WORD_PREP                 
+00000E92  E95C                    1113      ROL.W  #4,D4                Move the MSB
+00000E94  3A04                    1114      MOVE.W D4,D5                Move word address to D5
+00000E96  0285 0000000F           1115      ANDI.L #$0000000F,D5        Clear everything except for MSB
+00000E9C                          1116  DATA_WORD_ASC
+00000E9C  0C05 0009               1117      CMPI.B #$09,D5              Is the character a number?
+00000EA0  6F00 000A               1118      BLE    DATA_WORD_NUM        Branch if yes.
+00000EA4                          1119  DATA_WORD_LET
+00000EA4  0605 0037               1120      ADDI.B #$37,D5              Convert into a prinatble ascii letter
+00000EA8  6000 000A               1121      BRA    DATA_WORD_CHAR
+00000EAC                          1122  DATA_WORD_NUM
+00000EAC  0605 0030               1123      ADDI.B #$30,D5              Convert into a prinatble ascii number
+00000EB0  6000 0002               1124      BRA    DATA_WORD_CHAR
+00000EB4                          1125  DATA_WORD_CHAR
+00000EB4  5300                    1126      SUBI.B #1,D0                Decrement counter
+00000EB6  16C5                    1127      MOVE.B D5,(A3)+             Move ascii into good buffer
+00000EB8  18C5                    1128      MOVE.B D5,(A4)+             Move ascii into bad buffer
+00000EBA  0C00 0000               1129      CMPI.B #0,D0                Have we moved all characters?
+00000EBE  6ED2                    1130      BGT    DATA_WORD_PREP       If not, repeat loop
+00000EC0  4E75                    1131      RTS                         If so, return
+00000EC2                          1132  LONGWORD_DATA
+00000EC2  7008                    1133      MOVEQ  #8,D0                Move counter to D0
+00000EC4  281D                    1134      MOVE.L (A5)+,D4             Move longword address into D4
+00000EC6                          1135  DATA_LONGWORD_PREP              
+00000EC6  E99C                    1136      ROL.L  #4,D4                Move the MSB
+00000EC8  3A04                    1137      MOVE.W D4,D5                Move longword address to D5
+00000ECA  0285 0000000F           1138      ANDI.L #$0000000F,D5        Clear everything except for MSB
+00000ED0                          1139  DATA_LONGWORD_ASC
+00000ED0  0C05 0009               1140      CMPI.B #$09,D5              Is the character a number?
+00000ED4  6F00 000A               1141      BLE    DATA_LONGWORD_NUM    Branch if yes.
+00000ED8                          1142  DATA_LONGWORD_LET
+00000ED8  0605 0037               1143      ADDI.B #$37,D5              Convert into a prinatble ascii letter
+00000EDC  6000 000A               1144      BRA    DATA_LONGWORD_CHAR
+00000EE0                          1145  DATA_LONGWORD_NUM
+00000EE0  0605 0030               1146      ADDI.B #$30,D5              Convert into a prinatble ascii number
+00000EE4  6000 0002               1147      BRA    DATA_LONGWORD_CHAR
+00000EE8                          1148  DATA_LONGWORD_CHAR
+00000EE8  5300                    1149      SUBI.B #1,D0                Decrement counter
+00000EEA  16C5                    1150      MOVE.B D5,(A3)+             Move ascii into good buffer
+00000EEC  18C5                    1151      MOVE.B D5,(A4)+             Move ascii into bad buffer
+00000EEE  0C00 0000               1152      CMPI.B #0,D0                Have we moved all characters?
+00000EF2  6ED2                    1153      BGT    DATA_LONGWORD_PREP   If not, repeat loop
+00000EF4  4E75                    1154      RTS                         If so, return
+00000EF6                          1155  
+00000EF6                          1156  
+00000EF6                          1157  
+00000EF6                          1158  
+00000EF6                          1159  
+00000EF6                          1160  
+00000EF6                          1161  
+00000EF6                          1162  
+00000EF6                          1163  
+00000EF6                          1164  
+00000EF6                          1165  
+00000EF6                          1166  ********************************GET BIT SIZE ************************
+00000EF6                          1167  * GETSIZE FUNCTION                                     *
+00000EF6                          1168  ********************************************************
+00000EF6                          1169  GETSIZE
+00000EF6  1606                    1170      MOVE.B  D6, D3                          Move instruction over for shifting
+00000EF8  EC0B                    1171      LSR.B   #6, D3                          Shift the bits 6 to the right to put the size in the LSB
+00000EFA  4E75                    1172      RTS                                     Retrun D3
+00000EFC                          1173  * GETSIZEONEBIT FUNCTION                               *
+00000EFC                          1174  GETSIZEONEBIT
+00000EFC  1606                    1175      MOVE.B  D6, D3                          Move instruction over for shifting
+00000EFE  E30B                    1176      LSL.B   #1, D3                          Shift 1 to the left so the MSB is the size
+00000F00  EE0B                    1177      LSR.B   #7, D3                          Shift 7 to the right so the MSB (which is the size) is in the LSB
+00000F02  4E75                    1178      RTS                                     Return D3
+00000F04                          1179  
+00000F04                          1180  
+00000F04                          1181  ********************************************************
+00000F04                          1182  * Get word of data from illegal instruction
+00000F04                          1183  ********************************************************
+00000F04                          1184  GETWORDFORBADDATA
+00000F04  18FC 0020               1185      MOVE.B   #' ',(A4)+                     Move a space into bad buffer
+00000F08  18FC 0024               1186      MOVE.B  #'$',(A4)+                      Move $ into bad buffer
+00000F0C  7004                    1187      MOVEQ  #4,D0                            Move counter to D0
+00000F0E  381D                    1188      MOVE.W (A5)+,D4                         Move longword address into D4
+00000F10                          1189  LONGWORD_PREP1                  
+00000F10  E95C                    1190      ROL.W  #4,D4                            Move the MSB
+00000F12  3A04                    1191      MOVE.W D4,D5                            Move longword address to D5
+00000F14  0285 0000000F           1192      ANDI.L #$0000000F,D5                    Clear everything except for MSB
+00000F1A                          1193  LONGWORD_ASC1
+00000F1A  0C05 0009               1194      CMPI.B #$09,D5                          Is the character a number?
+00000F1E  6F00 000A               1195      BLE    LONGWORD_NUM1                    Branch if yes.
+00000F22                          1196  LONGWORD_LET1
+00000F22  0605 0037               1197      ADDI.B #$37,D5                          Convert into a prinatble ascii letter
+00000F26  6000 000A               1198      BRA    NEXT_LONGWORD_CHAR1
+00000F2A                          1199  LONGWORD_NUM1 
+00000F2A  0605 0030               1200      ADDI.B #$30,D5                          Convert into a prinatble ascii number
+00000F2E  6000 0002               1201      BRA    NEXT_LONGWORD_CHAR1
+00000F32                          1202  NEXT_LONGWORD_CHAR1
+00000F32  5300                    1203      SUBI.B #1,D0                            Decrement counter
+00000F34  18C5                    1204      MOVE.B  D5,(A4)+                        Push ASCII into bad buffer
+00000F36  0C00 0000               1205      CMPI.B #0,D0                            Have we moved all characters?
+00000F3A  6ED4                    1206      BGT    LONGWORD_PREP1                   If not, repeat loop
+00000F3C  4E75                    1207      RTS                                     If so, return
+00000F3E                          1208  
+00000F3E                          1209  
+00000F3E                          1210  
+00000F3E                          1211  
+00000F3E                          1212  
+00000F3E                          1213  
+00000F3E                          1214         
+00000F3E                          1215  *------------------ NOP & RTS ADDRESS ------------------------------------------------------
+00000F3E                          1216  Decode_Constant                                 * Check for NOP & RTS
+00000F3E  4EB9 00001204           1217          JSR         CLEAR_REGISTERS
+00000F44  49F9 00001488           1218          LEA         OPCODE, A4                  * Load opcode to A4
+00000F4A  4EB9 00000FAA           1219          JSR         UNCHANGED_CONSTANT          * NOP & RTS
+00000F50  4E75                    1220          RTS
+00000F52                          1221  
+00000F52                          1222  
+00000F52                          1223  ********************************************************************************************
+00000F52                          1224  *------------------ PRINT CURRENT ADDRESS IN ASCII -----------------------------------------
+00000F52                          1225  PRINT_CURRENT_ADD
+00000F52  240E                    1226          MOVE.L      A6,D2                       * Move current address into D2
+00000F54  1A3C 0000               1227          MOVE.B      #0,D5                       * Set counter to read all hex
+00000F58  1C3C 0008               1228          MOVE.B      #8,D6                       
+00000F5C                          1229  CONVERT_HEX_ASCII
+00000F5C  BC05                    1230          CMP.B       D5,D6                       * Check if last hex character is read
+00000F5E  6600 0004               1231          BNE         SET_COUNTER_4               * Set counter to read 4 bits
+00000F62  4E75                    1232          RTS
+00000F64                          1233  SET_COUNTER_4
+00000F64  163C 0000               1234          MOVE.B      #0,D3                       
+00000F68  183C 0004               1235          MOVE.B      #4,D4    
+00000F6C                          1236  Loop
+00000F6C  B803                    1237          CMP.B       D3,D4                       * Read one character at a time
+00000F6E  6700 0018               1238          BEQ         STORE_ONE_CHAR
+00000F72  E38A                    1239          LSL.L       #1,D2
+00000F74  6400 0008               1240          BCC         ADDZERO
+00000F78  5201                    1241          ADDI.B      #1,D1
+00000F7A  6000 0006               1242          BRA         INCREMENT_BIT_LOOP
+00000F7E                          1243  ADDZERO
+00000F7E  0601 0000               1244          ADDI.B      #0,D1
+00000F82                          1245  INCREMENT_BIT_LOOP
+00000F82  5203                    1246          ADDI.B      #1,D3
+00000F84  E389                    1247          LSL.L       #1,D1
+00000F86  60E4                    1248          BRA         Loop
+00000F88                          1249  STORE_ONE_CHAR                                   * Store hex character
+00000F88  E289                    1250          LSR.L       #1,D1
+00000F8A  B23C 0009               1251          CMP.B       #$9,D1
+00000F8E  6D00 000A               1252          BLT         HEX_TO_ASCII_NUMBER
+00000F92  0601 0037               1253          ADDI.B      #$37,D1                     * HEX_TO_ASCII_LETTER
+00000F96  6000 0006               1254          BRA         INCREMENT_NEXT_HEX_LOOP
+00000F9A                          1255  HEX_TO_ASCII_NUMBER
+00000F9A  0601 0030               1256          ADDI.B      #$30,D1
+00000F9E                          1257  INCREMENT_NEXT_HEX_LOOP
+00000F9E  5205                    1258          ADDI.B      #1,D5
+00000FA0  103C 0006               1259          MOVE.B      #6,D0
+00000FA4  4E4F                    1260          TRAP        #15
+00000FA6  4281                    1261          CLR.L       D1
+00000FA8  60B2                    1262          BRA         CONVERT_HEX_ASCII
+00000FAA                          1263  ***********************END OF PRINTING HEX ADDRESS TO ASCII *******************
+00000FAA                          1264  
+00000FAA                          1265  
+00000FAA                          1266  ********************************************************************************************
+00000FAA                          1267  * PRINT NOP OR RTS -------------------------------------------------------------------------
+00000FAA                          1268  UNCHANGED_CONSTANT
+00000FAA  18FC 0020               1269          MOVE.B      #' ',(A4)+
+00000FAE  18FC 0020               1270          MOVE.B      #' ',(A4)+
+00000FB2  18FC 0020               1271          MOVE.B      #' ',(A4)+
+00000FB6  18FC 0020               1272          MOVE.B      #' ',(A4)+
+00000FBA  0C56 4E71               1273          CMP.W       #$4E71,(A6)
+00000FBE  6700 0014               1274          BEQ         PRINT_NOP
+00000FC2  0C56 4E75               1275          CMP.W       #$4E75,(A6)
+00000FC6  6700 002E               1276          BEQ         PRINT_RTS
+00000FCA  0C56 FFFF               1277          CMP.W       #$FFFF,(A6)
+00000FCE  6700 0048               1278          BEQ         PRINT_NO_CODE    
+00000FD2  4E75                    1279          RTS  
+00000FD4                          1280  PRINT_NOP
+00000FD4  18FC 004E               1281          MOVE.B  #'N',(A4)+
+00000FD8  18FC 004F               1282          MOVE.B  #'O',(A4)+
+00000FDC  18FC 0050               1283          MOVE.B  #'P',(A4)+
+00000FE0  18FC 0000               1284          MOVE.B  #$00,(A4)+
+00000FE4  43F9 00001488           1285          LEA     OPCODE,A1
+00000FEA  103C 000D               1286          MOVE.B  #13,D0
+00000FEE  4E4F                    1287          TRAP    #15
+00000FF0  548E                    1288          ADD.L   #$2,A6          ;increase by 2 bytes if it prints NOP
+00000FF2  6000 F56E               1289          BRA     ADDR_LOOP
+00000FF6                          1290  PRINT_RTS
+00000FF6  18FC 0052               1291          MOVE.B  #'R',(A4)+
+00000FFA  18FC 0054               1292          MOVE.B  #'T',(A4)+
+00000FFE  18FC 0053               1293          MOVE.B  #'S',(A4)+
+00001002  18FC 0000               1294          MOVE.B  #$00,(A4)+
+00001006  43F9 00001488           1295          LEA     OPCODE,A1
+0000100C  103C 000D               1296          MOVE.B  #13,D0
+00001010  4E4F                    1297          TRAP    #15
+00001012  548E                    1298          ADD.L   #$2,A6
+00001014  6000 F54C               1299          BRA     ADDR_LOOP
+00001018                          1300  PRINT_NO_CODE
+00001018  18FC 004E               1301          MOVE.B  #'N',(A4)+
+0000101C  18FC 004F               1302          MOVE.B  #'O',(A4)+
+00001020  18FC 0020               1303          MOVE.B  #' ',(A4)+
+00001024  18FC 0044               1304          MOVE.B  #'D',(A4)+
+00001028  18FC 0041               1305          MOVE.B  #'A',(A4)+
+0000102C  18FC 0054               1306          MOVE.B  #'T',(A4)+
+00001030  18FC 0041               1307          MOVE.B  #'A',(A4)+
+00001034  18FC 0020               1308          MOVE.B  #' ',(A4)+
+00001038  18FC 0024               1309          MOVE.B  #'$',(A4)+
+0000103C  143C 0000               1310          MOVE.B  #0,D2                   ;Setting counter for print Must be word size
+00001040  163C 0004               1311          MOVE.B  #4,D3
+00001044  4EB9 00001060           1312          JSR     PRINT_IMMIDIATE_DATA
+0000104A  18FC 0000               1313          MOVE.B  #$00,(A4)+
+0000104E  43F9 00001488           1314          LEA     OPCODE,A1
+00001054  103C 000D               1315          MOVE.B  #13,D0
+00001058  4E4F                    1316          TRAP    #15
+0000105A  548E                    1317          ADD.L   #$2,A6
+0000105C  6000 F504               1318          BRA     ADDR_LOOP   
+00001060                          1319  
+00001060                          1320  
+00001060                          1321  ********************************************************************************************
+00001060                          1322  * PRINT_IMMIDIATE_DATA---------------------------------------------------------------------
+00001060                          1323  PRINT_IMMIDIATE_DATA
+00001060  B63C 0002               1324          CMP.B   #2,D3
+00001064  6700 0012               1325          BEQ     BYTE_SIZE
+00001068  B63C 0004               1326          CMP.B   #4,D3
+0000106C  6700 0018               1327          BEQ     WORD_SIZE
+00001070  B63C 0008               1328          CMP.B   #8,D3
+00001074  6700 001E               1329          BEQ     LONG_SIZE
+00001078                          1330  BYTE_SIZE
+00001078  1016                    1331          MOVE.B  (A6),D0
+0000107A  13FC 0001 00001476      1332          MOVE.B  #1,SIZE
+00001082  6000 001E               1333          BRA     LOOP_IMMIDIATE_DATA
+00001086                          1334  WORD_SIZE
+00001086  3016                    1335          MOVE.W  (A6),D0
+00001088  13FC 0003 00001476      1336          MOVE.B  #3,SIZE
+00001090  6000 0010               1337          BRA     LOOP_IMMIDIATE_DATA
+00001094                          1338  LONG_SIZE
+00001094  2016                    1339          MOVE.L  (A6),D0
+00001096  13FC 0003 00001476      1340          MOVE.B  #3,SIZE
+0000109E  6000 0002               1341          BRA     LOOP_IMMIDIATE_DATA  
+000010A2                          1342  LOOP_IMMIDIATE_DATA    
+000010A2  B602                    1343          CMP.B   D2,D3               ;D3 WIIL BE 8 FOR BYTE, 16 FOR WORD, 32 FOR LONG
+000010A4  6600 0008               1344          BNE     CONTINUE_SHIFT
+000010A8  4282                    1345          CLR.L   D2
+000010AA  4283                    1346          CLR.L   D3       
+000010AC  4E75                    1347          RTS  
+000010AE                          1348  CONTINUE_SHIFT
+000010AE  4EB9 000010C2           1349          JSR     SHIFT_4_BIT         ;SHIFT 4 BIT TO SEE WHAT TYPE OF 
+000010B4                          1350  HEX_F    
+000010B4  B23C 000F               1351          CMP.B   #hexF,D1
+000010B8  6700 00D0               1352          BEQ     PRINT_F  
+000010BC                          1353  ADD_COUNTER
+000010BC  5202                    1354          ADDI.B  #1,D2
+000010BE  4281                    1355          CLR.L   D1
+000010C0  60E0                    1356          BRA     LOOP_IMMIDIATE_DATA
+000010C2                          1357  
+000010C2                          1358  * SHIFT_4_BIT--------------------------------------------------------------------
+000010C2                          1359  SHIFT_4_BIT
+000010C2  183C 0000               1360          MOVE.B   #0,D4
+000010C6  1A3C 0004               1361          MOVE.B   #4,D5              ;SHIFTS FROM 
+000010CA                          1362  START_SHIFT_4_BIT   
+000010CA  BA04                    1363          CMP.B    D4,D5
+000010CC  6600 0006               1364          BNE      SHIFT_SIZE 
+000010D0  E289                    1365          LSR.L    #1,D1
+000010D2  4E75                    1366          RTS
+000010D4                          1367  SHIFT_SIZE 
+000010D4  B63C 0002               1368          CMP.B   #2,D3
+000010D8  6700 0012               1369          BEQ     SHIFT_SIZE_BYTE
+000010DC  B63C 0004               1370          CMP.B   #4,D3
+000010E0  6700 0014               1371          BEQ     SHIFT_SIZE_WORD
+000010E4  B63C 0008               1372          CMP.B   #8,D3
+000010E8  6700 0016               1373          BEQ     SHIFT_SIZE_LONG
+000010EC                          1374  SHIFT_SIZE_BYTE
+000010EC  E308                    1375          LSL.B   #1, D0              ;COPY OF THE DATA WE NEED TO SHIFT
+000010EE  6500 0020               1376          BCS     ADDONE
+000010F2  6000 0012               1377          BRA     ADD_ZERO
+000010F6                          1378  SHIFT_SIZE_WORD
+000010F6  E348                    1379          LSL.W   #1, D0              ;COPY OF THE DATA WE NEED TO SHIFT
+000010F8  6500 0016               1380          BCS     ADDONE
+000010FC  6000 0008               1381          BRA     ADD_ZERO
+00001100                          1382  SHIFT_SIZE_LONG
+00001100  E388                    1383          LSL.L   #1, D0              ;COPY OF THE DATA WE NEED TO SHIFT
+00001102  6500 000C               1384          BCS     ADDONE
+00001106                          1385  ADD_ZERO        
+00001106  0601 0000               1386          ADDI.B  #%0, D1                    * add 0 bit to d2
+0000110A  E381                    1387          ASL.L   #1, D1     
+0000110C  6000 000A               1388          BRA     COUNTER_SHIFT_4_BIT 
+00001110                          1389  ADDONE        
+00001110  5201                    1390          ADDI.B  #%1, D1                    * add 1 bit to d2
+00001112  E381                    1391          ASL.L   #1, D1
+00001114  6000 0002               1392          BRA     COUNTER_SHIFT_4_BIT 
+00001118                          1393  COUNTER_SHIFT_4_BIT
+00001118  5284                    1394          ADDI.L  #1,D4
+0000111A  60AE                    1395          BRA     START_SHIFT_4_BIT
+0000111C                          1396  
+0000111C                          1397  ********************************************************************************************
+0000111C                          1398  * PRINT_ASCCI_HEX---------------------------------------------------------------------
+0000111C                          1399  PRINT_0
+0000111C  18FC 0030               1400      MOVE.B  #'0',(A4)+
+00001120  609A                    1401      BRA     ADD_COUNTER
+00001122                          1402  PRINT_1
+00001122  18FC 0031               1403      MOVE.B  #'1',(A4)+
+00001126  6094                    1404      BRA     ADD_COUNTER
+00001128                          1405  PRINT_2
+00001128  18FC 0032               1406      MOVE.B  #'2',(A4)+
+0000112C  608E                    1407      BRA     ADD_COUNTER
+0000112E                          1408  PRINT_3
+0000112E  18FC 0033               1409      MOVE.B  #'3',(A4)+
+00001132  6088                    1410      BRA     ADD_COUNTER
+00001134                          1411  PRINT_4
+00001134  18FC 0034               1412      MOVE.B  #'4',(A4)+
+00001138  6082                    1413      BRA     ADD_COUNTER
+0000113A                          1414  PRINT_5
+0000113A  18FC 0035               1415      MOVE.B  #'5',(A4)+
+0000113E  6000 FF7C               1416      BRA     ADD_COUNTER
+00001142                          1417  PRINT_6
+00001142  18FC 0036               1418      MOVE.B  #'6',(A4)+
+00001146  6000 FF74               1419      BRA     ADD_COUNTER
+0000114A                          1420  PRINT_7
+0000114A  18FC 0037               1421      MOVE.B  #'7',(A4)+
+0000114E  6000 FF6C               1422      BRA     ADD_COUNTER
+00001152                          1423  PRINT_8
+00001152  18FC 0038               1424      MOVE.B  #'8',(A4)+
+00001156  6000 FF64               1425      BRA     ADD_COUNTER
+0000115A                          1426  PRINT_9
+0000115A  18FC 0039               1427      MOVE.B  #'9',(A4)+
+0000115E  6000 FF5C               1428      BRA     ADD_COUNTER
+00001162                          1429  PRINT_A
+00001162  18FC 0041               1430      MOVE.B  #'A',(A4)+
+00001166  6000 FF54               1431      BRA     ADD_COUNTER
+0000116A                          1432  PRINT_B
+0000116A  18FC 0042               1433      MOVE.B  #'B',(A4)+
+0000116E  6000 FF4C               1434      BRA     ADD_COUNTER
+00001172                          1435  PRINT_C
+00001172  18FC 0043               1436      MOVE.B  #'C',(A4)+
+00001176  6000 FF44               1437      BRA     ADD_COUNTER
+0000117A                          1438  PRINT_D
+0000117A  18FC 0044               1439      MOVE.B  #'D',(A4)+
+0000117E  6000 FF3C               1440      BRA     ADD_COUNTER
+00001182                          1441  PRINT_E
+00001182  18FC 0045               1442      MOVE.B  #'E',(A4)+
+00001186  6000 FF34               1443      BRA     ADD_COUNTER
+0000118A                          1444  PRINT_F
+0000118A  18FC 0046               1445      MOVE.B  #'F',(A4)+
+0000118E  6000 FF2C               1446      BRA     ADD_COUNTER
+00001192                          1447  
+00001192                          1448      
+00001192                          1449  ********************************************************************************************
+00001192                          1450  *------------------ KEY -  -----------------------------------------------------------------
+00001192                          1451  * Desctiption:
+00001192                          1452  * Expect:       DO, D1, A1 to be empty
+00001192                          1453  * 
+00001192                          1454  *------------------ Prompt User for Enter, R, or Q -----------------------------------------
+00001192                          1455  GETKEY
+00001192  43F9 00001332           1456          LEA         PROMPTOPTIONS, A1            * Load the prompt message
+00001198  103C 000E               1457          MOVE.B      #14,D0
+0000119C  4E4F                    1458          TRAP        #15 
+0000119E  13FC 0000 00001472      1459          MOVE.B      #$00, LINE_COUNT            * Reset Line Count 
+000011A6  103C 0005               1460          MOVE.B      #5, D0                      * Log keyboard input
+000011AA  4E4F                    1461          TRAP        #15                 
+000011AC  B23C 000D               1462          CMP.B       #$D, D1                     * Compare the key press with ENTER
+000011B0  6700 0028               1463          BEQ         OPCODESETUP         
+000011B4  B23C 0072               1464          CMP.B       #$72, D1                    * Compare the key press with R
+000011B8  6700 0030               1465          BEQ         RESTART             
+000011BC  B23C 0052               1466          CMP.B       #$52, D1                    * Compare the key press with r
+000011C0  6700 0028               1467          BEQ         RESTART             
+000011C4  B23C 0071               1468          CMP.B       #$71, D1                    * Compare the key press with q
+000011C8  6700 0068               1469          BEQ         END_PROGRAM             
+000011CC  B23C 0051               1470          CMP.B       #$51, D1                    * Compare the key press with Q
+000011D0  6700 0060               1471          BEQ         END_PROGRAM            
+000011D4  B23C 005D               1472          CMP.B       #$5D, D1                    * Check the key press with ENTER
+000011D8  66B8                    1473          BNE         GETKEY              
+000011DA                          1474  OPCODESETUP
+000011DA  103C 000B               1475          MOVE.B  #11, D0                         * Task 11 - Clear screen
+000011DE  323C FF00               1476          MOVE.W  #$FF00, D1          
+000011E2  4E4F                    1477          TRAP    #15                 
+000011E4  4281                    1478          CLR.L   D1
+000011E6  4280                    1479          CLR.L   D0
+000011E8  4E75                    1480          RTS                 
+000011EA                          1481  *------------------ RESTART ----------------------------------------------------------------
+000011EA                          1482  RESTART
+000011EA  4EB8 11DA               1483          JSR         OPCODESETUP
+000011EE  4EB9 00001204           1484          JSR         CLEAR_REGISTERS
+000011F4  2E7C 01000000           1485          MOVEA.L     #$01000000,A7       Reset stack pointer
+000011FA  2C7C 01000000           1486          MOVEA.L     #$01000000,A6       Reset stack pointer
+00001200  6000 F1FE               1487          BRA         START
+00001204                          1488          
+00001204                          1489  ********************************************************************************************
+00001204                          1490  *------------------ CLEAR REGISTERS --------------------------------------------------------
+00001204                          1491  * Desctiption:
+00001204                          1492  * 
+00001204                          1493  CLEAR_REGISTERS
+00001204  4280                    1494          CLR.L   D0
+00001206  4285                    1495          CLR.L   D5
+00001208  4282                    1496          CLR.L   D2
+0000120A  4281                    1497          CLR.L   D1
+0000120C  4283                    1498          CLR.L   D3
+0000120E  4284                    1499          CLR.L   D4
+00001210  4286                    1500          CLR.L   D6
+00001212  227C 00000000           1501          MOVE.L  #$00000000,A1
+00001218  247C 00000000           1502          MOVE.L  #$00000000,A2
+0000121E  267C 00000000           1503          MOVE.L  #$00000000,A3
+00001224  287C 00000000           1504          MOVE.L  #$00000000,A4
+0000122A  2A7C 00000000           1505          MOVE.L  #$00000000,A5
+00001230  4E75                    1506          RTS
+00001232                          1507  
+00001232                          1508  ********************************************************************************************
+00001232                          1509  ********************************************************************************************
+00001232                          1510  ********************************************************************************************
+00001232                          1511  END_PROGRAM
+00001232  FFFF FFFF               1512          SIMHALT             ; halt simulator
+00001236                          1513  ********************************************************************************************
+00001236                          1514  ********************************************************************************************
+00001236                          1515  ********************************************************************************************
+00001236                          1516  
+00001236                          1517  
+00001236                          1518  ********************************************************************************************
+00001236                          1519  * VARIABLES & MESSAGES ---------------------------------------------------------------------
+00001236  =0000000D               1520  CR        EQU       $0D
+00001236  =0000000A               1521  LF        EQU       $0A
+00001236                          1522  * Hex values -------------------------------------------------------------------------------  
+00001236  =00000000               1523  numzero     EQU     0  
+00001236  =00000001               1524  numone      EQU     1
+00001236  =00000002               1525  numtwo      EQU     2
+00001236  =00000003               1526  numthree    EQU     3
+00001236  =00000004               1527  numfour     EQU     4
+00001236  =00000005               1528  numfive     EQU     5
+00001236  =00000006               1529  numsix      EQU     6
+00001236  =00000007               1530  numseven    EQU     7
+00001236  =00000008               1531  numeight    EQU     8
+00001236  =00000009               1532  numnine     EQU     9
+00001236  =0000000A               1533  numA        EQU     10
+00001236  =0000000B               1534  numB        EQU     11
+00001236  =0000000C               1535  numC        EQU     12
+00001236  =0000000D               1536  numD        EQU     13
+00001236  =0000000E               1537  numE        EQU     $E
+00001236  =0000000F               1538  numF        EQU     15
+00001236                          1539  * Binary Hex Values ------------------------------------------------------------------------
+00001236  =00000000               1540  hex0        EQU     %0000   
+00001236  =00000001               1541  hex1        EQU     %0001   
+00001236  =00000002               1542  hex2        EQU     %0010   
+00001236  =00000003               1543  hex3        EQU     %0011   
+00001236  =00000004               1544  hex4        EQU     %0100   
+00001236  =00000005               1545  hex5        EQU     %0101   
+00001236  =00000006               1546  hex6        EQU     %0110   
+00001236  =00000007               1547  hex7        EQU     %0111   
+00001236  =00000008               1548  hex8        EQU     %1000   
+00001236  =00000009               1549  hex9        EQU     %1001   
+00001236  =0000000A               1550  hexA        EQU     %1010   
+00001236  =0000000B               1551  hexB        EQU     %1011   
+00001236  =0000000C               1552  hexC        EQU     %1100   
+00001236  =0000000D               1553  hexD        EQU     %1101   
+00001236  =0000000E               1554  hexE        EQU     %1110   
+00001236  =0000000F               1555  hexF        EQU     %1111   
+00001236                          1556  * OP Codes ---------------------------------------------------------------------------------
+00001236  =00000000               1557  bin0000     EQU     %0000   ;ADDI, ANDI, EORI, BCHG, CMPI
+00001236  =00000001               1558  bin0001     EQU     %0001   ;MOVE.B
+00001236  =00000002               1559  bin0010     EQU     %0010   ;MOVE.L
+00001236  =00000003               1560  bin0011     EQU     %0011   ;MOVE.W
+00001236  =00000004               1561  bin0100     EQU     %0100   ;MOVEM, MULS.L, DIVU.L, LEA, CLR, JSR, RTS
+00001236  =00000005               1562  bin0101     EQU     %0101   ;SUBQ
+00001236  =00000006               1563  bin0110     EQU     %0110   ;Bcc
+00001236  =00000007               1564  bin0111     EQU     %0111   ;MOVEQ
+00001236  =00000008               1565  bin1000     EQU     %1000   ;DIVU.W
+00001236  =00000009               1566  bin1001     EQU     %1001   ;SUB, SUBA
+00001236  =0000000B               1567  bin1011     EQU     %1011   ;CMP, CMPA, EOR
+00001236  =0000000C               1568  bin1100     EQU     %1100   ;AND, MULS.W
+00001236  =0000000D               1569  bin1101     EQU     %1101   ;ADD, ADDA
+00001236  =0000000E               1570  bin1110     EQU     %1110   ;ASR, ASL, ROL, ROR
+00001236                          1571  * MESSAGES ---------------------------------------------------------------------------------------------
+00001236= 20 20 20 20 20 20 ...   1572  GREETING        DC.B    '       HELLO THERE, WELCOME TO AWESOME DISASSEMBLER'
+00001269= 0D 0A 4E 6F 74 65 ...   1573                  DC.B    CR,LF,'Note: Addressess must be in HEX'
+0000128A= 0D 0A 4E 6F 74 65 ...   1574                  DC.B    CR,LF,'Note: Addressess must be in caps'
+000012AC= 0D 0A 20 20 20 20 ...   1575                  DC.B    CR,LF,'    : Starting Address must be greater than 70000',CR,LF,CR,LF,CR,LF,0 
+000012E6= 454E 5445 5220 4...     1576  PROMPTSADDR     DC.W    'ENTER A STARTING ADDRESS (ON CAPS): ',0
+0000130C= 454E 5445 5220 4...     1577  PROMPTEADDR     DC.W    'ENTER A ENDING ADDRESS   (ON CAPS): ',0
+00001332= 50 72 65 73 73 3A ...   1578  PROMPTOPTIONS    DC.B    'Press: ENTER to Continue || Q or q to Quit || R OR r to Restart',CR,LF,CR,LF,0
+00001376                          1579  * ERROR MSG --------------------------------------------------------------------------------------------
+00001376= 45 52 52 4F 52 3A ...   1580  INVALIDSADDR        DC.B    'ERROR: INVALID STARTING ADDRESS VERSUS ENDING.',CR,LF,CR,LF,0
+000013A9= 45 52 52 4F 52 3A ...   1581  ERRORINPUTSIZE      DC.B    'ERROR: INVALID ADDRESS SIZE',CR,LF,CR,LF,0
+000013C9= 45 52 52 4F 52 3A ...   1582  INVALIDCHAR         DC.B    'ERROR: INVALID ADDRESS CHARACTER',CR,LF,CR,LF,0
+000013EE= 45 52 52 4F 52 3A ...   1583  SGTEM               DC.B    'ERROR: STARTING ADDRESS > ENDING ADDRESS',CR,LF,CR,LF,0
+0000141B= 45 52 52 4F 52 3A ...   1584  ODD_ADD_MSG         DC.B    'ERROR: ODD ADDRESS',CR,LF,CR,LF,0
+00001432= 45 52 52 4F 52 3A ...   1585  STARTING_ADDR_7     DC.B    'ERROR: Invalid starting adress - must be greater than 7000',CR,LF,CR,LF,0
+00001471                          1586  * VARIABLES --------------------------------------------------------------------------------------------
+00001472                          1587  LINE_COUNT      DS.L    1
+00001476                          1588  SIZE            DS.B    1
+00001478                          1589  INPUT_HEX       DS.L    1   * Use to temp hold starting and ending address
+0000147C                          1590  STARTING_ADD    DS.L    1   ;1 is the size, if I change to 4 then array size changes
+00001480                          1591  ENDING_ADD      DS.L    1
+00001484                          1592  BADCODE         DS.L    1  
+00001488= 00000001                1593  OPCODE          DC.L    1
+0000148C                          1594          
+0000148C                          1595          END    START        ; last line of source
 
 No errors detected
 No warnings generated
@@ -607,11 +1605,25 @@ No warnings generated
 SYMBOL TABLE INFORMATION
 Symbol-name         Value
 -------------------------
-ADDONE              762
+ABSOLUTE            7E6
+ABSOLUTE000         DB4
+ABSOLUTE001         E0A
+ABSOLUTE010         E62
+ABSOLUTE011         E6A
+ABSOLUTE100         E72
+ADDADDRESSLONGWORD  C42
+ADDADDRESSWORD      C3C
+ADDLONGWORD         E24
+ADDONE              1110
+ADDRESSLOOP1        99A
+ADDRESSLOOP1_       BD6
+ADDRESSLOOP1_PREDEC  A6E
 ADDR_LOOP           562
-ADDZERO             5D0
-ADD_COUNTER         70E
-ADD_ZERO            758
+ADDWORD             DCE
+ADDZERO             F7E
+ADD_COUNTER         10BC
+ADD_ZERO            1106
+BADCODE             1484
 BADSIZES            462
 BIN0000             0
 BIN0001             1
@@ -627,20 +1639,92 @@ BIN1011             B
 BIN1100             C
 BIN1101             D
 BIN1110             E
-BYTE_SIZE           6CA
-CLEAR_REGISTERS     860
-CONTINUE_ADDR_LOOP  580
-CONTINUE_SHIFT      700
+BYTEDATA            852
+BYTE_SIZE           1078
+CLEAR_REGISTERS     1204
+CONTINUE_ADDR_LOOP  586
+CONTINUE_SHIFT      10AE
 CONTINUE_STORE      520
-CONVERT_HEX_ASCII   5AE
-COUNTER_SHIFT_4_BIT  76A
+CONVERT_HEX_ASCII   F5C
+COUNTER_SHIFT_4_BIT  1118
 CR                  D
-DECODE_CONSTANT     592
-ENDING_ADD          ADC
-END_PROGRAM         88E
-ERRORINPUTSIZE      A05
-GETKEY              7E4
-GREETING            892
+DATA_ASC9           632
+DATA_CHAR9          64A
+DATA_LET9           63A
+DATA_LONGWORD_ASC   ED0
+DATA_LONGWORD_CHAR  EE8
+DATA_LONGWORD_LET   ED8
+DATA_LONGWORD_NUM   EE0
+DATA_LONGWORD_PREP  EC6
+DATA_NUM9           642
+DATA_PREP9          628
+DATA_WORD_ASC       E9C
+DATA_WORD_CHAR      EB4
+DATA_WORD_LET       EA4
+DATA_WORD_NUM       EAC
+DATA_WORD_PREP      E92
+DECODE_CONSTANT     F3E
+EACODE              CCE
+ENDING_ADD          1480
+END_PROGRAM         1232
+ERRORINPUTSIZE      13A9
+FINDADDRESSREG      97A
+FINDADDRESSREG_     BB6
+FINDADDRESSREG_LOOP  A4E
+FINDADDRESSREG_PREDEC  A4C
+FINDDATAREG         90C
+FINDDATAREG_        B48
+FINDDATAREG_PREDEC  9DE
+FINDLIST2M          8F2
+FINDLIST2R          B32
+FINISHCLR           86A
+FINISHMOVEM2R       C28
+FINISHMOVEMR2M      AB2
+FORMAT              786
+FORMAT000           CEE
+FORMAT001           D00
+FORMAT010           D12
+FORMAT011           D2C
+FORMAT100           D4A
+FORMAT101           D68
+FORMAT110           D70
+FORMAT111           D76
+FOUNDFIRSTADDRESS   98C
+FOUNDFIRSTADDRESS_  BC8
+FOUNDFIRSTADDRESS_PREDEC  A60
+FOUNDFIRSTDATA      91E
+FOUNDFIRSTDATA_     B5A
+FOUNDFIRSTDATA_PREDEC  9F0
+FOUNDSECONDADDRESS  9B6
+FOUNDSECONDADDRESS_  BF2
+FOUNDSECONDADDRESS_PREDEC  A8A
+FOUNDSECONDDATA     94E
+FOUNDSECONDDATA_    B8A
+FOUNDSECONDDATA_PREDEC  A20
+FOUR0000            804
+FOUR0001            80A
+FOUR0010            81E
+FOUR0011            876
+FOUR0100            88A
+FOUR0101            890
+FOUR0110            8A4
+FOUR0111            8AA
+FOUR1000            8BE
+FOUR1001            AD0
+FOUR1010            AE4
+FOUR1011            AEA
+FOUR1100            AFE
+FOUR1101            C4A
+FOUR1110            C5E
+FOUR1111            CA2
+FOURTABLE           706
+GETBADDATA          624
+GETKEY              1192
+GETSIZE             EF6
+GETSIZEONEBIT       EFC
+GETWORDFORBADDATA   F04
+GET_INSTRUCTION     656
+GREETING            1236
 HEX0                0
 HEX1                1
 HEX2                2
@@ -657,20 +1741,63 @@ HEXC                C
 HEXD                D
 HEXE                E
 HEXF                F
-HEX_F               706
-HEX_TO_ASCII_NUMBER  5EC
-INCREMENT_BIT_LOOP  5D4
-INCREMENT_NEXT_HEX_LOOP  5F0
-INPUT_HEX           AD4
-INVALIDCHAR         A25
-INVALIDSADDR        9D2
+HEX_F               10B4
+HEX_TO_ASCII_NUMBER  F9A
+INCREMENT_BIT_LOOP  F82
+INCREMENT_NEXT_HEX_LOOP  F9E
+INPUT_HEX           1478
+INSTR0000           6D6
+INSTR0001           6D8
+INSTR0010           6DA
+INSTR0011           6DC
+INSTR0100           6DE
+INSTR0110           6F6
+INSTR0111           6F8
+INSTR1000           704
+INSTR1001           6FA
+INSTR1011           6FC
+INSTR1100           6FE
+INSTR1101           700
+INSTR1110           702
+INVALIDCHAR         13C9
+INVALIDSADDR        1376
 INVALID_CHARACTER   476
+ITSARTS             C94
+ITSNOP              C86
+LEAMAIN             CB6
 LETTERS             4AA
 LF                  A
-LINE_COUNT          ACE
-LONG_SIZE           6E6
-LOOP                5BE
-LOOP_IMMIDIATE_DATA  6F4
+LINE_COUNT          1472
+LISTADDRESSLOOP2    9BA
+LISTADDRESSLOOP2_   BF6
+LISTADDRESSLOOP2_PREDEC  A8E
+LISTDATALOOP1       92A
+LISTDATALOOP1_      B66
+LISTDATALOOP1_PREDEC  9FC
+LISTDATALOOP2       952
+LISTDATALOOP2_      B8E
+LISTDATALOOP2_PREDEC  A24
+LONGDATA            862
+LONGDATAR2M         AC8
+LONGWORD_ASC        E3A
+LONGWORD_ASC1       F1A
+LONGWORD_DATA       EC2
+LONGWORD_LET        E42
+LONGWORD_LET1       F22
+LONGWORD_NUM        E4A
+LONGWORD_NUM1       F2A
+LONGWORD_PREP       E30
+LONGWORD_PREP1      F10
+LONG_SIZE           1094
+LOOP                F6C
+LOOP_IMMIDIATE_DATA  10A2
+MLONGDATAM2R        C20
+MOVELONGWORD        E2E
+MOVEWORD            DD8
+MWORDDATAM2R        C18
+NEXT_LONGWORD_CHAR  E52
+NEXT_LONGWORD_CHAR1  F32
+NEXT_WORD_CHAR      DFA
 NUMA                A
 NUMB                B
 NUMBER              4A2
@@ -688,57 +1815,87 @@ NUMSIX              6
 NUMTHREE            3
 NUMTWO              2
 NUMZERO             0
-ODD_ADD_MSG         A77
+ODD_ADD_MSG         141B
 ODD_TEST            4C0
 ODD_TEST_FAIL       4D8
-OPCODE              AE0
-OPCODESETUP         836
-PRINT_0             76E
-PRINT_1             774
-PRINT_2             77A
-PRINT_3             780
-PRINT_4             786
-PRINT_5             78C
-PRINT_6             794
-PRINT_7             79C
-PRINT_8             7A4
-PRINT_9             7AC
-PRINT_A             7B4
-PRINT_B             7BC
-PRINT_C             7C4
-PRINT_CURRENT_ADD   5A4
-PRINT_D             7CC
-PRINT_E             7D4
-PRINT_F             7DC
-PRINT_IMMIDIATE_DATA  6B2
-PRINT_NOP           626
-PRINT_NO_CODE       66A
-PRINT_RTS           648
-PROMPTEADDR         968
-PROMPTOPTIONS       98E
-PROMPTSADDR         942
+OPCODE              1488
+OPCODESETUP         11DA
+OPCODE_JMP_TABLE    66E
+PRINTBADDATA        5D2
+PRINTLISTADDRESS2   9CC
+PRINTLISTADDRESS2_  C06
+PRINTLISTADDRESS2_PREDEC  AA0
+PRINTLISTDATA1      946
+PRINTLISTDATA1_     B82
+PRINTLISTDATA1_PREDEC  A18
+PRINTLISTDATA2      964
+PRINTLISTDATA2_     BA0
+PRINTLISTDATA2_PREDEC  A36
+PRINT_0             111C
+PRINT_1             1122
+PRINT_2             1128
+PRINT_3             112E
+PRINT_4             1134
+PRINT_5             113A
+PRINT_6             1142
+PRINT_7             114A
+PRINT_8             1152
+PRINT_9             115A
+PRINT_A             1162
+PRINT_B             116A
+PRINT_C             1172
+PRINT_CURRENT_ADD   F52
+PRINT_D             117A
+PRINT_E             1182
+PRINT_F             118A
+PRINT_IMMIDIATE_DATA  1060
+PRINT_NOP           FD4
+PRINT_NO_CODE       1018
+PRINT_RTS           FF6
+PROMPTEADDR         130C
+PROMPTOPTIONS       1332
+PROMPTSADDR         12E6
 READHEX             48A
 READ_EADDR          432
 READ_SADDR          414
-RESTART             846
-SET_COUNTER_4       5B6
+REGISTER            7B6
+REGISTER000         D84
+REGISTER001         D8A
+REGISTER010         D90
+REGISTER011         D96
+REGISTER100         D9C
+REGISTER101         DA2
+REGISTER110         DA8
+REGISTER111         DAE
+RESTART             11EA
+RTN                 C48
+SETUPBADDATA        5FC
+SETUPOPCODE         5E6
+SET_COUNTER_4       F64
 SGTE                54E
-SGTEM               A4A
-SHIFT_4_BIT         714
-SHIFT_SIZE          726
-SHIFT_SIZE_BYTE     73E
-SHIFT_SIZE_LONG     752
-SHIFT_SIZE_WORD     748
-SIZE                AD2
+SGTEM               13EE
+SHIFT_4_BIT         10C2
+SHIFT_SIZE          10D4
+SHIFT_SIZE_BYTE     10EC
+SHIFT_SIZE_LONG     1100
+SHIFT_SIZE_WORD     10F6
+SIZE                1476
 START               400
-STARTING_ADD        AD8
-STARTING_ADDR_7     A8E
-START_SHIFT_4_BIT   71C
+STARTING_ADD        147C
+STARTING_ADDR_7     1432
+START_SHIFT_4_BIT   10CA
 STORE               4B2
 STORE_ADDRESS       4F4
 STORE_E             53C
 STORE_ENDING        532
-STORE_ONE_CHAR      5DA
-UNCHANGED_CONSTANT  5FC
+STORE_ONE_CHAR      F88
+UNCHANGED_CONSTANT  FAA
 VALIDATE_STORE      44E
-WORD_SIZE           6D8
+WORDDATA            85A
+WORDDATAR2M         AC0
+WORD_ASC            DE2
+WORD_DATA           E8E
+WORD_LET            DEA
+WORD_NUM            DF2
+WORD_PREP           DDA
+WORD_SIZE           1086
