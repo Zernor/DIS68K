@@ -244,7 +244,7 @@ GET_INSTRUCTION
         RTS        
 
 ********************************************************************************************
-* OP CODE                                              
+* OP CODE FOR 4 BIT                                           
 OPCODE_JMP_TABLE
     JSR     INSTR0000                           * - ADDI
     RTS
@@ -278,23 +278,7 @@ OPCODE_JMP_TABLE
     RTS  
     JSR     INSTR1111                           * - BAD DATA
     RTS   
-
-
-    
 ********************************************************
-
-
-INSTR0101                           
-    MOVE.B	$11, D7   
-    RTS
-INSTR1010  
-    MOVE.B	$11, D7   
-    RTS                         
-INSTR1111 
-    MOVE.B	$11, D7   
-    RTS                          
-
-
 INSTR0000
     RTS
 INSTR0001
@@ -311,12 +295,20 @@ INSTR0100
     LEA     FOURTABLE, A0
     JSR     00(A0,D5)   
     RTS
+INSTR0101                           
+    MOVE.B	$11, D7   
+    RTS
 INSTR0110
     RTS
 INSTR0111
     RTS
+INSTR1000
+    RTS
 INSTR1001
     RTS
+INSTR1010  
+    MOVE.B	$11, D7   
+    RTS 
 INSTR1011
     RTS  
 INSTR1100
@@ -325,17 +317,11 @@ INSTR1101
     RTS  
 INSTR1110
     RTS
-INSTR1000
-    RTS
-    
-
-
-
-
-
-
-
-
+                        
+INSTR1111 
+    MOVE.B	$11, D7   
+    RTS                          
+*---------------------------------------------------------------------------------------
 * 1011 - CMP INSTRUCTION TABLES             *                   
 *BINSTTABLE
 *    JSR     BTABLE000                       CMP.B Instruction
@@ -1414,6 +1400,7 @@ BADCODE         DS.L    5
 OPCODE          DC.L    1
         
         END    START        ; last line of source
+
 
 
 
