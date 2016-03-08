@@ -225,6 +225,29 @@ DATA_CHAR
     	CMP.B      D3,D6               	
     	BLT         WORD_ASCII                      * if not, repeat loop
     	RTS
+    	
+LONG_ASCII                      	
+    	ROL.L       #4,D5               	        * Move the MSB to LSB
+    	MOVE.L      D5,D4               	        * Move longword address to D5
+    	ANDI.L      #$0000000F,D4       	        * Clear everything except for MSB
+DATA_ASC2
+    	CMPI.B      #$09,D4             	            * Is the character a number?
+    	BLE         DATA_NUM2                        * Branch if yes.
+DATA_LET2
+    	ADDI.B      #$37,D4                         * Convert into a prinatble ascii letter
+    	BRA         DATA_CHAR2
+DATA_NUM2 
+    	ADDI.B      #$30,D4             	        * Convert into a prinatble ascii number
+    	BRA         DATA_CHAR2
+    	
+DATA_CHAR2
+    	ADDI.B      #1,D6               	        * Update counter
+    	MOVE.B      D4,(A5)+            	        * Add ASCII to printer
+    	CMP.B       D3,D6               	
+    	BLT         LONG_ASCII                      * if not, repeat loop
+    	RTS    	
+    	
+    	
 *---------------------------------------------------------------------------------
 
 GET_INSTRUCTION
@@ -582,18 +605,21 @@ EAMODE111
     MULU        #6, D6
     LEA         REGISTER, A0
     JSR         00(A0,D6)
-     		
+    RTS 		
 
 
 * Registers ------------------------------------------------
 REGISTER000
-    DIVU.W      #8,D6
-    CMP.B       #$3,D6
+    MOVE.W      D5, D6                     
+    ROL.W       #8, D6
+    ROL.W       #5, D6
+    ANDI.W      #$0007, D6
+    CMP.B       #$7,D6
     BEQ         ReadNextW
     BRA         CREGISTER000
 ReadNextW
     MOVE.B	    #0,D6                           * Set 0
-    MOVE.W      D7,D5                           * Bad Code to D5
+    MOVE.W      (A6)+,D5                           * Bad Code to D5
     MOVE.B      #4,D3
     JSR         WORD_ASCII
     RTS
@@ -601,16 +627,20 @@ CREGISTER000
     MOVE.B      #'0',(A5)+
     RTS
 REGISTER001
-    DIVU.W      #8,D6
-    CMP.B       #$3,D6
+    MOVE.W      D5, D6                     
+    ROL.W       #8, D6
+    ROL.W       #5, D6
+    ANDI.W      #$0007, D6
+    CMP.B       #$7,D6
     BEQ         ReadNextL
     BRA         CREGISTER001  
 ReadNextL
     MOVE.B	    #0,D6                           * Set 0
-    MOVE.W      D7,D5                           * Bad Code to D5
+    MOVE.L      (A6)+,D5                           * Bad Code to D5
     MOVE.B      #8,D3
-    JSR         WORD_ASCII
+    JSR         LONG_ASCII
     RTS
+
 CREGISTER001  
     MOVE.B      #'1',(A5)+
     RTS
@@ -781,6 +811,7 @@ ENDING_ADD      DS.L    1
 PRINTER         DC.L    1
         
         END    START        ; last line of source
+
 
 
 

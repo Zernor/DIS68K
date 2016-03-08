@@ -10,12 +10,12 @@ START:                  ; first instruction of program
 * Put program code here
     NOP
     RTS
-    JSR     $1234
-    JSR     (A1)
-    JSR     (A2)
-    JSR     (A3)
-    JSR     (A4)
-    JSR     (A5)
+*    JSR     $1234
+*    JSR     (A1)
+*    JSR     (A2)
+*    JSR     (A3)
+*    JSR     (A4)
+*    JSR     (A5)
     
 
 **-----------MOVE OPCODE-----------
@@ -112,15 +112,17 @@ START:                  ; first instruction of program
 *DUMB        RTS 
 
 *-------CLR-------------------
-    CLR.B   (A0)
-    CLR.W   (A0)
-    CLR.L   (A0)
-    CLR.B   D0
-    CLR.W   D0   
-    CLR.L   D0
-    CLR.B   $0001
-    CLR.W   $0011
-    CLR.L   $0001  
+*    CLR.B   (A0)
+*    CLR.W   (A0)
+*    CLR.L   (A0)
+*    CLR.B   D0
+*    CLR.W   D0   
+*    CLR.L   D0
+*    CLR.B   $0001
+*    CLR.W   $0011
+*    CLR.L   $0001  
+    CLR.B   $7FFF
+    CLR.B   $8000       
     CLR.B   $AAAA
     CLR.W   $BBBB
     CLR.L   $CCCC
@@ -268,6 +270,7 @@ START:                  ; first instruction of program
 * Put variables and constants here
 
     END    START        ; last line of source
+
 
 
 
