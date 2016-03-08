@@ -8,21 +8,27 @@
 START:                  ; first instruction of program
 
 * Put program code here
-    MOVEA.L      $12345678, A1
     NOP
     RTS
+    JSR     TEST
+    MOVE.W  #$1234,A0
+    JSR     0(A0,D0)
     JSR     (A1)
+    JSR     $40000
     JSR     (A2)
     JSR     (A3)
     JSR     (A4)
     JSR     (A5)
+    MOVEM.L  $12345678, A1
+ 
     
-    
+TEST    
     SIMHALT             ; halt simulator
 
 * Put variables and constants here
 
     END    START        ; last line of source
+
 
 
 
