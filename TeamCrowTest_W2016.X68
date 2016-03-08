@@ -10,12 +10,12 @@ START:                  ; first instruction of program
 * Put program code here
     NOP
     RTS
-*    JSR     $1234
-*    JSR     (A1)
-*    JSR     (A2)
-*    JSR     (A3)
-*    JSR     (A4)
-*    JSR     (A5)
+    JSR     $1234
+    JSR     (A1)
+    JSR     (A2)
+    JSR     (A3)
+    JSR     (A4)
+    JSR     (A5)
     
 
 **-----------MOVE OPCODE-----------
@@ -96,37 +96,38 @@ START:                  ; first instruction of program
 *    MOVEM.L  (SP)+,A1-A6/D2/D3
 *
 *TEST_BACK     RTS
-*
-*    LEA     $9800,A1
-*    LEA     $0001,A2
-*    LEA     (A3),A3
-*    LEA     $4000,A7
-*    LEA.L   $1230,A5
-*    LEA     $1301,A5
-*    LEA     $01001,A1
+
+    LEA     $9800,A1
+    LEA     $0001,A2
+    LEA     (A3),A3
+    LEA     $4000,A7
+    LEA     $1230,A5
+    LEA     $1301,A5
+    LEA     $01001,A1
 **-------JRS & RTS-------------
-*   JSR      $0000
-*   JSR      $A000
-*   JSR      (A4)
-*   JSR      DUMB
-*DUMB        RTS 
+   JSR      $0000
+   JSR      $A000
+   JSR      (A4)
+   JSR      DUMB
+DUMB        
+    RTS 
 
 *-------CLR-------------------
-*    CLR.B   (A0)
-*    CLR.W   (A0)
-*    CLR.L   (A0)
-*    CLR.B   D0
-*    CLR.W   D0   
-*    CLR.L   D0
-*    CLR.B   $0001
-*    CLR.W   $0011
-*    CLR.L   $0001  
+    CLR.B   (A0)
+    CLR.W   (A0)
+    CLR.L   (A0)
+    CLR.B   D0
+    CLR.W   D0   
+    CLR.L   D0
+    CLR.B   $0001
+    CLR.W   $0011
+    CLR.L   $0001  
     CLR.B   $7FFF
     CLR.B   $8000       
     CLR.B   $AAAA
     CLR.W   $BBBB
-    CLR.L   $CCCC
-    
+*    CLR.L   $CCCC
+*    
 ***----------ADD--------------------------
 *    ADD.B   $11,D5
 *    ADD.W   $1111,D5
@@ -270,6 +271,7 @@ START:                  ; first instruction of program
 * Put variables and constants here
 
     END    START        ; last line of source
+
 
 
 

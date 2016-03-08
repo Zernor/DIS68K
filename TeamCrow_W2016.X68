@@ -424,9 +424,17 @@ REGISTER
 
 
 
-   
+* ------------------------------------------  
 THREE000
+    MOVE.W          D5, D6                     
+    ROL.W           #3, D6
+    MOVE.W          D6, D5
+    ANDI.W          #$0007, D6
+    MULU            #8, D6
+    LEA             THREE_TABLE_2, A0
+    JSR             00(A0,D6) 
     RTS
+    
 THREE001
     MOVE.W          D5, D6                     
     ROL.W           #3, D6
@@ -435,32 +443,72 @@ THREE001
     MULU            #8, D6
     LEA             THREE_TABLE_2, A0
     JSR             00(A0,D6) 
-    RTS    
+    RTS  
+  
 THREE010
-    
+    MOVE.W          D5, D6                     
+    ROL.W           #3, D6
+    MOVE.W          D6, D5
+    ANDI.W          #$0007, D6
+    MULU            #8, D6
+    LEA             THREE_TABLE_2, A0
+    JSR             00(A0,D6) 
     RTS
+    
 THREE011
+    MOVE.W          D5, D6                     
+    ROL.W           #3, D6
+    MOVE.W          D6, D5
+    ANDI.W          #$0007, D6
+    MULU            #8, D6
+    LEA             THREE_TABLE_2, A0
+    JSR             00(A0,D6) 
     RTS
-THREE100
-    RTS
-THREE101
-    RTS
-THREE110
-    RTS
-THREE111
-        CMP.W           #$4E75, D7                      Is this an RTS function
-        BEQ             IS_RTS                         If so go to the ITSARTS function
-        CMP.W           #$4E71, D7
-        BEQ             IS_NOP
     
-        MOVE.W          D5, D6                     
-        ROL.W           #3, D6
-        MOVE.W          D6, D5
-        ANDI.W          #$0007, D6
-        MULU            #6, D6
-        LEA             THREE_TABLE_2, A0
-        JSR             00(A0,D6)   
-        RTS
+THREE100
+    MOVE.W          D5, D6                     
+    ROL.W           #3, D6
+    MOVE.W          D6, D5
+    ANDI.W          #$0007, D6
+    MULU            #8, D6
+    LEA             THREE_TABLE_2, A0
+    JSR             00(A0,D6) 
+    RTS
+    
+THREE101
+    MOVE.W          D5, D6                     
+    ROL.W           #3, D6
+    MOVE.W          D6, D5
+    ANDI.W          #$0007, D6
+    MULU            #8, D6
+    LEA             THREE_TABLE_2, A0
+    JSR             00(A0,D6) 
+    RTS
+    
+THREE110
+    MOVE.W          D5, D6                     
+    ROL.W           #3, D6
+    MOVE.W          D6, D5
+    ANDI.W          #$0007, D6
+    MULU            #8, D6
+    LEA             THREE_TABLE_2, A0
+    JSR             00(A0,D6) 
+    RTS
+    
+THREE111
+    CMP.W           #$4E75, D7                      Is this an RTS function
+    BEQ             IS_RTS                         If so go to the ITSARTS function
+    CMP.W           #$4E71, D7
+    BEQ             IS_NOP
+IS_JSR
+    MOVE.W          D5, D6                     
+    ROL.W           #3, D6
+    MOVE.W          D6, D5
+    ANDI.W          #$0007, D6
+    MULU            #8, D6
+    LEA             THREE_TABLE_2, A0
+    JSR             00(A0,D6)   
+    RTS
 IS_NOP
     MOVE.B  #'N',(A5)+						Insert R into output
     MOVE.B  #'O',(A5)+						Insert T into output
@@ -471,6 +519,10 @@ IS_RTS
     MOVE.B  #'T',(A5)+						Insert T into output
     MOVE.B  #'S',(A5)+						Insert S into output
     RTS       
+*-------------------------------------------------------------------------------    
+    
+    
+    
     
     
 THREE2000
@@ -511,6 +563,20 @@ THREE2001
     RTS
 
 THREE2010
+    MOVE.W      D7, D6
+    ANDI.W      #$FF00, D6
+    CMP.W       #$4200, D6
+    BEQ         IS_CLR
+    
+    MOVE.B      #'J',(A5)+
+    MOVE.B      #'S',(A5)+
+    MOVE.B      #'R',(A5)+
+    MOVE.B      #' ',(A5)+
+    MOVE.B      #' ',(A5)+    
+    MOVE.B      #' ',(A5)+ 
+    BRA         THREE2010_EA   
+    
+IS_CLR
     MOVE.B      #'C',(A5)+
     MOVE.B      #'L',(A5)+
     MOVE.B      #'R',(A5)+
@@ -518,7 +584,7 @@ THREE2010
     MOVE.B      #'L',(A5)+
     MOVE.B      #' ',(A5)+
     MOVE.B      #' ',(A5)+
-    
+THREE2010_EA    
     MOVE.W      D5, D6                     
     ROL.W       #3, D6
     MOVE.W      D6, D5
@@ -536,6 +602,25 @@ THREE2101
 THREE2110
     RTS
 THREE2111 
+    MOVE.B          #'L',(A5)+
+    MOVE.B          #'E',(A5)+
+    MOVE.B          #'A',(A5)+
+    MOVE.B          #' ',(A5)+
+    MOVE.B          #' ',(A5)+
+    MOVE.B          #' ',(A5)+
+    MOVE.W      D5, D6                     
+    ROL.W       #3, D6
+    MOVE.W      D6, D5
+    ANDI.W      #$0007, D6
+    MULU        #6, D6
+    LEA         EA_MODE, A0
+    JSR         00(A0,D6)  
+    MOVE.B      #',',(A5)+
+    
+    CLR.L       D5
+    MOVE.W      D7, D5
+    ROL.L       #4, D5
+    JSR         EAMODE010 
     RTS
     
 
@@ -811,6 +896,7 @@ ENDING_ADD      DS.L    1
 PRINTER         DC.L    1
         
         END    START        ; last line of source
+
 
 
 

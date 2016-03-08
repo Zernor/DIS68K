@@ -1,6 +1,6 @@
 00000400 Starting Address
 Assembler used: EASy68K Editor/Assembler v5.15.04
-Created On: 3/8/2016 12:10:15 PM
+Created On: 3/8/2016 1:22:16 PM
 
 00000000                             1  *------------------------------------------------------------------------------------------
 00000000                             2  * Title:  68K Disassembler
@@ -10,30 +10,30 @@ Created On: 3/8/2016 12:10:15 PM
 00000000                             6  *------------------------------------------------------------------------------------------
 00000400                             7      ORG    $400
 00000400                             8  START:  
-00000400  43F9 00000BA6              9          LEA         GREETING, A1            * Load the greeting message
+00000400  43F9 00000C92              9          LEA         GREETING, A1            * Load the greeting message
 00000406  103C 000E                 10          MOVE.B      #14,D0
 0000040A  4E4F                      11          TRAP        #15 
-0000040C  13FC 0000 00000DE2        12          MOVE.B      #0, LINE_COUNT          * Initilize the LINE_COUNTER variable 
-00000414  13FC 0000 00000DE6        13          MOVE.B      #0, BAD_DATA_SWITCH            * Reset Line Count 
+0000040C  13FC 0000 00000ECE        12          MOVE.B      #0, LINE_COUNT          * Initilize the LINE_COUNTER variable 
+00000414  13FC 0000 00000ED2        13          MOVE.B      #0, BAD_DATA_SWITCH            * Reset Line Count 
 0000041C                            14  
 0000041C                            15  ********************************************************************************************
 0000041C                            16  * DESCRIPTION: Reading Addresses
 0000041C                            17  *------------------ STARTING ADDRESS -------------------------------------------------------
 0000041C                            18  READ_SADDR
 0000041C  4287                      19          CLR.L       D7
-0000041E  43F9 00000C56             20          LEA         PROMPTSADDR, A1
+0000041E  43F9 00000D42             20          LEA         PROMPTSADDR, A1
 00000424  103C 000E                 21          MOVE.B      #14, D0
 00000428  4E4F                      22          TRAP        #15
-0000042A  43F9 00000DEC             23          LEA         INPUT_HEX,A1            * Temp hold starting address
+0000042A  43F9 00000ED8             23          LEA         INPUT_HEX,A1            * Temp hold starting address
 00000430  103C 0002                 24          MOVE.B      #2,D0                   * Read string from keyboard and store at A1
 00000434  4E4F                      25          TRAP        #15
 00000436  6000 001E                 26          BRA         VALIDATE_STORE 
 0000043A                            27  *------------------ ENDING ADDRESS -------------------------------------------------------
 0000043A                            28  READ_EADDR
-0000043A  43F9 00000C7C             29          LEA         PROMPTEADDR, A1
+0000043A  43F9 00000D68             29          LEA         PROMPTEADDR, A1
 00000440  103C 000E                 30          MOVE.B      #14, D0
 00000444  4E4F                      31          TRAP        #15
-00000446  43F9 00000DEC             32          LEA         INPUT_HEX,A1            * Temp hold ending address
+00000446  43F9 00000ED8             32          LEA         INPUT_HEX,A1            * Temp hold ending address
 0000044C  103C 0002                 33          MOVE.B      #2,D0                   * Read string from keyboard and store at A1
 00000450  4E4F                      34          TRAP        #15  
 00000452  6000 0002                 35          BRA         VALIDATE_STORE 
@@ -48,14 +48,14 @@ Created On: 3/8/2016 12:10:15 PM
 00000462  6E00 0006                 44          BGT         BADSIZES
 00000466  6000 002A                 45          BRA         READHEX
 0000046A                            46  BADSIZES
-0000046A  43F9 00000D19             47          LEA         ERRORINPUTSIZE, A1      * Print Bad Size Error
+0000046A  43F9 00000E05             47          LEA         ERRORINPUTSIZE, A1      * Print Bad Size Error
 00000470  103C 000E                 48          MOVE.B      #14,D0
 00000474  4E4F                      49          TRAP        #15
 00000476  B63C 0000                 50          CMP.B       #0,D3                   * D3 - HOLDS 0 if starting address has not being stored yet
 0000047A  67A0                      51          BEQ         READ_SADDR
 0000047C  60BC                      52          BRA         READ_EADDR 
 0000047E                            53  INVALID_CHARACTER                           * Print Invalid Character for Address
-0000047E  43F9 00000D39             54          LEA         INVALIDCHAR, A1
+0000047E  43F9 00000E25             54          LEA         INVALIDCHAR, A1
 00000484  103C 000E                 55          MOVE.B      #14,D0 
 00000488  4E4F                      56          TRAP        #15 
 0000048A  B63C 0000                 57          CMP.B       #0,D3
@@ -95,7 +95,7 @@ Created On: 3/8/2016 12:10:15 PM
 000004DC                            91              
 000004DC  6000 001E                 92          BRA         STORE_ADDRESS                           
 000004E0                            93  ODD_TEST_FAIL   
-000004E0  43F9 00000D8B             94          LEA         ODD_ADD_MSG,A1          * Load ODD_ADD_MSG to A1
+000004E0  43F9 00000E77             94          LEA         ODD_ADD_MSG,A1          * Load ODD_ADD_MSG to A1
 000004E6  103C 000E                 95          MOVE.B      #14,D0                  * Print odd address error message
 000004EA  4E4F                      96          TRAP        #15                     
 000004EC  4286                      97          CLR.L       D6
@@ -116,28 +116,28 @@ Created On: 3/8/2016 12:10:15 PM
 00000514                           112      
 00000514  4286                     113          CLR.L       D6
 00000516  4287                     114          CLR.L       D7
-00000518  43F9 00000DA2            115          LEA         STARTING_ADDR_7, A1         * Load ODD_ADD_MSG to A1
+00000518  43F9 00000E8E            115          LEA         STARTING_ADDR_7, A1         * Load ODD_ADD_MSG to A1
 0000051E  103C 000E                116          MOVE.B      #14,D0                      * Print odd address error message
 00000522  4E4F                     117          TRAP        #15  
 00000524  6000 FEF6                118          BRA         READ_SADDR
 00000528                           119          
 00000528                           120  CONTINUE_STORE        
-00000528  23C7 00000DF0            121          MOVE.L      D7, STARTING_ADD            * Save in the memory address 
+00000528  23C7 00000EDC            121          MOVE.L      D7, STARTING_ADD            * Save in the memory address 
 0000052E  2C47                     122          MOVEA.L     D7, A6                      * Save starting at A6
 00000530  163C 0001                123          MOVE.B      #1, D3                      * Counter - for VALID_STORE
 00000534  4287                     124          CLR.L       D7
 00000536  6000 FF02                125          BRA         READ_EADDR    
 0000053A                           126  STORE_ENDING 
-0000053A  BEB9 00000DF0            127          CMP.L       (STARTING_ADD), D7
+0000053A  BEB9 00000EDC            127          CMP.L       (STARTING_ADD), D7
 00000540  6D00 0014                128          BLT         SGTE
 00000544                           129  
 00000544                           130  STORE_E             
-00000544  23C7 00000DF4            131          MOVE.L      D7, ENDING_ADD  
+00000544  23C7 00000EE0            131          MOVE.L      D7, ENDING_ADD  
 0000054A  4287                     132          CLR.L       D7
-0000054C  4EB9 00000B4A            133          JSR         CLEAR_SCREEN
+0000054C  4EB9 00000C36            133          JSR         CLEAR_SCREEN
 00000552  6000 0016                134          BRA         ADDR_LOOP
 00000556                           135  SGTE                                            * Starting greater then ending
-00000556  43F9 00000CE6            136          LEA         INVALIDSADDR, A1
+00000556  43F9 00000DD2            136          LEA         INVALIDSADDR, A1
 0000055C  103C 000E                137          MOVE.B      #14, D0
 00000560  4E4F                     138          TRAP        #15
 00000562  4287                     139          CLR.L       D7
@@ -151,43 +151,43 @@ Created On: 3/8/2016 12:10:15 PM
 0000056A                           147  *
 0000056A                           148  *------------------ Compare Current Address to Ending Adddres ------------------------------ 
 0000056A                           149  ADDR_LOOP
-0000056A  4EB9 00000B74            150          JSR         CLEAR_REGISTERS             * Clear registers
-00000570  2A79 00000DF4            151          MOVE.L      ENDING_ADD,A5               * Check current address against ending adress           
+0000056A  4EB9 00000C60            150          JSR         CLEAR_REGISTERS             * Clear registers
+00000570  2A79 00000EE0            151          MOVE.L      ENDING_ADD,A5               * Check current address against ending adress           
 00000576  BDCD                     152          CMP.L       A5,A6
-00000578  6E00 0628                153          BGT         END_PROGRAM    
+00000578  6E00 0714                153          BGT         END_PROGRAM    
 0000057C                           154  
 0000057C  2A7C 00000000            155          MOVE.L      #$00000000, A5
-00000582  0C39 0019 00000DE2       156          CMP.B       #25, LINE_COUNT             * Check line counter
+00000582  0C39 0019 00000ECE       156          CMP.B       #25, LINE_COUNT             * Check line counter
 0000058A  6600 0008                157          BNE         CONTINUE_ADDR_LOOP
-0000058E  4EB9 00000B02            158          JSR         USER_RESPONSE         
+0000058E  4EB9 00000BEE            158          JSR         USER_RESPONSE         
 00000594                           159  CONTINUE_ADDR_LOOP        
-00000594  5239 00000DE2            160          ADD.B       #1, LINE_COUNT              * Update Line counter
-0000059A  4EB9 00000B74            161          JSR         CLEAR_REGISTERS             * Clear registers
-000005A0  4EB9 00000A9C            162          JSR         PRINT_CURRENT_ADD           * PRINT CURRENT ADDRESS
+00000594  5239 00000ECE            160          ADD.B       #1, LINE_COUNT              * Update Line counter
+0000059A  4EB9 00000C60            161          JSR         CLEAR_REGISTERS             * Clear registers
+000005A0  4EB9 00000B88            162          JSR         PRINT_CURRENT_ADD           * PRINT CURRENT ADDRESS
 000005A6                           163          
-000005A6  4BF9 00000DF8            164          LEA         PRINTER, A5                  
+000005A6  4BF9 00000EE4            164          LEA         PRINTER, A5                  
 000005AC  3E1E                     165          MOVE.W      (A6)+, D7
 000005AE  4EB9 0000068C            166          JSR         GET_INSTRUCTION
 000005B4                           167          
-000005B4  0C39 000A 00000DE6       168          CMP.B       #10, BAD_DATA_SWITCH        * Check if Bad Data Switch is True
+000005B4  0C39 000A 00000ED2       168          CMP.B       #10, BAD_DATA_SWITCH        * Check if Bad Data Switch is True
 000005BC  6700 0012                169          BEQ         PRINT_BAD_DATA  
 000005C0  1AFC 0000                170          MOVE.B      #$00,(A5)+                  * Add 00 to opcode printer
 000005C4                           171          
-000005C4  43F9 00000DF8            172          LEA         PRINTER, A1                 * Print
+000005C4  43F9 00000EE4            172          LEA         PRINTER, A1                 * Print
 000005CA  700D                     173          MOVEQ       #13,D0              
 000005CC  4E4F                     174          TRAP        #15                 
 000005CE                           175  
 000005CE  609A                     176          BRA         ADDR_LOOP
 000005D0                           177  PRINT_BAD_DATA                                  * Asume is Empty 
-000005D0  4EB9 00000B74            178          JSR         CLEAR_REGISTERS             * Clear registers
-000005D6  4BF9 00000DF8            179          LEA         PRINTER, A5
+000005D0  4EB9 00000C60            178          JSR         CLEAR_REGISTERS             * Clear registers
+000005D6  4BF9 00000EE4            179          LEA         PRINTER, A5
 000005DC  3E1E                     180          MOVE.W      (A6)+, D7
 000005DE  4EB9 000005FE            181          JSR         BAD_DATA                
 000005E4  1AFC 0000                182          MOVE.B      #$00,(A5)+                  * Add 00 BAD_BUFFER so we can end the line.
-000005E8  43F9 00000DF8            183          LEA         PRINTER,A1                  * Load the bad data into A1
+000005E8  43F9 00000EE4            183          LEA         PRINTER,A1                  * Load the bad data into A1
 000005EE  700D                     184          MOVEQ       #13,D0                      * Set print trap
 000005F0  4E4F                     185          TRAP        #15     
-000005F2  13FC 0000 00000DE6       186          MOVE.B      #$00, BAD_DATA_SWITCH            * Reset Line Count 
+000005F2  13FC 0000 00000ED2       186          MOVE.B      #$00, BAD_DATA_SWITCH            * Reset Line Count 
 000005FA  6000 FF6E                187          BRA         ADDR_LOOP       Go back to main loop
 000005FE                           188          
 000005FE                           189  
@@ -307,39 +307,39 @@ Created On: 3/8/2016 12:10:15 PM
 00000726                           303  THREE_TABLE     
 00000726  4EB9 00000854            304      JSR     THREE000            - LEA                  
 0000072C  4E75                     305      RTS                                 
-0000072E  4EB9 00000856            306      JSR     THREE001            - LEA, CLR        
+0000072E  4EB9 0000086C            306      JSR     THREE001            - LEA, CLR        
 00000734  4E75                     307      RTS                                 
-00000736  4EB9 0000086E            308      JSR     THREE010            - LEA
+00000736  4EB9 00000884            308      JSR     THREE010            - LEA
 0000073C  4E75                     309      RTS                                 
-0000073E  4EB9 00000870            310      JSR     THREE011            - LEA        
+0000073E  4EB9 0000089C            310      JSR     THREE011            - LEA        
 00000744  4E75                     311      RTS                                 
-00000746  4EB9 00000872            312      JSR     THREE100            - LEA, MOVEM        
+00000746  4EB9 000008B4            312      JSR     THREE100            - LEA, MOVEM        
 0000074C  4E75                     313      RTS                                 
-0000074E  4EB9 00000874            314      JSR     THREE101            - LEA
+0000074E  4EB9 000008CC            314      JSR     THREE101            - LEA
 00000754  4E75                     315      RTS                                 
-00000756  4EB9 00000876            316      JSR     THREE110            - LEA, MOVEM        
+00000756  4EB9 000008E4            316      JSR     THREE110            - LEA, MOVEM        
 0000075C  4E75                     317      RTS                                 
-0000075E  4EB9 00000878            318      JSR     THREE111            - LEA, JSR, NOP, RTS       
+0000075E  4EB9 000008FC            318      JSR     THREE111            - LEA, JSR, NOP, RTS       
 00000764  4E75                     319      RTS    
 00000766                           320      
 00000766                           321  *********************************************************
 00000766                           322  * 0100 
 00000766                           323  THREE_TABLE_2     
-00000766  4EB9 000008BC            324      JSR     THREE2000            - CLR.B               
+00000766  4EB9 00000940            324      JSR     THREE2000            - CLR.B               
 0000076C  4E75                     325      RTS                                 
-0000076E  4EB9 000008F0            326      JSR     THREE2001            - CLR.W       
+0000076E  4EB9 00000974            326      JSR     THREE2001            - CLR.W       
 00000774  4E75                     327      RTS                                 
-00000776  4EB9 00000924            328      JSR     THREE2010            - CLR.L, MOVEM.W
+00000776  4EB9 000009A8            328      JSR     THREE2010            - CLR.L, MOVEM.W
 0000077C  4E75                     329      RTS                                 
-0000077E  4EB9 00000958            330      JSR     THREE2011            - MOVEM.L, JSR        
+0000077E  4EB9 00000A06            330      JSR     THREE2011            - MOVEM.L, JSR        
 00000784  4E75                     331      RTS                                 
-00000786  4EB9 0000095A            332      JSR     THREE2100            - Bad Data       
+00000786  4EB9 00000A08            332      JSR     THREE2100            - Bad Data       
 0000078C  4E75                     333      RTS                                 
-0000078E  4EB9 0000095C            334      JSR     THREE2101            - Bad Data
+0000078E  4EB9 00000A0A            334      JSR     THREE2101            - Bad Data
 00000794  4E75                     335      RTS                                 
-00000796  4EB9 0000095E            336      JSR     THREE2110            - Bad Data
+00000796  4EB9 00000A0C            336      JSR     THREE2110            - Bad Data
 0000079C  4E75                     337      RTS                                 
-0000079E  4EB9 00000960            338      JSR     THREE2111            - LEA     
+0000079E  4EB9 00000A0E            338      JSR     THREE2111            - LEA     
 000007A4  4E75                     339      RTS    
 000007A6                           340      
 000007A6                           341   
@@ -350,13 +350,13 @@ Created On: 3/8/2016 12:10:15 PM
 000007A6                           346  
 000007A6                           347  
 000007A6                           348  OPCODE0101       
-000007A6  0639 000A 00000DE6       349      ADD.B       #10, BAD_DATA_SWITCH             
+000007A6  0639 000A 00000ED2       349      ADD.B       #10, BAD_DATA_SWITCH             
 000007AE  4E75                     350      RTS
 000007B0                           351  OPCODE1010  
-000007B0  0639 000A 00000DE6       352      ADD.B       #10, BAD_DATA_SWITCH              
+000007B0  0639 000A 00000ED2       352      ADD.B       #10, BAD_DATA_SWITCH              
 000007B8  4E75                     353      RTS                         
 000007BA                           354  OPCODE1111 
-000007BA  0639 000A 00000DE6       355      ADD.B       #10, BAD_DATA_SWITCH               
+000007BA  0639 000A 00000ED2       355      ADD.B       #10, BAD_DATA_SWITCH               
 000007C2  4E75                     356      RTS                          
 000007C4                           357  
 000007C4                           358  
@@ -399,24 +399,24 @@ Created On: 3/8/2016 12:10:15 PM
 000007F4                           395  
 000007F4                           396  *********************************************************
 000007F4                           397  EA_MODE
-000007F4  4EF9 00000962            398      JMP    EAMODE000            Call function with EA mode of 000
-000007FA  4EF9 0000097E            399      JMP    EAMODE001            Call function with EA mode of 001
-00000800  4EF9 00000980            400      JMP    EAMODE010            Call function with EA mode of 010
-00000806  4EF9 000009A4            401      JMP    EAMODE011            Call function with EA mode of 011
-0000080C  4EF9 000009CC            402      JMP    EAMODE100            Call function with EA mode of 100
-00000812  4EF9 000009F4            403      JMP    EAMODE101            Call function with EA mode of 101
-00000818  4EF9 000009FE            404      JMP    EAMODE110            Call function with EA mode of 110
-0000081E  4EF9 00000A08            405      JMP    EAMODE111            Call function with EA mode of 111
+000007F4  4EF9 00000A4E            398      JMP    EAMODE000            Call function with EA mode of 000
+000007FA  4EF9 00000A6A            399      JMP    EAMODE001            Call function with EA mode of 001
+00000800  4EF9 00000A6C            400      JMP    EAMODE010            Call function with EA mode of 010
+00000806  4EF9 00000A90            401      JMP    EAMODE011            Call function with EA mode of 011
+0000080C  4EF9 00000AB8            402      JMP    EAMODE100            Call function with EA mode of 100
+00000812  4EF9 00000AE0            403      JMP    EAMODE101            Call function with EA mode of 101
+00000818  4EF9 00000AEA            404      JMP    EAMODE110            Call function with EA mode of 110
+0000081E  4EF9 00000AF4            405      JMP    EAMODE111            Call function with EA mode of 111
 00000824                           406  *********************************************************   
 00000824                           407  REGISTER
-00000824  4EF9 00000A20            408      JMP    REGISTER000          Call function with EA register of 000
-0000082A  4EF9 00000A4C            409      JMP    REGISTER001          Call function with EA register of 001
-00000830  4EF9 00000A78            410      JMP    REGISTER010          Call function with EA register of 010
-00000836  4EF9 00000A7E            411      JMP    REGISTER011          Call function with EA register of 011
-0000083C  4EF9 00000A84            412      JMP    REGISTER100          Call function with EA register of 100
-00000842  4EF9 00000A8A            413      JMP    REGISTER101          Call function with EA register of 101
-00000848  4EF9 00000A90            414      JMP    REGISTER110          Call function with EA register of 110
-0000084E  4EF9 00000A96            415      JMP    REGISTER111          Call function with EA register of 111
+00000824  4EF9 00000B0C            408      JMP    REGISTER000          Call function with EA register of 000
+0000082A  4EF9 00000B38            409      JMP    REGISTER001          Call function with EA register of 001
+00000830  4EF9 00000B64            410      JMP    REGISTER010          Call function with EA register of 010
+00000836  4EF9 00000B6A            411      JMP    REGISTER011          Call function with EA register of 011
+0000083C  4EF9 00000B70            412      JMP    REGISTER100          Call function with EA register of 100
+00000842  4EF9 00000B76            413      JMP    REGISTER101          Call function with EA register of 101
+00000848  4EF9 00000B7C            414      JMP    REGISTER110          Call function with EA register of 110
+0000084E  4EF9 00000B82            415      JMP    REGISTER111          Call function with EA register of 111
 00000854                           416  *********************************************************   
 00000854                           417  *ABSOLUTE
 00000854                           418  *    JMP    ABSOLUTE000         Call function with absolute register of 000
@@ -428,393 +428,478 @@ Created On: 3/8/2016 12:10:15 PM
 00000854                           424  
 00000854                           425  
 00000854                           426  
-00000854                           427     
+00000854                           427  * ------------------------------------------  
 00000854                           428  THREE000
-00000854  4E75                     429      RTS
-00000856                           430  THREE001
-00000856  3C05                     431      MOVE.W          D5, D6                     
-00000858  E75E                     432      ROL.W           #3, D6
-0000085A  3A06                     433      MOVE.W          D6, D5
-0000085C  0246 0007                434      ANDI.W          #$0007, D6
-00000860  CCFC 0008                435      MULU            #8, D6
-00000864  41F8 0766                436      LEA             THREE_TABLE_2, A0
-00000868  4EB0 6000                437      JSR             00(A0,D6) 
-0000086C  4E75                     438      RTS    
-0000086E                           439  THREE010
-0000086E                           440      
-0000086E  4E75                     441      RTS
-00000870                           442  THREE011
-00000870  4E75                     443      RTS
-00000872                           444  THREE100
-00000872  4E75                     445      RTS
-00000874                           446  THREE101
-00000874  4E75                     447      RTS
-00000876                           448  THREE110
-00000876  4E75                     449      RTS
-00000878                           450  THREE111
-00000878  BE7C 4E75                451          CMP.W           #$4E75, D7                      Is this an RTS function
-0000087C  6700 0030                452          BEQ             IS_RTS                         If so go to the ITSARTS function
-00000880  BE7C 4E71                453          CMP.W           #$4E71, D7
-00000884  6700 001A                454          BEQ             IS_NOP
-00000888                           455      
-00000888  3C05                     456          MOVE.W          D5, D6                     
-0000088A  E75E                     457          ROL.W           #3, D6
-0000088C  3A06                     458          MOVE.W          D6, D5
-0000088E  0246 0007                459          ANDI.W          #$0007, D6
-00000892  CCFC 0006                460          MULU            #6, D6
-00000896  41F8 0766                461          LEA             THREE_TABLE_2, A0
-0000089A  4EB0 6000                462          JSR             00(A0,D6)   
-0000089E  4E75                     463          RTS
-000008A0                           464  IS_NOP
-000008A0  1AFC 004E                465      MOVE.B  #'N',(A5)+                      Insert R into output
-000008A4  1AFC 004F                466      MOVE.B  #'O',(A5)+                      Insert T into output
-000008A8  1AFC 0050                467      MOVE.B  #'P',(A5)+                      Insert S into output
-000008AC  4E75                     468      RTS  
-000008AE                           469  IS_RTS
-000008AE  1AFC 0052                470      MOVE.B  #'R',(A5)+                      Insert R into output
-000008B2  1AFC 0054                471      MOVE.B  #'T',(A5)+                      Insert T into output
-000008B6  1AFC 0053                472      MOVE.B  #'S',(A5)+                      Insert S into output
-000008BA  4E75                     473      RTS       
-000008BC                           474      
-000008BC                           475      
-000008BC                           476  THREE2000
-000008BC  1AFC 0043                477      MOVE.B      #'C',(A5)+
-000008C0  1AFC 004C                478      MOVE.B      #'L',(A5)+
-000008C4  1AFC 0052                479      MOVE.B      #'R',(A5)+
-000008C8  1AFC 002E                480      MOVE.B      #'.',(A5)+
-000008CC  1AFC 0042                481      MOVE.B      #'B',(A5)+
-000008D0  1AFC 0020                482      MOVE.B      #' ',(A5)+
-000008D4  1AFC 0020                483      MOVE.B      #' ',(A5)+
-000008D8                           484      
-000008D8  3C05                     485      MOVE.W      D5, D6                     
-000008DA  E75E                     486      ROL.W       #3, D6
-000008DC  3A06                     487      MOVE.W      D6, D5
-000008DE  0246 0007                488      ANDI.W      #$0007, D6
-000008E2  CCFC 0006                489      MULU        #6, D6
-000008E6  41F8 07F4                490      LEA         EA_MODE, A0
-000008EA  4EB0 6000                491      JSR         00(A0,D6)   
-000008EE                           492         
-000008EE  4E75                     493      RTS
-000008F0                           494  THREE2001
-000008F0  1AFC 0043                495      MOVE.B      #'C',(A5)+
-000008F4  1AFC 004C                496      MOVE.B      #'L',(A5)+
-000008F8  1AFC 0052                497      MOVE.B      #'R',(A5)+
-000008FC  1AFC 002E                498      MOVE.B      #'.',(A5)+
-00000900  1AFC 0057                499      MOVE.B      #'W',(A5)+
-00000904  1AFC 0020                500      MOVE.B      #' ',(A5)+
-00000908  1AFC 0020                501      MOVE.B      #' ',(A5)+
-0000090C                           502      
-0000090C  3C05                     503      MOVE.W      D5, D6                     
-0000090E  E75E                     504      ROL.W       #3, D6
-00000910  3A06                     505      MOVE.W      D6, D5
-00000912  0246 0007                506      ANDI.W      #$0007, D6
-00000916  CCFC 0006                507      MULU        #6, D6
-0000091A  41F8 07F4                508      LEA         EA_MODE, A0
-0000091E  4EB0 6000                509      JSR         00(A0,D6)   
-00000922                           510         
+00000854  3C05                     429      MOVE.W          D5, D6                     
+00000856  E75E                     430      ROL.W           #3, D6
+00000858  3A06                     431      MOVE.W          D6, D5
+0000085A  0246 0007                432      ANDI.W          #$0007, D6
+0000085E  CCFC 0008                433      MULU            #8, D6
+00000862  41F8 0766                434      LEA             THREE_TABLE_2, A0
+00000866  4EB0 6000                435      JSR             00(A0,D6) 
+0000086A  4E75                     436      RTS
+0000086C                           437      
+0000086C                           438  THREE001
+0000086C  3C05                     439      MOVE.W          D5, D6                     
+0000086E  E75E                     440      ROL.W           #3, D6
+00000870  3A06                     441      MOVE.W          D6, D5
+00000872  0246 0007                442      ANDI.W          #$0007, D6
+00000876  CCFC 0008                443      MULU            #8, D6
+0000087A  41F8 0766                444      LEA             THREE_TABLE_2, A0
+0000087E  4EB0 6000                445      JSR             00(A0,D6) 
+00000882  4E75                     446      RTS  
+00000884                           447    
+00000884                           448  THREE010
+00000884  3C05                     449      MOVE.W          D5, D6                     
+00000886  E75E                     450      ROL.W           #3, D6
+00000888  3A06                     451      MOVE.W          D6, D5
+0000088A  0246 0007                452      ANDI.W          #$0007, D6
+0000088E  CCFC 0008                453      MULU            #8, D6
+00000892  41F8 0766                454      LEA             THREE_TABLE_2, A0
+00000896  4EB0 6000                455      JSR             00(A0,D6) 
+0000089A  4E75                     456      RTS
+0000089C                           457      
+0000089C                           458  THREE011
+0000089C  3C05                     459      MOVE.W          D5, D6                     
+0000089E  E75E                     460      ROL.W           #3, D6
+000008A0  3A06                     461      MOVE.W          D6, D5
+000008A2  0246 0007                462      ANDI.W          #$0007, D6
+000008A6  CCFC 0008                463      MULU            #8, D6
+000008AA  41F8 0766                464      LEA             THREE_TABLE_2, A0
+000008AE  4EB0 6000                465      JSR             00(A0,D6) 
+000008B2  4E75                     466      RTS
+000008B4                           467      
+000008B4                           468  THREE100
+000008B4  3C05                     469      MOVE.W          D5, D6                     
+000008B6  E75E                     470      ROL.W           #3, D6
+000008B8  3A06                     471      MOVE.W          D6, D5
+000008BA  0246 0007                472      ANDI.W          #$0007, D6
+000008BE  CCFC 0008                473      MULU            #8, D6
+000008C2  41F8 0766                474      LEA             THREE_TABLE_2, A0
+000008C6  4EB0 6000                475      JSR             00(A0,D6) 
+000008CA  4E75                     476      RTS
+000008CC                           477      
+000008CC                           478  THREE101
+000008CC  3C05                     479      MOVE.W          D5, D6                     
+000008CE  E75E                     480      ROL.W           #3, D6
+000008D0  3A06                     481      MOVE.W          D6, D5
+000008D2  0246 0007                482      ANDI.W          #$0007, D6
+000008D6  CCFC 0008                483      MULU            #8, D6
+000008DA  41F8 0766                484      LEA             THREE_TABLE_2, A0
+000008DE  4EB0 6000                485      JSR             00(A0,D6) 
+000008E2  4E75                     486      RTS
+000008E4                           487      
+000008E4                           488  THREE110
+000008E4  3C05                     489      MOVE.W          D5, D6                     
+000008E6  E75E                     490      ROL.W           #3, D6
+000008E8  3A06                     491      MOVE.W          D6, D5
+000008EA  0246 0007                492      ANDI.W          #$0007, D6
+000008EE  CCFC 0008                493      MULU            #8, D6
+000008F2  41F8 0766                494      LEA             THREE_TABLE_2, A0
+000008F6  4EB0 6000                495      JSR             00(A0,D6) 
+000008FA  4E75                     496      RTS
+000008FC                           497      
+000008FC                           498  THREE111
+000008FC  BE7C 4E75                499      CMP.W           #$4E75, D7                      Is this an RTS function
+00000900  6700 0030                500      BEQ             IS_RTS                         If so go to the ITSARTS function
+00000904  BE7C 4E71                501      CMP.W           #$4E71, D7
+00000908  6700 001A                502      BEQ             IS_NOP
+0000090C                           503  IS_JSR
+0000090C  3C05                     504      MOVE.W          D5, D6                     
+0000090E  E75E                     505      ROL.W           #3, D6
+00000910  3A06                     506      MOVE.W          D6, D5
+00000912  0246 0007                507      ANDI.W          #$0007, D6
+00000916  CCFC 0008                508      MULU            #8, D6
+0000091A  41F8 0766                509      LEA             THREE_TABLE_2, A0
+0000091E  4EB0 6000                510      JSR             00(A0,D6)   
 00000922  4E75                     511      RTS
-00000924                           512  
-00000924                           513  THREE2010
-00000924  1AFC 0043                514      MOVE.B      #'C',(A5)+
-00000928  1AFC 004C                515      MOVE.B      #'L',(A5)+
-0000092C  1AFC 0052                516      MOVE.B      #'R',(A5)+
-00000930  1AFC 002E                517      MOVE.B      #'.',(A5)+
-00000934  1AFC 004C                518      MOVE.B      #'L',(A5)+
-00000938  1AFC 0020                519      MOVE.B      #' ',(A5)+
-0000093C  1AFC 0020                520      MOVE.B      #' ',(A5)+
-00000940                           521      
-00000940  3C05                     522      MOVE.W      D5, D6                     
-00000942  E75E                     523      ROL.W       #3, D6
-00000944  3A06                     524      MOVE.W      D6, D5
-00000946  0246 0007                525      ANDI.W      #$0007, D6
-0000094A  CCFC 0006                526      MULU        #6, D6
-0000094E  41F8 07F4                527      LEA         EA_MODE, A0
-00000952  4EB0 6000                528      JSR         00(A0,D6)  
-00000956  4E75                     529      RTS
-00000958                           530  THREE2011
-00000958  4E75                     531      RTS
-0000095A                           532  THREE2100
-0000095A  4E75                     533      RTS
-0000095C                           534  THREE2101
-0000095C  4E75                     535      RTS
-0000095E                           536  THREE2110
-0000095E  4E75                     537      RTS
-00000960                           538  THREE2111 
-00000960  4E75                     539      RTS
-00000962                           540      
-00000962                           541  
-00000962                           542  
-00000962                           543  
-00000962                           544  EAMODE000
-00000962  1AFC 0044                545      MOVE.B      #'D',(A5)+  
-00000966  3C05                     546      MOVE.W      D5, D6                     
-00000968  E75E                     547      ROL.W       #3, D6
-0000096A  3A06                     548      MOVE.W      D6, D5
-0000096C  0246 0007                549      ANDI.W      #$0007, D6
-00000970  CCFC 0006                550      MULU        #6, D6
-00000974  41F8 0824                551      LEA         REGISTER, A0
-00000978  4EB0 6000                552      JSR         00(A0,D6)
-0000097C  4E75                     553      RTS   
-0000097E                           554  EAMODE001
-0000097E  4E75                     555      RTS             
-00000980                           556  EAMODE010 
-00000980  1AFC 0028                557      MOVE.B      #'(',(A5)+  
-00000984  1AFC 0041                558      MOVE.B      #'A',(A5)+  
-00000988  3C05                     559      MOVE.W      D5, D6                     
-0000098A  E75E                     560      ROL.W       #3, D6
-0000098C  3A06                     561      MOVE.W      D6, D5
-0000098E  0246 0007                562      ANDI.W      #$0007, D6
-00000992  CCFC 0006                563      MULU        #6, D6
-00000996  41F8 0824                564      LEA         REGISTER, A0
-0000099A  4EB0 6000                565      JSR         00(A0,D6)
-0000099E  1AFC 0029                566      MOVE.B      #')',(A5)+
-000009A2  4E75                     567      RTS     
-000009A4                           568  EAMODE011 
-000009A4  1AFC 0028                569      MOVE.B      #'(',(A5)+  
-000009A8  1AFC 0041                570      MOVE.B      #'A',(A5)+  
-000009AC  3C05                     571      MOVE.W      D5, D6                     
-000009AE  E75E                     572      ROL.W       #3, D6
-000009B0  3A06                     573      MOVE.W      D6, D5
-000009B2  0246 0007                574      ANDI.W      #$0007, D6
-000009B6  CCFC 0006                575      MULU        #6, D6
-000009BA  41F8 0824                576      LEA         REGISTER, A0
-000009BE  4EB0 6000                577      JSR         00(A0,D6)
-000009C2  1AFC 0029                578      MOVE.B      #')',(A5)+
-000009C6  1AFC 002B                579      MOVE.B      #'+',(A5)+
-000009CA  4E75                     580      RTS
-000009CC                           581  EAMODE100
-000009CC  1AFC 002D                582      MOVE.B      #'-',(A5)+
-000009D0  1AFC 0028                583      MOVE.B      #'(',(A5)+  
-000009D4  1AFC 0041                584      MOVE.B      #'A',(A5)+  
-000009D8  3C05                     585      MOVE.W      D5, D6                     
-000009DA  E75E                     586      ROL.W       #3, D6
-000009DC  3A06                     587      MOVE.W      D6, D5
-000009DE  0246 0007                588      ANDI.W      #$0007, D6
-000009E2  CCFC 0006                589      MULU        #6, D6
-000009E6  41F8 0824                590      LEA         REGISTER, A0
-000009EA  4EB0 6000                591      JSR         00(A0,D6)
-000009EE  1AFC 0029                592      MOVE.B      #')',(A5)+
-000009F2  4E75                     593      RTS             
-000009F4                           594  EAMODE101
-000009F4  0639 000A 00000DE6       595      ADD.B       #10, BAD_DATA_SWITCH             
-000009FC  4E75                     596      RTS             
-000009FE                           597  EAMODE110
-000009FE  0639 000A 00000DE6       598      ADD.B       #10, BAD_DATA_SWITCH             
-00000A06  4E75                     599      RTS             
-00000A08                           600  EAMODE111
-00000A08  3C05                     601      MOVE.W      D5, D6                     
-00000A0A  E75E                     602      ROL.W       #3, D6
-00000A0C  3A06                     603      MOVE.W      D6, D5
-00000A0E  0246 0007                604      ANDI.W      #$0007, D6
-00000A12  CCFC 0006                605      MULU        #6, D6
-00000A16  41F8 0824                606      LEA         REGISTER, A0
-00000A1A  4EB0 6000                607      JSR         00(A0,D6)
-00000A1E  4E75                     608      RTS         
-00000A20                           609  
-00000A20                           610  
-00000A20                           611  * Registers ------------------------------------------------
-00000A20                           612  REGISTER000
-00000A20  3C05                     613      MOVE.W      D5, D6                     
-00000A22  E15E                     614      ROL.W       #8, D6
-00000A24  EB5E                     615      ROL.W       #5, D6
-00000A26  0246 0007                616      ANDI.W      #$0007, D6
-00000A2A  BC3C 0007                617      CMP.B       #$7,D6
-00000A2E  6700 0006                618      BEQ         ReadNextW
-00000A32  6000 0012                619      BRA         CREGISTER000
-00000A36                           620  ReadNextW
-00000A36  1C3C 0000                621      MOVE.B      #0,D6                           * Set 0
-00000A3A  3A1E                     622      MOVE.W      (A6)+,D5                           * Bad Code to D5
-00000A3C  163C 0004                623      MOVE.B      #4,D3
-00000A40  4EB8 0634                624      JSR         WORD_ASCII
-00000A44  4E75                     625      RTS
-00000A46                           626  CREGISTER000
-00000A46  1AFC 0030                627      MOVE.B      #'0',(A5)+
-00000A4A  4E75                     628      RTS
-00000A4C                           629  REGISTER001
-00000A4C  3C05                     630      MOVE.W      D5, D6                     
-00000A4E  E15E                     631      ROL.W       #8, D6
-00000A50  EB5E                     632      ROL.W       #5, D6
-00000A52  0246 0007                633      ANDI.W      #$0007, D6
-00000A56  BC3C 0007                634      CMP.B       #$7,D6
-00000A5A  6700 0006                635      BEQ         ReadNextL
-00000A5E  6000 0012                636      BRA         CREGISTER001  
-00000A62                           637  ReadNextL
-00000A62  1C3C 0000                638      MOVE.B      #0,D6                           * Set 0
-00000A66  2A1E                     639      MOVE.L      (A6)+,D5                           * Bad Code to D5
-00000A68  163C 0008                640      MOVE.B      #8,D3
-00000A6C  4EB8 0660                641      JSR         LONG_ASCII
-00000A70  4E75                     642      RTS
-00000A72                           643  
-00000A72                           644  CREGISTER001  
-00000A72  1AFC 0031                645      MOVE.B      #'1',(A5)+
-00000A76  4E75                     646      RTS
-00000A78                           647  REGISTER010
-00000A78  1AFC 0032                648      MOVE.B      #'2',(A5)+
-00000A7C  4E75                     649      RTS
-00000A7E                           650  REGISTER011
-00000A7E  1AFC 0033                651      MOVE.B      #'3',(A5)+
-00000A82  4E75                     652      RTS
-00000A84                           653  REGISTER100
-00000A84  1AFC 0034                654      MOVE.B      #'4',(A5)+
-00000A88  4E75                     655      RTS
-00000A8A                           656  REGISTER101
-00000A8A  1AFC 0035                657      MOVE.B      #'5',(A5)+
-00000A8E  4E75                     658      RTS
-00000A90                           659  REGISTER110
-00000A90  1AFC 0036                660      MOVE.B      #'6',(A5)+
-00000A94  4E75                     661      RTS
-00000A96                           662  REGISTER111
-00000A96  1AFC 0037                663      MOVE.B      #'7',(A5)+
-00000A9A  4E75                     664      RTS
-00000A9C                           665  *---------------------------------------------------------------
-00000A9C                           666  
-00000A9C                           667  
-00000A9C                           668  ********************************************************************************************
-00000A9C                           669  *------------------ PRINT CURRENT ADDRESS IN ASCII -----------------------------------------
-00000A9C                           670  PRINT_CURRENT_ADD
-00000A9C  240E                     671          MOVE.L      A6,D2                       * Move current address into D2
-00000A9E  1A3C 0000                672          MOVE.B      #0,D5                       * Set counter to read all hex
-00000AA2  1C3C 0008                673          MOVE.B      #8,D6                       
-00000AA6                           674  CONVERT_HEX_ASCII
-00000AA6  BC05                     675          CMP.B       D5,D6                       * Check if last hex character is read
-00000AA8  6600 0012                676          BNE         SET_COUNTER_4               * Set counter to read 4 bits
-00000AAC  103C 0006                677          MOVE.B      #6, D0
-00000AB0  123C 0020                678          MOVE.B      #32, D1
-00000AB4  4E4F                     679          TRAP        #15
-00000AB6  4E4F                     680          TRAP        #15
-00000AB8  4E4F                     681          TRAP        #15
-00000ABA  4E75                     682          RTS
-00000ABC                           683  SET_COUNTER_4
-00000ABC  163C 0000                684          MOVE.B      #0,D3                       
-00000AC0  183C 0004                685          MOVE.B      #4,D4    
-00000AC4                           686  Loop
-00000AC4  B803                     687          CMP.B       D3,D4                       * Read one character at a time
-00000AC6  6700 0018                688          BEQ         STORE_ONE_CHAR
-00000ACA  E38A                     689          LSL.L       #1,D2
-00000ACC  6400 0008                690          BCC         ADDZERO
-00000AD0  5201                     691          ADDI.B      #1,D1
-00000AD2  6000 0006                692          BRA         INCREMENT_BIT_LOOP
-00000AD6                           693  ADDZERO
-00000AD6  0601 0000                694          ADDI.B      #0,D1
-00000ADA                           695  INCREMENT_BIT_LOOP
-00000ADA  5203                     696          ADDI.B      #1,D3
-00000ADC  E389                     697          LSL.L       #1,D1
-00000ADE  60E4                     698          BRA         Loop
-00000AE0                           699  STORE_ONE_CHAR                                   * Store hex character
-00000AE0  E289                     700          LSR.L       #1,D1
-00000AE2  B23C 000A                701          CMP.B       #$A,D1
-00000AE6  6D00 000A                702          BLT         HEX_TO_ASCII_NUMBER
-00000AEA  0601 0037                703          ADDI.B      #$37,D1                     * HEX_TO_ASCII_LETTER
-00000AEE  6000 0006                704          BRA         INCREMENT_NEXT_HEX_LOOP
-00000AF2                           705  HEX_TO_ASCII_NUMBER
-00000AF2  0601 0030                706          ADDI.B      #$30,D1
-00000AF6                           707  INCREMENT_NEXT_HEX_LOOP
-00000AF6  5205                     708          ADDI.B      #1,D5
-00000AF8  103C 0006                709          MOVE.B      #6,D0
-00000AFC  4E4F                     710          TRAP        #15
-00000AFE  4281                     711          CLR.L       D1
-00000B00  60A4                     712          BRA         CONVERT_HEX_ASCII
-00000B02                           713  ***********************END OF PRINTING HEX ADDRESS TO ASCII *******************
-00000B02                           714  
-00000B02                           715  ********************************************************************************************
-00000B02                           716  *------------------ KEY -  -----------------------------------------------------------------
-00000B02                           717  * Desctiption:
-00000B02                           718  * Expect:       DO, D1, A1 to be empty
-00000B02                           719  * 
-00000B02                           720  *------------------ Prompt User for Enter, R, or Q -----------------------------------------
-00000B02                           721  USER_RESPONSE
-00000B02  43F9 00000CA2            722          LEA         PROMPTOPTIONS, A1            * Load the prompt message
-00000B08  103C 000E                723          MOVE.B      #14,D0
-00000B0C  4E4F                     724          TRAP        #15 
-00000B0E  13FC 0000 00000DE2       725          MOVE.B      #$00, LINE_COUNT            * Reset Line Count 
-00000B16  103C 0005                726          MOVE.B      #5, D0                      * Log keyboard input
-00000B1A  4E4F                     727          TRAP        #15                 
-00000B1C  B23C 000D                728          CMP.B       #$D, D1                     * Compare the key press with ENTER
-00000B20  6700 0028                729          BEQ         CLEAR_SCREEN                  
-00000B24  B23C 0072                730          CMP.B       #$72, D1                    * Compare the key press with R
-00000B28  6700 0030                731          BEQ         RESTART             
-00000B2C  B23C 0052                732          CMP.B       #$52, D1                    * Compare the key press with r
-00000B30  6700 0028                733          BEQ         RESTART             
-00000B34  B23C 0071                734          CMP.B       #$71, D1                    * Compare the key press with q
-00000B38  6700 0068                735          BEQ         END_PROGRAM             
-00000B3C  B23C 0051                736          CMP.B       #$51, D1                    * Compare the key press with Q
-00000B40  6700 0060                737          BEQ         END_PROGRAM            
-00000B44  B23C 005D                738          CMP.B       #$5D, D1                    * Check the key press with ENTER
-00000B48  66B8                     739          BNE         USER_RESPONSE              
-00000B4A                           740  CLEAR_SCREEN
-00000B4A  103C 000B                741          MOVE.B  #11, D0                         * Task 11 - Clear screen
-00000B4E  323C FF00                742          MOVE.W  #$FF00, D1          
-00000B52  4E4F                     743          TRAP    #15                 
-00000B54  4281                     744          CLR.L   D1
-00000B56  4280                     745          CLR.L   D0
-00000B58  4E75                     746          RTS                 
-00000B5A                           747  *------------------ RESTART ----------------------------------------------------------------
-00000B5A                           748  RESTART
-00000B5A  4EB8 0B4A                749          JSR         CLEAR_SCREEN
-00000B5E  4EB9 00000B74            750          JSR         CLEAR_REGISTERS
-00000B64  2E7C 01000000            751          MOVEA.L     #$01000000,A7       Reset stack pointer
-00000B6A  2C7C 01000000            752          MOVEA.L     #$01000000,A6       Reset stack pointer
-00000B70  6000 F88E                753          BRA         START
-00000B74                           754          
-00000B74                           755  ********************************************************************************************
-00000B74                           756  *------------------ CLEAR REGISTERS --------------------------------------------------------
-00000B74                           757  * Desctiption:
-00000B74                           758  * 
-00000B74                           759  CLEAR_REGISTERS
-00000B74  4280                     760          CLR.L   D0
-00000B76  4285                     761          CLR.L   D5
-00000B78  4282                     762          CLR.L   D2
-00000B7A  4281                     763          CLR.L   D1
-00000B7C  4283                     764          CLR.L   D3
-00000B7E  4284                     765          CLR.L   D4
-00000B80  4286                     766          CLR.L   D6
-00000B82  227C 00000000            767          MOVE.L  #$00000000,A1
-00000B88  247C 00000000            768          MOVE.L  #$00000000,A2
-00000B8E  267C 00000000            769          MOVE.L  #$00000000,A3
-00000B94  287C 00000000            770          MOVE.L  #$00000000,A4
-00000B9A  2A7C 00000000            771          MOVE.L  #$00000000,A5
-00000BA0  4E75                     772          RTS
-00000BA2                           773  
-00000BA2                           774  ********************************************************************************************
-00000BA2                           775  ********************************************************************************************
-00000BA2                           776  ********************************************************************************************
-00000BA2                           777  END_PROGRAM
-00000BA2  FFFF FFFF                778          SIMHALT             ; halt simulator
-00000BA6                           779  ********************************************************************************************
-00000BA6                           780  ********************************************************************************************
-00000BA6                           781  ********************************************************************************************
-00000BA6                           782  
-00000BA6                           783  
-00000BA6                           784  ********************************************************************************************
-00000BA6                           785  * VARIABLES & MESSAGES ---------------------------------------------------------------------
-00000BA6  =0000000D                786  CR        EQU       $0D
-00000BA6  =0000000A                787  LF        EQU       $0A
-00000BA6                           788  
-00000BA6                           789  * MESSAGES ---------------------------------------------------------------------------------------------
-00000BA6= 20 20 20 20 20 20 ...    790  GREETING        DC.B    '       HELLO THERE, WELCOME TO AWESOME DISASSEMBLER'
-00000BD9= 0D 0A 4E 6F 74 65 ...    791                  DC.B    CR,LF,'Note: Addressess must be in HEX'
-00000BFA= 0D 0A 4E 6F 74 65 ...    792                  DC.B    CR,LF,'Note: Addressess must be in caps'
-00000C1C= 0D 0A 20 20 20 20 ...    793                  DC.B    CR,LF,'    : Starting Address must be greater than 70000',CR,LF,CR,LF,CR,LF,0 
-00000C56= 454E 5445 5220 4...      794  PROMPTSADDR     DC.W    'ENTER A STARTING ADDRESS (ON CAPS): ',0
-00000C7C= 454E 5445 5220 4...      795  PROMPTEADDR     DC.W    'ENTER A ENDING ADDRESS   (ON CAPS): ',0
-00000CA2= 50 72 65 73 73 3A ...    796  PROMPTOPTIONS    DC.B    'Press: ENTER to Continue || Q or q to Quit || R OR r to Restart',CR,LF,CR,LF,0
-00000CE6                           797  * ERROR MSG --------------------------------------------------------------------------------------------
-00000CE6= 45 52 52 4F 52 3A ...    798  INVALIDSADDR        DC.B    'ERROR: INVALID STARTING ADDRESS VERSUS ENDING.',CR,LF,CR,LF,0
-00000D19= 45 52 52 4F 52 3A ...    799  ERRORINPUTSIZE      DC.B    'ERROR: INVALID ADDRESS SIZE',CR,LF,CR,LF,0
-00000D39= 45 52 52 4F 52 3A ...    800  INVALIDCHAR         DC.B    'ERROR: INVALID ADDRESS CHARACTER',CR,LF,CR,LF,0
-00000D5E= 45 52 52 4F 52 3A ...    801  SGTEM               DC.B    'ERROR: STARTING ADDRESS > ENDING ADDRESS',CR,LF,CR,LF,0
-00000D8B= 45 52 52 4F 52 3A ...    802  ODD_ADD_MSG         DC.B    'ERROR: ODD ADDRESS',CR,LF,CR,LF,0
-00000DA2= 45 52 52 4F 52 3A ...    803  STARTING_ADDR_7     DC.B    'ERROR: Invalid starting adress - must be greater than 7000',CR,LF,CR,LF,0
-00000DE1                           804  * VARIABLES --------------------------------------------------------------------------------------------
-00000DE2                           805  LINE_COUNT      DS.L    1
-00000DE6                           806  BAD_DATA_SWITCH DS.L    1    
-00000DEA                           807  SIZE            DS.B    1
-00000DEC                           808  INPUT_HEX       DS.L    1   * Use to temp hold starting and ending address
-00000DF0                           809  STARTING_ADD    DS.L    1   ;1 is the size, if I change to 4 then array size changes
-00000DF4                           810  ENDING_ADD      DS.L    1
-00000DF8= 00000001                 811  PRINTER         DC.L    1
-00000DFC                           812          
-00000DFC                           813          END    START        ; last line of source
+00000924                           512  IS_NOP
+00000924  1AFC 004E                513      MOVE.B  #'N',(A5)+                      Insert R into output
+00000928  1AFC 004F                514      MOVE.B  #'O',(A5)+                      Insert T into output
+0000092C  1AFC 0050                515      MOVE.B  #'P',(A5)+                      Insert S into output
+00000930  4E75                     516      RTS  
+00000932                           517  IS_RTS
+00000932  1AFC 0052                518      MOVE.B  #'R',(A5)+                      Insert R into output
+00000936  1AFC 0054                519      MOVE.B  #'T',(A5)+                      Insert T into output
+0000093A  1AFC 0053                520      MOVE.B  #'S',(A5)+                      Insert S into output
+0000093E  4E75                     521      RTS       
+00000940                           522  *-------------------------------------------------------------------------------    
+00000940                           523      
+00000940                           524      
+00000940                           525      
+00000940                           526      
+00000940                           527      
+00000940                           528  THREE2000
+00000940  1AFC 0043                529      MOVE.B      #'C',(A5)+
+00000944  1AFC 004C                530      MOVE.B      #'L',(A5)+
+00000948  1AFC 0052                531      MOVE.B      #'R',(A5)+
+0000094C  1AFC 002E                532      MOVE.B      #'.',(A5)+
+00000950  1AFC 0042                533      MOVE.B      #'B',(A5)+
+00000954  1AFC 0020                534      MOVE.B      #' ',(A5)+
+00000958  1AFC 0020                535      MOVE.B      #' ',(A5)+
+0000095C                           536      
+0000095C  3C05                     537      MOVE.W      D5, D6                     
+0000095E  E75E                     538      ROL.W       #3, D6
+00000960  3A06                     539      MOVE.W      D6, D5
+00000962  0246 0007                540      ANDI.W      #$0007, D6
+00000966  CCFC 0006                541      MULU        #6, D6
+0000096A  41F8 07F4                542      LEA         EA_MODE, A0
+0000096E  4EB0 6000                543      JSR         00(A0,D6)   
+00000972                           544         
+00000972  4E75                     545      RTS
+00000974                           546  THREE2001
+00000974  1AFC 0043                547      MOVE.B      #'C',(A5)+
+00000978  1AFC 004C                548      MOVE.B      #'L',(A5)+
+0000097C  1AFC 0052                549      MOVE.B      #'R',(A5)+
+00000980  1AFC 002E                550      MOVE.B      #'.',(A5)+
+00000984  1AFC 0057                551      MOVE.B      #'W',(A5)+
+00000988  1AFC 0020                552      MOVE.B      #' ',(A5)+
+0000098C  1AFC 0020                553      MOVE.B      #' ',(A5)+
+00000990                           554      
+00000990  3C05                     555      MOVE.W      D5, D6                     
+00000992  E75E                     556      ROL.W       #3, D6
+00000994  3A06                     557      MOVE.W      D6, D5
+00000996  0246 0007                558      ANDI.W      #$0007, D6
+0000099A  CCFC 0006                559      MULU        #6, D6
+0000099E  41F8 07F4                560      LEA         EA_MODE, A0
+000009A2  4EB0 6000                561      JSR         00(A0,D6)   
+000009A6                           562         
+000009A6  4E75                     563      RTS
+000009A8                           564  
+000009A8                           565  THREE2010
+000009A8  3C07                     566      MOVE.W      D7, D6
+000009AA  0246 FF00                567      ANDI.W      #$FF00, D6
+000009AE  BC7C 4200                568      CMP.W       #$4200, D6
+000009B2  6700 001E                569      BEQ         IS_CLR
+000009B6                           570      
+000009B6  1AFC 004A                571      MOVE.B      #'J',(A5)+
+000009BA  1AFC 0053                572      MOVE.B      #'S',(A5)+
+000009BE  1AFC 0052                573      MOVE.B      #'R',(A5)+
+000009C2  1AFC 0020                574      MOVE.B      #' ',(A5)+
+000009C6  1AFC 0020                575      MOVE.B      #' ',(A5)+    
+000009CA  1AFC 0020                576      MOVE.B      #' ',(A5)+ 
+000009CE  6000 001E                577      BRA         THREE2010_EA   
+000009D2                           578      
+000009D2                           579  IS_CLR
+000009D2  1AFC 0043                580      MOVE.B      #'C',(A5)+
+000009D6  1AFC 004C                581      MOVE.B      #'L',(A5)+
+000009DA  1AFC 0052                582      MOVE.B      #'R',(A5)+
+000009DE  1AFC 002E                583      MOVE.B      #'.',(A5)+
+000009E2  1AFC 004C                584      MOVE.B      #'L',(A5)+
+000009E6  1AFC 0020                585      MOVE.B      #' ',(A5)+
+000009EA  1AFC 0020                586      MOVE.B      #' ',(A5)+
+000009EE                           587  THREE2010_EA    
+000009EE  3C05                     588      MOVE.W      D5, D6                     
+000009F0  E75E                     589      ROL.W       #3, D6
+000009F2  3A06                     590      MOVE.W      D6, D5
+000009F4  0246 0007                591      ANDI.W      #$0007, D6
+000009F8  CCFC 0006                592      MULU        #6, D6
+000009FC  41F8 07F4                593      LEA         EA_MODE, A0
+00000A00  4EB0 6000                594      JSR         00(A0,D6)  
+00000A04  4E75                     595      RTS
+00000A06                           596  THREE2011
+00000A06  4E75                     597      RTS
+00000A08                           598  THREE2100
+00000A08  4E75                     599      RTS
+00000A0A                           600  THREE2101
+00000A0A  4E75                     601      RTS
+00000A0C                           602  THREE2110
+00000A0C  4E75                     603      RTS
+00000A0E                           604  THREE2111 
+00000A0E  1AFC 004C                605      MOVE.B          #'L',(A5)+
+00000A12  1AFC 0045                606      MOVE.B          #'E',(A5)+
+00000A16  1AFC 0041                607      MOVE.B          #'A',(A5)+
+00000A1A  1AFC 0020                608      MOVE.B          #' ',(A5)+
+00000A1E  1AFC 0020                609      MOVE.B          #' ',(A5)+
+00000A22  1AFC 0020                610      MOVE.B          #' ',(A5)+
+00000A26  3C05                     611      MOVE.W      D5, D6                     
+00000A28  E75E                     612      ROL.W       #3, D6
+00000A2A  3A06                     613      MOVE.W      D6, D5
+00000A2C  0246 0007                614      ANDI.W      #$0007, D6
+00000A30  CCFC 0006                615      MULU        #6, D6
+00000A34  41F8 07F4                616      LEA         EA_MODE, A0
+00000A38  4EB0 6000                617      JSR         00(A0,D6)  
+00000A3C  1AFC 002C                618      MOVE.B      #',',(A5)+
+00000A40                           619      
+00000A40  4285                     620      CLR.L       D5
+00000A42  3A07                     621      MOVE.W      D7, D5
+00000A44  E99D                     622      ROL.L       #4, D5
+00000A46  4EB9 00000A6C            623      JSR         EAMODE010 
+00000A4C  4E75                     624      RTS
+00000A4E                           625      
+00000A4E                           626  
+00000A4E                           627  
+00000A4E                           628  
+00000A4E                           629  EAMODE000
+00000A4E  1AFC 0044                630      MOVE.B      #'D',(A5)+  
+00000A52  3C05                     631      MOVE.W      D5, D6                     
+00000A54  E75E                     632      ROL.W       #3, D6
+00000A56  3A06                     633      MOVE.W      D6, D5
+00000A58  0246 0007                634      ANDI.W      #$0007, D6
+00000A5C  CCFC 0006                635      MULU        #6, D6
+00000A60  41F8 0824                636      LEA         REGISTER, A0
+00000A64  4EB0 6000                637      JSR         00(A0,D6)
+00000A68  4E75                     638      RTS   
+00000A6A                           639  EAMODE001
+00000A6A  4E75                     640      RTS             
+00000A6C                           641  EAMODE010 
+00000A6C  1AFC 0028                642      MOVE.B      #'(',(A5)+  
+00000A70  1AFC 0041                643      MOVE.B      #'A',(A5)+  
+00000A74  3C05                     644      MOVE.W      D5, D6                     
+00000A76  E75E                     645      ROL.W       #3, D6
+00000A78  3A06                     646      MOVE.W      D6, D5
+00000A7A  0246 0007                647      ANDI.W      #$0007, D6
+00000A7E  CCFC 0006                648      MULU        #6, D6
+00000A82  41F8 0824                649      LEA         REGISTER, A0
+00000A86  4EB0 6000                650      JSR         00(A0,D6)
+00000A8A  1AFC 0029                651      MOVE.B      #')',(A5)+
+00000A8E  4E75                     652      RTS     
+00000A90                           653  EAMODE011 
+00000A90  1AFC 0028                654      MOVE.B      #'(',(A5)+  
+00000A94  1AFC 0041                655      MOVE.B      #'A',(A5)+  
+00000A98  3C05                     656      MOVE.W      D5, D6                     
+00000A9A  E75E                     657      ROL.W       #3, D6
+00000A9C  3A06                     658      MOVE.W      D6, D5
+00000A9E  0246 0007                659      ANDI.W      #$0007, D6
+00000AA2  CCFC 0006                660      MULU        #6, D6
+00000AA6  41F8 0824                661      LEA         REGISTER, A0
+00000AAA  4EB0 6000                662      JSR         00(A0,D6)
+00000AAE  1AFC 0029                663      MOVE.B      #')',(A5)+
+00000AB2  1AFC 002B                664      MOVE.B      #'+',(A5)+
+00000AB6  4E75                     665      RTS
+00000AB8                           666  EAMODE100
+00000AB8  1AFC 002D                667      MOVE.B      #'-',(A5)+
+00000ABC  1AFC 0028                668      MOVE.B      #'(',(A5)+  
+00000AC0  1AFC 0041                669      MOVE.B      #'A',(A5)+  
+00000AC4  3C05                     670      MOVE.W      D5, D6                     
+00000AC6  E75E                     671      ROL.W       #3, D6
+00000AC8  3A06                     672      MOVE.W      D6, D5
+00000ACA  0246 0007                673      ANDI.W      #$0007, D6
+00000ACE  CCFC 0006                674      MULU        #6, D6
+00000AD2  41F8 0824                675      LEA         REGISTER, A0
+00000AD6  4EB0 6000                676      JSR         00(A0,D6)
+00000ADA  1AFC 0029                677      MOVE.B      #')',(A5)+
+00000ADE  4E75                     678      RTS             
+00000AE0                           679  EAMODE101
+00000AE0  0639 000A 00000ED2       680      ADD.B       #10, BAD_DATA_SWITCH             
+00000AE8  4E75                     681      RTS             
+00000AEA                           682  EAMODE110
+00000AEA  0639 000A 00000ED2       683      ADD.B       #10, BAD_DATA_SWITCH             
+00000AF2  4E75                     684      RTS             
+00000AF4                           685  EAMODE111
+00000AF4  3C05                     686      MOVE.W      D5, D6                     
+00000AF6  E75E                     687      ROL.W       #3, D6
+00000AF8  3A06                     688      MOVE.W      D6, D5
+00000AFA  0246 0007                689      ANDI.W      #$0007, D6
+00000AFE  CCFC 0006                690      MULU        #6, D6
+00000B02  41F8 0824                691      LEA         REGISTER, A0
+00000B06  4EB0 6000                692      JSR         00(A0,D6)
+00000B0A  4E75                     693      RTS         
+00000B0C                           694  
+00000B0C                           695  
+00000B0C                           696  * Registers ------------------------------------------------
+00000B0C                           697  REGISTER000
+00000B0C  3C05                     698      MOVE.W      D5, D6                     
+00000B0E  E15E                     699      ROL.W       #8, D6
+00000B10  EB5E                     700      ROL.W       #5, D6
+00000B12  0246 0007                701      ANDI.W      #$0007, D6
+00000B16  BC3C 0007                702      CMP.B       #$7,D6
+00000B1A  6700 0006                703      BEQ         ReadNextW
+00000B1E  6000 0012                704      BRA         CREGISTER000
+00000B22                           705  ReadNextW
+00000B22  1C3C 0000                706      MOVE.B      #0,D6                           * Set 0
+00000B26  3A1E                     707      MOVE.W      (A6)+,D5                           * Bad Code to D5
+00000B28  163C 0004                708      MOVE.B      #4,D3
+00000B2C  4EB8 0634                709      JSR         WORD_ASCII
+00000B30  4E75                     710      RTS
+00000B32                           711  CREGISTER000
+00000B32  1AFC 0030                712      MOVE.B      #'0',(A5)+
+00000B36  4E75                     713      RTS
+00000B38                           714  REGISTER001
+00000B38  3C05                     715      MOVE.W      D5, D6                     
+00000B3A  E15E                     716      ROL.W       #8, D6
+00000B3C  EB5E                     717      ROL.W       #5, D6
+00000B3E  0246 0007                718      ANDI.W      #$0007, D6
+00000B42  BC3C 0007                719      CMP.B       #$7,D6
+00000B46  6700 0006                720      BEQ         ReadNextL
+00000B4A  6000 0012                721      BRA         CREGISTER001  
+00000B4E                           722  ReadNextL
+00000B4E  1C3C 0000                723      MOVE.B      #0,D6                           * Set 0
+00000B52  2A1E                     724      MOVE.L      (A6)+,D5                           * Bad Code to D5
+00000B54  163C 0008                725      MOVE.B      #8,D3
+00000B58  4EB8 0660                726      JSR         LONG_ASCII
+00000B5C  4E75                     727      RTS
+00000B5E                           728  
+00000B5E                           729  CREGISTER001  
+00000B5E  1AFC 0031                730      MOVE.B      #'1',(A5)+
+00000B62  4E75                     731      RTS
+00000B64                           732  REGISTER010
+00000B64  1AFC 0032                733      MOVE.B      #'2',(A5)+
+00000B68  4E75                     734      RTS
+00000B6A                           735  REGISTER011
+00000B6A  1AFC 0033                736      MOVE.B      #'3',(A5)+
+00000B6E  4E75                     737      RTS
+00000B70                           738  REGISTER100
+00000B70  1AFC 0034                739      MOVE.B      #'4',(A5)+
+00000B74  4E75                     740      RTS
+00000B76                           741  REGISTER101
+00000B76  1AFC 0035                742      MOVE.B      #'5',(A5)+
+00000B7A  4E75                     743      RTS
+00000B7C                           744  REGISTER110
+00000B7C  1AFC 0036                745      MOVE.B      #'6',(A5)+
+00000B80  4E75                     746      RTS
+00000B82                           747  REGISTER111
+00000B82  1AFC 0037                748      MOVE.B      #'7',(A5)+
+00000B86  4E75                     749      RTS
+00000B88                           750  *---------------------------------------------------------------
+00000B88                           751  
+00000B88                           752  
+00000B88                           753  ********************************************************************************************
+00000B88                           754  *------------------ PRINT CURRENT ADDRESS IN ASCII -----------------------------------------
+00000B88                           755  PRINT_CURRENT_ADD
+00000B88  240E                     756          MOVE.L      A6,D2                       * Move current address into D2
+00000B8A  1A3C 0000                757          MOVE.B      #0,D5                       * Set counter to read all hex
+00000B8E  1C3C 0008                758          MOVE.B      #8,D6                       
+00000B92                           759  CONVERT_HEX_ASCII
+00000B92  BC05                     760          CMP.B       D5,D6                       * Check if last hex character is read
+00000B94  6600 0012                761          BNE         SET_COUNTER_4               * Set counter to read 4 bits
+00000B98  103C 0006                762          MOVE.B      #6, D0
+00000B9C  123C 0020                763          MOVE.B      #32, D1
+00000BA0  4E4F                     764          TRAP        #15
+00000BA2  4E4F                     765          TRAP        #15
+00000BA4  4E4F                     766          TRAP        #15
+00000BA6  4E75                     767          RTS
+00000BA8                           768  SET_COUNTER_4
+00000BA8  163C 0000                769          MOVE.B      #0,D3                       
+00000BAC  183C 0004                770          MOVE.B      #4,D4    
+00000BB0                           771  Loop
+00000BB0  B803                     772          CMP.B       D3,D4                       * Read one character at a time
+00000BB2  6700 0018                773          BEQ         STORE_ONE_CHAR
+00000BB6  E38A                     774          LSL.L       #1,D2
+00000BB8  6400 0008                775          BCC         ADDZERO
+00000BBC  5201                     776          ADDI.B      #1,D1
+00000BBE  6000 0006                777          BRA         INCREMENT_BIT_LOOP
+00000BC2                           778  ADDZERO
+00000BC2  0601 0000                779          ADDI.B      #0,D1
+00000BC6                           780  INCREMENT_BIT_LOOP
+00000BC6  5203                     781          ADDI.B      #1,D3
+00000BC8  E389                     782          LSL.L       #1,D1
+00000BCA  60E4                     783          BRA         Loop
+00000BCC                           784  STORE_ONE_CHAR                                   * Store hex character
+00000BCC  E289                     785          LSR.L       #1,D1
+00000BCE  B23C 000A                786          CMP.B       #$A,D1
+00000BD2  6D00 000A                787          BLT         HEX_TO_ASCII_NUMBER
+00000BD6  0601 0037                788          ADDI.B      #$37,D1                     * HEX_TO_ASCII_LETTER
+00000BDA  6000 0006                789          BRA         INCREMENT_NEXT_HEX_LOOP
+00000BDE                           790  HEX_TO_ASCII_NUMBER
+00000BDE  0601 0030                791          ADDI.B      #$30,D1
+00000BE2                           792  INCREMENT_NEXT_HEX_LOOP
+00000BE2  5205                     793          ADDI.B      #1,D5
+00000BE4  103C 0006                794          MOVE.B      #6,D0
+00000BE8  4E4F                     795          TRAP        #15
+00000BEA  4281                     796          CLR.L       D1
+00000BEC  60A4                     797          BRA         CONVERT_HEX_ASCII
+00000BEE                           798  ***********************END OF PRINTING HEX ADDRESS TO ASCII *******************
+00000BEE                           799  
+00000BEE                           800  ********************************************************************************************
+00000BEE                           801  *------------------ KEY -  -----------------------------------------------------------------
+00000BEE                           802  * Desctiption:
+00000BEE                           803  * Expect:       DO, D1, A1 to be empty
+00000BEE                           804  * 
+00000BEE                           805  *------------------ Prompt User for Enter, R, or Q -----------------------------------------
+00000BEE                           806  USER_RESPONSE
+00000BEE  43F9 00000D8E            807          LEA         PROMPTOPTIONS, A1            * Load the prompt message
+00000BF4  103C 000E                808          MOVE.B      #14,D0
+00000BF8  4E4F                     809          TRAP        #15 
+00000BFA  13FC 0000 00000ECE       810          MOVE.B      #$00, LINE_COUNT            * Reset Line Count 
+00000C02  103C 0005                811          MOVE.B      #5, D0                      * Log keyboard input
+00000C06  4E4F                     812          TRAP        #15                 
+00000C08  B23C 000D                813          CMP.B       #$D, D1                     * Compare the key press with ENTER
+00000C0C  6700 0028                814          BEQ         CLEAR_SCREEN                  
+00000C10  B23C 0072                815          CMP.B       #$72, D1                    * Compare the key press with R
+00000C14  6700 0030                816          BEQ         RESTART             
+00000C18  B23C 0052                817          CMP.B       #$52, D1                    * Compare the key press with r
+00000C1C  6700 0028                818          BEQ         RESTART             
+00000C20  B23C 0071                819          CMP.B       #$71, D1                    * Compare the key press with q
+00000C24  6700 0068                820          BEQ         END_PROGRAM             
+00000C28  B23C 0051                821          CMP.B       #$51, D1                    * Compare the key press with Q
+00000C2C  6700 0060                822          BEQ         END_PROGRAM            
+00000C30  B23C 005D                823          CMP.B       #$5D, D1                    * Check the key press with ENTER
+00000C34  66B8                     824          BNE         USER_RESPONSE              
+00000C36                           825  CLEAR_SCREEN
+00000C36  103C 000B                826          MOVE.B  #11, D0                         * Task 11 - Clear screen
+00000C3A  323C FF00                827          MOVE.W  #$FF00, D1          
+00000C3E  4E4F                     828          TRAP    #15                 
+00000C40  4281                     829          CLR.L   D1
+00000C42  4280                     830          CLR.L   D0
+00000C44  4E75                     831          RTS                 
+00000C46                           832  *------------------ RESTART ----------------------------------------------------------------
+00000C46                           833  RESTART
+00000C46  4EB8 0C36                834          JSR         CLEAR_SCREEN
+00000C4A  4EB9 00000C60            835          JSR         CLEAR_REGISTERS
+00000C50  2E7C 01000000            836          MOVEA.L     #$01000000,A7       Reset stack pointer
+00000C56  2C7C 01000000            837          MOVEA.L     #$01000000,A6       Reset stack pointer
+00000C5C  6000 F7A2                838          BRA         START
+00000C60                           839          
+00000C60                           840  ********************************************************************************************
+00000C60                           841  *------------------ CLEAR REGISTERS --------------------------------------------------------
+00000C60                           842  * Desctiption:
+00000C60                           843  * 
+00000C60                           844  CLEAR_REGISTERS
+00000C60  4280                     845          CLR.L   D0
+00000C62  4285                     846          CLR.L   D5
+00000C64  4282                     847          CLR.L   D2
+00000C66  4281                     848          CLR.L   D1
+00000C68  4283                     849          CLR.L   D3
+00000C6A  4284                     850          CLR.L   D4
+00000C6C  4286                     851          CLR.L   D6
+00000C6E  227C 00000000            852          MOVE.L  #$00000000,A1
+00000C74  247C 00000000            853          MOVE.L  #$00000000,A2
+00000C7A  267C 00000000            854          MOVE.L  #$00000000,A3
+00000C80  287C 00000000            855          MOVE.L  #$00000000,A4
+00000C86  2A7C 00000000            856          MOVE.L  #$00000000,A5
+00000C8C  4E75                     857          RTS
+00000C8E                           858  
+00000C8E                           859  ********************************************************************************************
+00000C8E                           860  ********************************************************************************************
+00000C8E                           861  ********************************************************************************************
+00000C8E                           862  END_PROGRAM
+00000C8E  FFFF FFFF                863          SIMHALT             ; halt simulator
+00000C92                           864  ********************************************************************************************
+00000C92                           865  ********************************************************************************************
+00000C92                           866  ********************************************************************************************
+00000C92                           867  
+00000C92                           868  
+00000C92                           869  ********************************************************************************************
+00000C92                           870  * VARIABLES & MESSAGES ---------------------------------------------------------------------
+00000C92  =0000000D                871  CR        EQU       $0D
+00000C92  =0000000A                872  LF        EQU       $0A
+00000C92                           873  
+00000C92                           874  * MESSAGES ---------------------------------------------------------------------------------------------
+00000C92= 20 20 20 20 20 20 ...    875  GREETING        DC.B    '       HELLO THERE, WELCOME TO AWESOME DISASSEMBLER'
+00000CC5= 0D 0A 4E 6F 74 65 ...    876                  DC.B    CR,LF,'Note: Addressess must be in HEX'
+00000CE6= 0D 0A 4E 6F 74 65 ...    877                  DC.B    CR,LF,'Note: Addressess must be in caps'
+00000D08= 0D 0A 20 20 20 20 ...    878                  DC.B    CR,LF,'    : Starting Address must be greater than 70000',CR,LF,CR,LF,CR,LF,0 
+00000D42= 454E 5445 5220 4...      879  PROMPTSADDR     DC.W    'ENTER A STARTING ADDRESS (ON CAPS): ',0
+00000D68= 454E 5445 5220 4...      880  PROMPTEADDR     DC.W    'ENTER A ENDING ADDRESS   (ON CAPS): ',0
+00000D8E= 50 72 65 73 73 3A ...    881  PROMPTOPTIONS    DC.B    'Press: ENTER to Continue || Q or q to Quit || R OR r to Restart',CR,LF,CR,LF,0
+00000DD2                           882  * ERROR MSG --------------------------------------------------------------------------------------------
+00000DD2= 45 52 52 4F 52 3A ...    883  INVALIDSADDR        DC.B    'ERROR: INVALID STARTING ADDRESS VERSUS ENDING.',CR,LF,CR,LF,0
+00000E05= 45 52 52 4F 52 3A ...    884  ERRORINPUTSIZE      DC.B    'ERROR: INVALID ADDRESS SIZE',CR,LF,CR,LF,0
+00000E25= 45 52 52 4F 52 3A ...    885  INVALIDCHAR         DC.B    'ERROR: INVALID ADDRESS CHARACTER',CR,LF,CR,LF,0
+00000E4A= 45 52 52 4F 52 3A ...    886  SGTEM               DC.B    'ERROR: STARTING ADDRESS > ENDING ADDRESS',CR,LF,CR,LF,0
+00000E77= 45 52 52 4F 52 3A ...    887  ODD_ADD_MSG         DC.B    'ERROR: ODD ADDRESS',CR,LF,CR,LF,0
+00000E8E= 45 52 52 4F 52 3A ...    888  STARTING_ADDR_7     DC.B    'ERROR: Invalid starting adress - must be greater than 7000',CR,LF,CR,LF,0
+00000ECD                           889  * VARIABLES --------------------------------------------------------------------------------------------
+00000ECE                           890  LINE_COUNT      DS.L    1
+00000ED2                           891  BAD_DATA_SWITCH DS.L    1    
+00000ED6                           892  SIZE            DS.B    1
+00000ED8                           893  INPUT_HEX       DS.L    1   * Use to temp hold starting and ending address
+00000EDC                           894  STARTING_ADD    DS.L    1   ;1 is the size, if I change to 4 then array size changes
+00000EE0                           895  ENDING_ADD      DS.L    1
+00000EE4= 00000001                 896  PRINTER         DC.L    1
+00000EE8                           897          
+00000EE8                           898          END    START        ; last line of source
 
 No errors detected
 No warnings generated
@@ -824,18 +909,18 @@ SYMBOL TABLE INFORMATION
 Symbol-name         Value
 -------------------------
 ADDR_LOOP           56A
-ADDZERO             AD6
+ADDZERO             BC2
 BADSIZES            46A
 BAD_DATA            5FE
-BAD_DATA_SWITCH     DE6
-CLEAR_REGISTERS     B74
-CLEAR_SCREEN        B4A
+BAD_DATA_SWITCH     ED2
+CLEAR_REGISTERS     C60
+CLEAR_SCREEN        C36
 CONTINUE_ADDR_LOOP  594
 CONTINUE_STORE      528
-CONVERT_HEX_ASCII   AA6
+CONVERT_HEX_ASCII   B92
 CR                  D
-CREGISTER000        A46
-CREGISTER001        A72
+CREGISTER000        B32
+CREGISTER001        B5E
 DATA_ASC            63E
 DATA_ASC2           66A
 DATA_CHAR           656
@@ -844,36 +929,38 @@ DATA_LET            646
 DATA_LET2           672
 DATA_NUM            64E
 DATA_NUM2           67A
-EAMODE000           962
-EAMODE001           97E
-EAMODE010           980
-EAMODE011           9A4
-EAMODE100           9CC
-EAMODE101           9F4
-EAMODE110           9FE
-EAMODE111           A08
+EAMODE000           A4E
+EAMODE001           A6A
+EAMODE010           A6C
+EAMODE011           A90
+EAMODE100           AB8
+EAMODE101           AE0
+EAMODE110           AEA
+EAMODE111           AF4
 EA_MODE             7F4
-ENDING_ADD          DF4
-END_PROGRAM         BA2
-ERRORINPUTSIZE      D19
+ENDING_ADD          EE0
+END_PROGRAM         C8E
+ERRORINPUTSIZE      E05
 GET_INSTRUCTION     68C
-GREETING            BA6
-HEX_TO_ASCII_NUMBER  AF2
-INCREMENT_BIT_LOOP  ADA
-INCREMENT_NEXT_HEX_LOOP  AF6
-INPUT_HEX           DEC
-INVALIDCHAR         D39
-INVALIDSADDR        CE6
+GREETING            C92
+HEX_TO_ASCII_NUMBER  BDE
+INCREMENT_BIT_LOOP  BC6
+INCREMENT_NEXT_HEX_LOOP  BE2
+INPUT_HEX           ED8
+INVALIDCHAR         E25
+INVALIDSADDR        DD2
 INVALID_CHARACTER   47E
-IS_NOP              8A0
-IS_RTS              8AE
+IS_CLR              9D2
+IS_JSR              90C
+IS_NOP              924
+IS_RTS              932
 LETTERS             4B2
 LF                  A
-LINE_COUNT          DE2
+LINE_COUNT          ECE
 LONG_ASCII          660
-LOOP                AC4
+LOOP                BB0
 NUMBER              4AA
-ODD_ADD_MSG         D8B
+ODD_ADD_MSG         E77
 ODD_TEST            4C8
 ODD_TEST_FAIL       4E0
 OPCODE0000          7C4
@@ -893,57 +980,58 @@ OPCODE1101          7EE
 OPCODE1110          7F0
 OPCODE1111          7BA
 OPCODE_JMP_TABLE    6A6
-PRINTER             DF8
+PRINTER             EE4
 PRINT_BAD_DATA      5D0
-PRINT_CURRENT_ADD   A9C
-PROMPTEADDR         C7C
-PROMPTOPTIONS       CA2
-PROMPTSADDR         C56
+PRINT_CURRENT_ADD   B88
+PROMPTEADDR         D68
+PROMPTOPTIONS       D8E
+PROMPTSADDR         D42
 READHEX             492
-READNEXTL           A62
-READNEXTW           A36
+READNEXTL           B4E
+READNEXTW           B22
 READ_EADDR          43A
 READ_SADDR          41C
 REGISTER            824
-REGISTER000         A20
-REGISTER001         A4C
-REGISTER010         A78
-REGISTER011         A7E
-REGISTER100         A84
-REGISTER101         A8A
-REGISTER110         A90
-REGISTER111         A96
-RESTART             B5A
-SET_COUNTER_4       ABC
+REGISTER000         B0C
+REGISTER001         B38
+REGISTER010         B64
+REGISTER011         B6A
+REGISTER100         B70
+REGISTER101         B76
+REGISTER110         B7C
+REGISTER111         B82
+RESTART             C46
+SET_COUNTER_4       BA8
 SGTE                556
-SGTEM               D5E
-SIZE                DEA
+SGTEM               E4A
+SIZE                ED6
 START               400
-STARTING_ADD        DF0
-STARTING_ADDR_7     DA2
+STARTING_ADD        EDC
+STARTING_ADDR_7     E8E
 STORE               4BA
 STORE_ADDRESS       4FC
 STORE_E             544
 STORE_ENDING        53A
-STORE_ONE_CHAR      AE0
+STORE_ONE_CHAR      BCC
 THREE000            854
-THREE001            856
-THREE010            86E
-THREE011            870
-THREE100            872
-THREE101            874
-THREE110            876
-THREE111            878
-THREE2000           8BC
-THREE2001           8F0
-THREE2010           924
-THREE2011           958
-THREE2100           95A
-THREE2101           95C
-THREE2110           95E
-THREE2111           960
+THREE001            86C
+THREE010            884
+THREE011            89C
+THREE100            8B4
+THREE101            8CC
+THREE110            8E4
+THREE111            8FC
+THREE2000           940
+THREE2001           974
+THREE2010           9A8
+THREE2010_EA        9EE
+THREE2011           A06
+THREE2100           A08
+THREE2101           A0A
+THREE2110           A0C
+THREE2111           A0E
 THREE_TABLE         726
 THREE_TABLE_2       766
-USER_RESPONSE       B02
+USER_RESPONSE       BEE
 VALIDATE_STORE      456
 WORD_ASCII          634
