@@ -434,7 +434,7 @@ THREE111
         ROL.W           #3, D6
         MOVE.W          D6, D5
         ANDI.W          #$0007, D6
-        MULU            #8, D6
+        MULU            #6, D6
         LEA             THREE_TABLE_2, A0
         JSR             00(A0,D6)   
         RTS
@@ -463,7 +463,7 @@ THREE2000
     ROL.W       #3, D6
     MOVE.W      D6, D5
     ANDI.W      #$0007, D6
-    MULU        #8, D6
+    MULU        #6, D6
     LEA         EA_MODE, A0
     JSR         00(A0,D6)   
        
@@ -481,10 +481,12 @@ THREE2001
     ROL.W       #3, D6
     MOVE.W      D6, D5
     ANDI.W      #$0007, D6
-    MULU        #8, D6
+    MULU        #6, D6
     LEA         EA_MODE, A0
-    JSR         00(A0,D6)  
+    JSR         00(A0,D6)   
+       
     RTS
+
 THREE2010
     MOVE.B      #'C',(A5)+
     MOVE.B      #'L',(A5)+
@@ -498,8 +500,7 @@ THREE2010
     ROL.W       #3, D6
     MOVE.W      D6, D5
     ANDI.W      #$0007, D6
-    MULU        #8, D6
-    MOVE.W      D6, D1
+    MULU        #6, D6
     LEA         EA_MODE, A0
     JSR         00(A0,D6)  
     RTS
@@ -780,6 +781,7 @@ ENDING_ADD      DS.L    1
 PRINTER         DC.L    1
         
         END    START        ; last line of source
+
 
 
 
