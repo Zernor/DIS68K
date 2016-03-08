@@ -1,6 +1,6 @@
 00007000 Starting Address
 Assembler used: EASy68K Editor/Assembler v5.15.04
-Created On: 3/7/2016 8:22:53 PM
+Created On: 3/7/2016 8:33:36 PM
 
 00000000                             1  *-----------------------------------------------------------
 00000000                             2  * Title      :
@@ -12,29 +12,38 @@ Created On: 3/7/2016 8:22:53 PM
 00007000                             8  START:                  ; first instruction of program
 00007000                             9  
 00007000                            10  * Put program code here
-00007000  4E71                      11      NOP
-00007002  4E75                      12      RTS
-00007004  4EB9 00007036             13      JSR     TEST
-0000700A  307C 1234                 14      MOVE.W  #$1234,A0
-0000700E  4EB0 0000                 15      JSR     0(A0,D0)
-00007012  4EB0 1000                 16      JSR     0(A0,D1)
-00007016  4EB0 2000                 17      JSR     0(A0,D2)
-0000701A  4EB1 0000                 18      JSR     0(A1,D0)
-0000701E  4E91                      19      JSR     (A1)
-00007020  4EB9 00040000             20      JSR     $40000
-00007026  4E92                      21      JSR     (A2)
-00007028  4E93                      22      JSR     (A3)
-0000702A  4E94                      23      JSR     (A4)
-0000702C  4E95                      24      JSR     (A5)
-0000702E  4CF9 0200 12345678        25      MOVEM.L  $12345678, A1
-00007036                            26   
-00007036                            27      
-00007036                            28  TEST    
-00007036  FFFF FFFF                 29      SIMHALT             ; halt simulator
-0000703A                            30  
-0000703A                            31  * Put variables and constants here
-0000703A                            32  
-0000703A                            33      END    START        ; last line of source
+00007000  123C 0020                 11      MOVE.B  #32,D1
+00007004  1401                      12      MOVE.B  D1,D2
+00007006  103C 007F                 13      MOVE.B  #$7F,D0
+0000700A  123C 0080                 14      MOVE.B  #$80,D1
+0000700E  343C 7FFF                 15      MOVE.W  #$7FFF,D2
+00007012  343C FFFF                 16      MOVE.W  #$FFFF,D2
+00007016  263C 7FFFFFFF             17      MOVE.L  #$7FFFFFFF,D3
+0000701C  4E4F                      18      TRAP    #15
+0000701E  4E4F                      19      TRAP    #15
+00007020  4E4F                      20      TRAP    #15
+00007022  123C 0021                 21      MOVE.B  #33,D1
+00007026  4E4F                      22      TRAP    #15
+00007028                            23  
+00007028                            24  
+00007028  1038 0003                 25      MOVE.B      $3,D0
+0000702C  2239 12345678             26      MOVE.L      $12345678, D1
+00007032  2438 0008                 27      MOVE.L      $8, D2
+00007036  4E71                      28      NOP
+00007038  4E75                      29      RTS
+0000703A  4EB8 1234                 30      JSR     $1234
+0000703E  4E91                      31      JSR     (A1)
+00007040  4E92                      32      JSR     (A2)
+00007042  4E93                      33      JSR     (A3)
+00007044  4E94                      34      JSR     (A4)
+00007046  4E95                      35      JSR     (A5)
+00007048                            36      
+00007048                            37      
+00007048  FFFF FFFF                 38      SIMHALT             ; halt simulator
+0000704C                            39  
+0000704C                            40  * Put variables and constants here
+0000704C                            41  
+0000704C                            42      END    START        ; last line of source
 
 No errors detected
 No warnings generated
@@ -44,4 +53,3 @@ SYMBOL TABLE INFORMATION
 Symbol-name         Value
 -------------------------
 START               7000
-TEST                7036
