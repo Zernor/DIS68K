@@ -646,7 +646,40 @@ OPCODE1001
 OPCODE1011
     RTS  
 OPCODE1100
+    MOVE.W          D5,D4
+    ANDI.W          #$1C00,D5
+    CMP.W           #$1C00,D5
+    BEQ             OPCODE1100_MULS
+
+OPCODE1100_MULS
+    MOVE.B      #'M',(A5)+
+    MOVE.B      #'U',(A5)+
+    MOVE.B      #'L',(A5)+
+    MOVE.B      #'S',(A5)+
+    MOVE.B      #'.',(A5)+
+    MOVE.B      #'W',(A5)+
+    MOVE.B      #' ',(A5)+
+    MOVE.B      #' ',(A5)+
+    MOVE.B      #' ',(A5)+ 
+
+
+    MOVE.W      D7,D6
+    ANDI.W      #$003F,D6
+    LEA         EA_MODE,A0
+    ROR.W       #3,D6
+    MOVE.W      D6,D5
+    ANDI.W      #$F,D6
+    MULU        #6,D6
+    JSR         0(A0,D6)
+    
+    MOVE.B      #',',(A5)+
+    ROL.W       #4,D7
+    ANDI.W      #$E000,D7
+    MOVE.L      D7,D5
+    JSR         EAMODE000
+    
     RTS
+    
 OPCODE1101
     RTS  
     
@@ -1209,12 +1242,14 @@ REGISTER000
     MOVE.W      D5, D6                     
     ROL.W       #8, D6
     ROL.W       #5, D6
+
     ANDI.W      #$0007, D6
     CMP.B       #$7,D6
     BEQ         ReadNextW
     BRA         CREGISTER000
 ReadNextW
     MOVE.B	    #0,D6                           * Set 0
+    MOVE.B      #'$',(A5)+
     MOVE.W      (A6)+,D5                           * Bad Code to D5
     MOVE.B      #4,D3
     JSR         WORD_ASCII
@@ -1227,12 +1262,14 @@ REGISTER001
     MOVE.W      D5, D6                     
     ROL.W       #8, D6
     ROL.W       #5, D6
+
     ANDI.W      #$0007, D6
     CMP.B       #$7,D6
     BEQ         ReadNextL
     BRA         CREGISTER001  
 ReadNextL
     MOVE.B	    #0,D6                           * Set 0
+    MOVE.B      #'$',(A5)+
     MOVE.L      (A6)+,D5                           * Bad Code to D5
     MOVE.B      #8,D3
     JSR         LONG_ASCII
@@ -1248,6 +1285,18 @@ REGISTER011
     MOVE.B      #'3',(A5)+
     RTS
 REGISTER100
+    MOVE.W      D5, D6                     
+    ROL.W       #8, D6
+    ROL.W       #5, D6
+
+    ANDI.W      #$0007, D6
+    CMP.B       #$7,D6
+    BEQ         ReadNextImmidiateData
+    BRA         CREGISTER100
+ReadNextImmidiateData
+    MOVE.B      #'#',(A5)+
+    BRA         ReadNextW
+CREGISTER100    
     MOVE.B      #'4',(A5)+
     RTS
 REGISTER101
@@ -1399,6 +1448,7 @@ SGTEM               DC.B    'ERROR: STARTING ADDRESS > ENDING ADDRESS',CR,LF,CR,
 ODD_ADD_MSG         DC.B    'ERROR: ODD ADDRESS',CR,LF,CR,LF,0
 STARTING_ADDR_7     DC.B    'ERROR: Invalid starting adress - must be greater than 7000',CR,LF,CR,LF,0
 * VARIABLES --------------------------------------------------------------------------------------------
+
 LINE_COUNT      DS.L    1
 BAD_DATA_SWITCH DS.L    1    
 SIZE            DS.B    1
@@ -1408,6 +1458,7 @@ ENDING_ADD      DS.L    1
 PRINTER         DC.L    1
         
         END    START        ; last line of source
+
 
 
 

@@ -95,37 +95,37 @@ START:                  ; first instruction of program
 *    MOVEM.L  (SP)+,A1-A5/D1-D4
 *    MOVEM.L  (SP)+,A1-A6/D2/D3
 *
-*TEST_BACK     RTS
+TEST_BACK     RTS
 
-*    LEA     $9800,A1
-*    LEA     $0001,A2
-*    LEA     (A3),A3
-*    LEA     $4000,A7
-*    LEA     $1230,A5
-*    LEA     $1301,A5
-*    LEA     $01001,A1
-***-------JRS & RTS-------------
-*   JSR      $0000
-*   JSR      $A000
-*   JSR      (A4)
-*   JSR      DUMB
-*DUMB        
-*    RTS 
+    LEA     $9800,A1
+    LEA     $0001,A2
+    LEA     (A3),A3
+    LEA     $4000,A7
+    LEA     $1230,A5
+    LEA     $1301,A5
+    LEA     $01001,A1
+**-------JRS & RTS-------------
+   JSR      $0000
+   JSR      $A000
+   JSR      (A4)
+   JSR      DUMB
+DUMB        
+    RTS 
 
 *-------CLR-------------------
-*    CLR.B   (A0)
-*    CLR.W   (A0)
-*    CLR.L   (A0)
-*    CLR.B   D0
-*    CLR.W   D0   
-*    CLR.L   D0
-*    CLR.B   $0001
-*    CLR.W   $0011
-*    CLR.L   $0001  
-*    CLR.B   $7FFF
-*    CLR.B   $8000       
-*    CLR.B   $AAAA
-*    CLR.W   $BBBB
+    CLR.B   (A0)
+    CLR.W   (A0)
+    CLR.L   (A0)
+    CLR.B   D0
+    CLR.W   D0   
+    CLR.L   D0
+    CLR.B   $0001
+    CLR.W   $0011
+    CLR.L   $0001  
+    CLR.B   $7FFF
+    CLR.B   $8000       
+    CLR.B   $AAAA
+    CLR.W   $BBBB
 ADD
 *    
 ***----------ADD--------------------------
@@ -196,37 +196,38 @@ ADD
 *    CMP.B   D0,D1
 *    BLE     TEST_BACK
 *
-**----------BCC PASS----------------------     
-*    
-*    MOVE.L  #$101,D1
-*    ADD.L   #$89,D1
-*    BCC     TEST_FORWARD
-*    MOVE.B  #4,D0
-*    MOVE.B  #6,D1
-*    CMP.B   D0,D1
-*    MOVE.L  #$101,D1
-*    ADD.L   #$89,D1
-*    BCC     TEST_BACK
-**----------BGT PASS----------------------
-*    MOVE.B  #4,D0
-*    MOVE.B  #6,D1
-*    CMP.B   D0,D1
-*    BGT     TEST_FORWARD
-*    MOVE.L  #$04,D0  
-*    MOVE.L  #$06,D1
-*    CMP.B   D0,D1
-*    BGT     TEST_BACK
+*----------BCC PASS----------------------     
+    
+    MOVE.L  #$101,D1
+    ADD.L   #$89,D1
+    BCC     TEST_FORWARD
+    MOVE.B  #4,D0
+    MOVE.B  #6,D1
+    CMP.B   D0,D1
+    MOVE.L  #$101,D1
+    ADD.L   #$89,D1
+    BCC     TEST_BACK
+*----------BGT PASS----------------------
+    MOVE.B  #4,D0
+    MOVE.B  #6,D1
+    CMP.B   D0,D1
+    BGT     TEST_FORWARD
+    MOVE.L  #$04,D0  
+    MOVE.L  #$06,D1
+    CMP.B   D0,D1
+    BGT     TEST_BACK
 ***-----------MULS------------------   
-*    MULS    $11,D0
-*    MULS    $1111,D2
-*    MULS    $11111111,D5
-*    MULS.W  #1,D4
-*    MULS.W  D0,D5
-*    MULS.W  #$00001,D4
-*    MULS.W  #$03,D3
-*    MULS.W  D0,D6
-*
-*TEST_FORWARD   RTS
+    MULS    $11,D0
+    MULS.W  $1111,D2
+    MULS    $1111,D2
+    MULS    $11111111,D5
+    MULS.W  #1,D4
+    MULS.W  D0,D5
+    MULS.W  #$1111,D4
+    MULS.W  #$03,D3
+    MULS.W  D0,D6
+
+TEST_FORWARD   RTS
 *
 ***-----------AND-------------------
 *    AND.B   $11,D5
@@ -250,58 +251,58 @@ ADD
 *    ROL.W   (a4)+ 
 *            
 **----------LSL----------------------------
-*    LSL.B   D0,D2
-*    LSL.L   D0,D2
-*    lSR.B   #7,D4  ;  bad case for LSL
-*    LSL.L   #8,D4
-*    LSL.W   $0FF00000 ; 
-*    LSL.W   (a4)+
-*    LSL.W   -(a6)
-*     
-*    ASR.L   #8,D0
-*    ASR.L   #7,D1
-*    ASR.L   #8,D2
-*    ASR.L   #6,D3
-*    ASR.L   #5,D4
-*    ASR.L   #4,D5
-*    ASR.L   #3,D6
-*    ASR.L   #2,D7
-*    ASR.L   #1,D7
-*  
-*    ASR.W   #8,D0
-*    ASR.W   #7,D1
-*    ASR.W   #6,D2
-*    ASR.W   #5,D3
-*    ASR.W   #4,D4
-*    ASR.W   #3,D5
-*    ASR.W   #2,D6
-*    ASR.W   #1,D7
-*    
-*    ASR.B   #8,D0
-*    ASR.B   #7,D1
-*    ASR.B   #6,D2
-*    ASR.B   #5,D3
-*    ASR.B   #4,D4
-*    ASR.B   #3,D5
-*    ASR.B   #2,D6
-*    ASR.B   #1,D7
-*    CLR.B   (A0)
-*    ASR.W   $0FF00000
-*    ASR.W   $0FF00000
-*    
-*    ASR.W   $0FF00000
-*    ASR.W   (A4)+
-*    ASR.W   -(A6)
-*
-*    ASR.B       D1, D0
-*    ASR.B       D2, D0
-*    ASR.B       D3, D0
-*    ASR.B       D4, D0
-*    ASR.B       D5, D6
-*    ASR.B       D1, D6
-*    ASR.B       D2, D6
-*    ASR.B       D3, D6
-*
+    LSL.B   D0,D2
+    LSL.L   D0,D2
+    lSR.B   #7,D4  ;  bad case for LSL
+    LSL.L   #8,D4
+    LSL.W   $0FF00000 ; 
+    LSL.W   (a4)+
+    LSL.W   -(a6)
+     
+    ASR.L   #8,D0
+    ASR.L   #7,D1
+    ASR.L   #8,D2
+    ASR.L   #6,D3
+    ASR.L   #5,D4
+    ASR.L   #4,D5
+    ASR.L   #3,D6
+    ASR.L   #2,D7
+    ASR.L   #1,D7
+  
+    ASR.W   #8,D0
+    ASR.W   #7,D1
+    ASR.W   #6,D2
+    ASR.W   #5,D3
+    ASR.W   #4,D4
+    ASR.W   #3,D5
+    ASR.W   #2,D6
+    ASR.W   #1,D7
+    
+    ASR.B   #8,D0
+    ASR.B   #7,D1
+    ASR.B   #6,D2
+    ASR.B   #5,D3
+    ASR.B   #4,D4
+    ASR.B   #3,D5
+    ASR.B   #2,D6
+    ASR.B   #1,D7
+    CLR.B   (A0)
+    ASR.W   $0FF00000
+    ASR.W   $0FF00000
+    
+    ASR.W   $0FF00000
+    ASR.W   (A4)+
+    ASR.W   -(A6)
+
+    ASR.B       D1, D0
+    ASR.B       D2, D0
+    ASR.B       D3, D0
+    ASR.B       D4, D0
+    ASR.B       D5, D6
+    ASR.B       D1, D6
+    ASR.B       D2, D6
+    ASR.B       D3, D6
+
 
     
     SIMHALT             ; halt simulator
@@ -309,6 +310,7 @@ ADD
 * Put variables and constants here
 
     END    START        ; last line of source
+
 
 
 
