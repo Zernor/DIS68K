@@ -8,14 +8,14 @@
 START:                  ; first instruction of program
 
 * Put program code here
-    NOP
-    RTS
-    JSR     $1234
-    JSR     (A1)
-    JSR     (A2)
-    JSR     (A3)
-    JSR     (A4)
-    JSR     (A5)
+*    NOP
+*    RTS
+*    JSR     $1234
+*    JSR     (A1)
+*    JSR     (A2)
+*    JSR     (A3)
+*    JSR     (A4)
+*    JSR     (A5)
     
 
 **-----------MOVE OPCODE-----------
@@ -65,17 +65,17 @@ START:                  ; first instruction of program
 *    MOVE.L  D5,$E123 
 *    
 **----------ADDI------------------
-*
-*    ADDI.B  #111,D1
-*    ADDI.B  #45,D1
-*    ADDI.W  #$101,D1
-*    ADDI.W  #$310, $2111
-*    ADDI.W  #10, $E1234560
-*    ADDI.L  #$101,D1
-*    ADDI.B  #101,(A3)+
-*    ADDI.B  #10,-(A4)
-*    ADDI.L  #$101,D1
-*    ADDI.L  #$5649,(A6)+
+
+    ADDI.B  #111,D1
+    ADDI.B  #45,D1
+    ADDI.W  #$101,D1
+    ADDI.W  #$310, $2111
+    ADDI.W  #10, $E1234560
+    ADDI.L  #$101,D1
+    ADDI.B  #101,(A3)+
+    ADDI.B  #10,-(A4)
+    ADDI.L  #$101,D1
+    ADDI.L  #$5649,(A6)+
 **-----------MOVEQ ------------------
 * 
 *    MOVEQ    #1, D4
@@ -97,36 +97,36 @@ START:                  ; first instruction of program
 *
 *TEST_BACK     RTS
 
-    LEA     $9800,A1
-    LEA     $0001,A2
-    LEA     (A3),A3
-    LEA     $4000,A7
-    LEA     $1230,A5
-    LEA     $1301,A5
-    LEA     $01001,A1
-**-------JRS & RTS-------------
-   JSR      $0000
-   JSR      $A000
-   JSR      (A4)
-   JSR      DUMB
-DUMB        
-    RTS 
+*    LEA     $9800,A1
+*    LEA     $0001,A2
+*    LEA     (A3),A3
+*    LEA     $4000,A7
+*    LEA     $1230,A5
+*    LEA     $1301,A5
+*    LEA     $01001,A1
+***-------JRS & RTS-------------
+*   JSR      $0000
+*   JSR      $A000
+*   JSR      (A4)
+*   JSR      DUMB
+*DUMB        
+*    RTS 
 
 *-------CLR-------------------
-    CLR.B   (A0)
-    CLR.W   (A0)
-    CLR.L   (A0)
-    CLR.B   D0
-    CLR.W   D0   
-    CLR.L   D0
-    CLR.B   $0001
-    CLR.W   $0011
-    CLR.L   $0001  
-    CLR.B   $7FFF
-    CLR.B   $8000       
-    CLR.B   $AAAA
-    CLR.W   $BBBB
-*    CLR.L   $CCCC
+*    CLR.B   (A0)
+*    CLR.W   (A0)
+*    CLR.L   (A0)
+*    CLR.B   D0
+*    CLR.W   D0   
+*    CLR.L   D0
+*    CLR.B   $0001
+*    CLR.W   $0011
+*    CLR.L   $0001  
+*    CLR.B   $7FFF
+*    CLR.B   $8000       
+*    CLR.B   $AAAA
+*    CLR.W   $BBBB
+ADD
 *    
 ***----------ADD--------------------------
 *    ADD.B   $11,D5
@@ -248,11 +248,8 @@ DUMB
 *    ROR.W   (a4)+
 *    ROL.w   -(a6)
 *    ROL.W   (a4)+ 
-*    
-*    
-*        
+*            
 **----------LSL----------------------------
-*
 *    LSL.B   D0,D2
 *    LSL.L   D0,D2
 *    lSR.B   #7,D4  ;  bad case for LSL
@@ -261,16 +258,59 @@ DUMB
 *    LSL.W   (a4)+
 *    LSL.W   -(a6)
 *     
-*    ASR.L   #8,D6
-*    ASL.L   #8,D4  ; bad case for ASR , fin
+*    ASR.L   #8,D0
+*    ASR.L   #7,D1
+*    ASR.L   #8,D2
+*    ASR.L   #6,D3
+*    ASR.L   #5,D4
+*    ASR.L   #4,D5
+*    ASR.L   #3,D6
+*    ASR.L   #2,D7
+*    ASR.L   #1,D7
+*  
+*    ASR.W   #8,D0
+*    ASR.W   #7,D1
+*    ASR.W   #6,D2
+*    ASR.W   #5,D3
+*    ASR.W   #4,D4
+*    ASR.W   #3,D5
+*    ASR.W   #2,D6
+*    ASR.W   #1,D7
+*    
+*    ASR.B   #8,D0
+*    ASR.B   #7,D1
+*    ASR.B   #6,D2
+*    ASR.B   #5,D3
+*    ASR.B   #4,D4
+*    ASR.B   #3,D5
+*    ASR.B   #2,D6
+*    ASR.B   #1,D7
+*    CLR.B   (A0)
 *    ASR.W   $0FF00000
-*    ASR.W   (a4)+
-*    ASR.W   -(a6)
+*    ASR.W   $0FF00000
+*    
+*    ASR.W   $0FF00000
+*    ASR.W   (A4)+
+*    ASR.W   -(A6)
+*
+*    ASR.B       D1, D0
+*    ASR.B       D2, D0
+*    ASR.B       D3, D0
+*    ASR.B       D4, D0
+*    ASR.B       D5, D6
+*    ASR.B       D1, D6
+*    ASR.B       D2, D6
+*    ASR.B       D3, D6
+*
+
+    
     SIMHALT             ; halt simulator
 
 * Put variables and constants here
 
     END    START        ; last line of source
+
+
 
 
 
