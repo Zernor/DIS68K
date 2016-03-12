@@ -10,7 +10,7 @@ START:                  ; first instruction of program
 * Put program code here 
     MOVE.W  #$70B0,D1
     ADDI.W  #$FF8A,D1
-    ADDI.W  #$2,D1
+    ADDI.W  #$7F,D1
 *    NOP
 *    RTS
 *    JSR     $1234
@@ -345,6 +345,7 @@ TEST_FORWARD   RTS
 * Put variables and constants here
 
     END    START        ; last line of source
+
 
 
 
