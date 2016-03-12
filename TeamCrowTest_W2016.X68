@@ -7,7 +7,10 @@
     ORG    $7000
 START:                  ; first instruction of program
 
-* Put program code here
+* Put program code here 
+    MOVE.W  #$70B0,D1
+    ADDI.W  #$FF8A,D1
+    ADDI.W  #$2,D1
 *    NOP
 *    RTS
 *    JSR     $1234
@@ -19,51 +22,51 @@ START:                  ; first instruction of program
     
 
 **-----------MOVE OPCODE-----------
-*    MOVE.B  #101,D1
-*    MOVE.B  $48,D2
-*    MOVE.B  #$AA,D1
-*    MOVE.B  D4,(A6)+
-*    MOVE.B  D2,(A5)
-*    MOVE.B  D5,-(A2)
-*    MOVE.B  (A1),D4
-*    MOVE.B  (A2)+,D3
-*    MOVE.B  -(A1),D1
-*    MOVE.B  #$44,D2
-*    MOVE.B  D0,-(A7)
-*    MOVE.B  D0, $E111
-*    MOVE.B  D0, $E1234560
-* 
+    MOVE.B  #101,D1
+    MOVE.B  $48,D2
+    MOVE.B  #$AA,D1
+    MOVE.B  D4,(A6)+
+    MOVE.B  D2,(A5)
+    MOVE.B  D5,-(A2)
+    MOVE.B  (A1),D4
+    MOVE.B  (A2)+,D3
+    MOVE.B  -(A1),D1
+    MOVE.B  #$44,D2
+    MOVE.B  D0,-(A7)
+    MOVE.B  D0, $E111
+    MOVE.B  D0, $E1234560
+ 
 **----------MOVE.W-------------------
-*    MOVE.W  #1201,D1
-*    MOVE.W  $418,D2
-*    MOVE.W  #$BA,D1
-*    MOVE.W  D1,(A6)+
-*    MOVE.W  D0,(A2)
-*    MOVE.W  D0,-(A0)
-*    MOVE.W  (A1),D1
-*    MOVE.W  (A1)+,D1
-*    MOVE.W  -(A1),D1
-*    MOVE.W  #$4120,D2
-*    MOVE.W  D0,D1
-*    MOVE.W  D0,$E111
-*    MOVE.W  D0,$1234   
-*  
+    MOVE.W  #1201,D1
+    MOVE.W  $418,D2
+    MOVE.W  #$BA,D1
+    MOVE.W  D1,(A6)+
+    MOVE.W  D0,(A2)
+    MOVE.W  D0,-(A0)
+    MOVE.W  (A1),D1
+    MOVE.W  (A1)+,D1
+    MOVE.W  -(A1),D1
+    MOVE.W  #$4120,D2
+    MOVE.W  D0,D1
+    MOVE.W  D0,$E111
+    MOVE.W  D0,$1234   
+  
 **-----------MOVE.L---------------
-* 
-*    MOVE.L  #1201,D1
-*    MOVE.L  $418,D2
-*    MOVE.L  #$BA,D1
-*    MOVE.L  D1,(A6)+
-*    MOVE.L  D0,(A2)
-*    MOVE.L  D0,-(A0)
-*    MOVE.L  (A1),D1
-*    MOVE.L  (A1)+,D1
-*    MOVE.L  -(A1),D1
-*    MOVE.L  #$4120,D2
-*    MOVE.L  D2,D4
-*    MOVE.L  D4,$AE11  
-*    MOVE.L  D5,$E123 
-*    
+ 
+    MOVE.L  #1201,D1
+    MOVE.L  $418,D2
+    MOVE.L  #$BA,D1
+    MOVE.L  D1,(A6)+
+    MOVE.L  D0,(A2)
+    MOVE.L  D0,-(A0)
+    MOVE.L  (A1),D1
+    MOVE.L  (A1)+,D1
+    MOVE.L  -(A1),D1
+    MOVE.L  #$4120,D2
+    MOVE.L  D2,D4
+    MOVE.L  D4,$AE11  
+    MOVE.L  D5,$E123 
+    
 **----------ADDI------------------
 
     ADDI.B  #111,D1
@@ -187,19 +190,20 @@ ADD
 *    DIVU    $11111111,D4
 *    
 **----------BLE PASS---------------------  
-*    MOVE.B  #$04,D0
-*    MOVE.B  #$06,D1
-*    CMP.B   D0,D1
-*    BLE     TEST_FORWARD
-*    MOVE.L  #$04,D0  
-*    MOVE.L  #$06,D1
-*    CMP.B   D0,D1
-*    BLE     TEST_BACK
+    MOVE.B  #$04,D0
+    MOVE.B  #$06,D1
+    CMP.B   D0,D1
+    BLE     TEST_FORWARD
+    MOVE.L  #$04,D0  
+    MOVE.L  #$06,D1
+    CMP.B   D0,D1
+    BLE     TEST_BACK
 *
 *----------BCC PASS----------------------     
     
     MOVE.L  #$101,D1
     ADD.L   #$89,D1
+    ADDI.L   #$89,D1
     BCC     TEST_FORWARD
     MOVE.B  #4,D0
     MOVE.B  #6,D1
@@ -207,6 +211,7 @@ ADD
     MOVE.L  #$101,D1
     ADD.L   #$89,D1
     BCC     TEST_BACK
+TEST_FORWARD   RTS
 *----------BGT PASS----------------------
     MOVE.B  #4,D0
     MOVE.B  #6,D1
@@ -227,18 +232,48 @@ ADD
     MULS.W  #$03,D3
     MULS.W  D0,D6
 
-TEST_FORWARD   RTS
+*TEST_FORWARD   RTS
 *
 ***-----------AND-------------------
-*    AND.B   $11,D5
-*    AND.W   $1111,D5
-*    AND.L   $11111111,D5
-*    AND.B   $1111,D5
-*    AND.W   $11111111,D5  
-*    AND.B   D5,$11
-*    AND.W   D5,$1111
-*    AND.L   D5,$11111111    
-*    
+    AND.B   $11,D5
+    AND.W   $1111,D5
+    AND.L   $11111111,D5
+    AND.B   $1111,D5
+    AND.W   $11111111,D5  
+    AND.B   D5,$11
+    AND.W   D5,$1111
+    AND.L   D5,$11111111
+    AND.B   D1,$300
+    AND.B   D1,D0
+    AND.B   D2,D0
+    AND.W   D3,D0
+    AND.B   D4,D0
+    AND.B   D5,D0
+    AND.L   D6,D0
+    AND.B   D7,D0
+    AND.W   D1,D1
+    AND.L   D1,D1
+    AND.B   (A1),D1
+    AND.B   (A2),D2
+    AND.L   (A3),D2
+    AND.B   (A4),D2
+    AND.W   (A5),D2
+    AND.B   (A6),D2
+    AND.L   (A7),D2
+    AND.B   (A2)+,D2            
+    AND.L   -(A2),D2
+    AND.B   $4000,D2
+    AND.B   $7F,D2
+    AND.B   $80000000,D2
+    AND.W   D2,$80000000
+    AND.W   D3,$80000000
+    AND.W   D4,$80000000
+    AND.W   D5,$80000000
+    AND.W   D6,$80000000
+    AND.W   D7,$80000000
+    
+
+    
 **-----------ROR-----------------
 *    ROR.W   #6,D0
 *    ROL.B   D0,D2
@@ -310,6 +345,9 @@ TEST_FORWARD   RTS
 * Put variables and constants here
 
     END    START        ; last line of source
+
+
+
 
 
 
