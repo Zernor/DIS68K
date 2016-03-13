@@ -311,32 +311,32 @@ JUMP2
 ***-------9. NOP-------------------
 *    NOP
 ***-------10. MOVEM-------------------
-*
-*    MOVEM.L  D0-D7,-(SP)
-*    MOVEM.L  A3/D2,-(SP)
-*    MOVEM.L  A1-A5/D1-D4,-(SP)
-*    MOVEM.L  A1-A3,-(SP)
-*    MOVEM.L  (SP)+,D0-D7
-*    MOVEM.L  (SP)+,A3/D2
-*    MOVEM.L  (SP)+,A1-A5/D1-D4
-*    MOVEM.L  (SP)+,A1-A6/D2/D3   
-*
-*
+
+    MOVEM.L  D0-D7,-(SP)
+    MOVEM.L  A3/D2,-(SP)
+    MOVEM.L  A1-A5/D1-D4,-(SP)
+    MOVEM.L  A1-A3,-(SP)
+    MOVEM.L  (SP)+,D0-D7
+    MOVEM.L  (SP)+,A3/D2
+    MOVEM.L  (SP)+,A1-A5/D1-D4
+    MOVEM.L  (SP)+,A1-A6/D2/D3   
+
+
 ****----------10. BCC PASS---------------------- 
-*   CMP.B    D0,D2
-*   BCC      AAAA    
-*    
+   CMP.B    D0,D2
+   BCC      AAAA    
+    
 ****----------11. BLE PASS---------------------  
-*AAAA 
-*    CMP.W    #1,D4
-*    BLE      BBBB
-*        
+AAAA 
+    CMP.W    #1,D4
+    BLE      BBBB
+        
 ****----------12. BGT PASS----------------------
-*BBBB   
-*    CMP.B    $5, D4
-*    BGT      CCCC
-*CCCC  
-*    MOVEA.W   #4,A4         
+BBBB   
+    CMP.B    $5, D4
+    BGT      CCCC
+CCCC  
+    MOVEA.W   #4,A4         
 ****-----------14. MOVEQ ------------------
  
     MOVEQ    #1, D4   * BYTE AND An ONLY
@@ -357,14 +357,42 @@ JUMP2
     DIVU    $11111111,D4
  
 ****----------16. SUB-------------------------
-*    SUB.B   $11,D0
-*    SUB.W   $1111,D0
-*    SUB.L   $11111111,D0 
-*    SUB.B   $1111,D0
-*    SUB.W   $11111111,D0
-*    SUB.B   D0,$11
-*    SUB.W   D0,$1111
-*    SUB.L   D0,$11111111 
+    SUB.B   D1,D0
+*    SUB.B   A4,D0
+    SUB.B   (A4)+,D0 
+    SUB.B   -(A5),D0
+    SUB.B   $11,D0
+    SUB.B   $1234,D2
+    SUB.B   $AAAABBBB,D5
+    SUB.B   #1,D7
+    SUB.B   #12,D7  
+*    SUB.B   #1212,D7
+*    SUB.B   #12121234,D7
+
+    SUB.W   D1,D0
+    SUB.W   A4,D0
+    SUB.W   (A4)+,D0 
+    SUB.W   -(A5),D0
+    SUB.W   $11,D0
+    SUB.W   $1234,D2
+    SUB.W   $AAAABBBB,D5
+    SUB.W   #1,D7
+    SUB.W   #12,D7  
+    SUB.W   #1212,D7
+*    SUB.B   #12121234,D7
+
+    SUB.L   D1,D0
+    SUB.L   A4,D0
+    SUB.L   A4,D0
+    SUB.L   (A4)+,D0 
+    SUB.L   -(A5),D0
+    SUB.L   $11,D0
+    SUB.L   $1234,D2
+    SUB.L   $AAAABBBB,D5
+    SUB.L   #1,D7
+    SUB.L   #12,D7  
+    SUB.L   #1212,D7
+    SUB.L   #12121234,D7
 ****-----------17. CMP----------------- 
      CMP.B  D0, D6   * DESTINATION IS DN ONLY AND EA CANT BE AN
 *     CMP.B  A2, D2     
@@ -378,7 +406,7 @@ JUMP2
      CMP.B  $44440000,D7 
      CMP.B  #$1, D4
      CMP.B  #$10, D4   
-     CMP.L  #$2000,D5 
+*     CMP.B  #$2000,D5 
      
      CMP.W  D0, D6      
      CMP.W  (A4)+,D3     
@@ -407,97 +435,134 @@ JUMP2
      CMP.L  #$2000,D5 
      
  
-****-----------18. MULS------------------   
-*     MULS    $11,D0
-*     MULS.W  $1111,D2
-*     MULS    $1111,D2
-*     MULS    $11111111,D5
-*     MULS.W  #1,D4
-*     MULS.W  D0,D5
-*     MULS.W  #$1111,D4
-*     MULS.W  #$03,D3
-*     MULS.W  D0,D6
-*TEST_FORWARD   RTS
+****-----------18. MULS------------------ 
+  
+     MULS      D0,D6 
+     MULS      (A1),D6 
+     MULS      (A2)+,D0
+     MULS      -(A3),D2
+     MULS      $11,D2
+     MULS      $1111,D5
+     MULS      $11111111,D5
+     MULS      #1,D4
+     MULS      #$03,D3
+     MULS      #$1111,D4
+     MULS.W    D0,D6 
+     MULS.W    (A1),D6 
+     MULS.W    (A2)+,D0
+     MULS.W    -(A3),D2
+     MULS.W    $11,D2
+     MULS.W    $1111,D5
+     MULS.W    $11111111,D5
+     MULS.W    #1,D4
+     MULS.W    #$03,D3
+     MULS.W    #$1111,D4
+    
+
 ****-----------19. AND-------------------
-*    AND.B   $11,D5
-*    AND.W   $1111,D5
-*    AND.L   $11111111,D5
-*    AND.B   $1111,D5
-*    AND.W   $11111111,D5  
-*    AND.B   D5,$11
-*    AND.W   D5,$1111
-*    AND.L   D5,$11111111
-*    AND.B   D1,$300
-*    AND.B   D1,D0
-*    AND.B   D2,D0
-*    AND.W   D3,D0
-*    AND.B   D4,D0
-*    AND.B   D5,D0
-*    AND.L   D6,D0
-*    AND.B   D7,D0
-*    AND.W   D1,D1
-*    AND.L   D1,D1
-*    AND.B   (A1),D1
-*    AND.B   (A2),D2
-*    AND.L   (A3),D2
-*    AND.B   (A4),D2
-*    AND.W   (A5),D2
-*    AND.B   (A6),D2
-*    AND.L   (A7),D2
-*    AND.B   (A2)+,D2            
-*    AND.L   -(A2),D2
-*    AND.B   $4000,D2
-*    AND.B   $7F,D2
-*    AND.B   $80000000,D2
-*    AND.W   D2,$80000000
-*    AND.W   D3,$80000000
-*    AND.W   D4,$80000000
-*    AND.W   D5,$80000000
-*    AND.W   D6,$80000000
-*    AND.W   D7,$80000000
-*    
-*
+     AND.B  D3, D2
+     AND.B  (A1),D4     *DESTINATION CANT BE AN & #<DATA>
+     AND.B  (A2)+,D3
+     AND.B  -(A1),D1   
+     AND.B  $48,D2
+     AND.B  #1,D1
+     AND.B  #$AA,D1
+*     AND.B.B  #$4444,D2
+*     MOVE.B  #$4444888,D2
+    
+    
+*     MOVE.B  #$4444,(D2)
+*     MOVE.B  #$4444888,(D2)
+    
+     AND.B    D3, (A2)+
+     AND.B  #1,-(A1)
+     AND.B  #$AA,-(A1) 
+   
+     AND.B  D3,$12 
+     AND.B #1,$12 
+     AND.B  #$AA,$12    
+     AND.B  D3,$1212 
+
+     AND.B  #1,$1212 
+     AND.B  #$AA,$1212   
+     AND.B  D3,$12124444 
+     AND.B  #1,$12124444 
+     AND.B  #$AA,$12124444    
+
 ****----------20. ADD--------------------------
-*    ADD.B   $11,D5
-*    ADD.W   $1111,D5
-*    ADD.L   $11111111,D5
-*    ADD.B   $1111,D5
-*    ADD.W   $11111111,D5
-*    ADD.B   $48,D2
-*    ADD.B   #$DA,D3
-*    ADD.B   D3,(A6)+
-*    ADD.B   D1,(A2)
-*    ADD.B   D5,-(A0)
-*    ADD.B   #$40,D2
-*    ADD.B   D1,$E115
-*    ADD.B   D5,$E1234567	
-*    ADD.W   #101,A6
-*    ADD.W   $48,D3
-*    ADD.W   #$AA,D6
-*    ADD.W   D3,(A5)+
-*    ADD.W   D5,(A2)
-*    ADD.W   D2,-(A0)
-*    ADD.W   (A1),A5
-*    ADD.W   (A1)+,A1
-*    ADD.W   -(A1),A6
-*    ADD.W   #$40,D7
-*    ADD.W   D0,A2
-*    ADD.W   D0,$E115
-*    ADD.W   D0,$E1234567
-*    ADD.B   D5,$11
-*    ADD.W   D5,$1111
-*    ADD.L   D5,$11111111
+
+    ADD.B   $11,D5
+    ADD.B   $1111,D5
+    ADD.B   $11111111,D5
+    ADD.B   $1111,D5
+    ADD.W   $11111111,D5
+    ADD.B   $48,D2
+    ADD.B   #$DA,D3
+    ADD.B   D3,(A6)+
+    ADD.B   D1,(A2)
+    ADD.B   D5,-(A0)
+    ADD.B   #$40,D2
+    ADD.B   D1,$E115
+    ADD.B   D5,$E1234567
+	
+    ADD.W   #101,A6
+    ADD.W   $48,D3
+    ADD.W   #$AA,D6
+    ADD.W   D3,(A5)+
+    ADD.W   D5,(A2)
+    ADD.W   D2,-(A0)
+    ADD.W   (A1),A5
+    ADD.W   (A1)+,A1
+    ADD.W   -(A1),A6
+    ADD.W   #$40,D7
+    ADD.W   D0,A2
+    ADD.W   D0,$E115
+    ADD.W   D0,$E1234567
+    ADD.W   D5,$11
+    ADD.W    D5,$11111111
+    	
+    ADD.L   #101,A6
+    ADD.L   $48,D3
+    ADD.L   #$AA,D6
+    ADD.L   D3,(A5)+
+    ADD.L   D5,(A2)
+    ADD.L   D2,-(A0)
+    ADD.L   (A1),A5
+    ADD.L   (A1)+,A1
+    ADD.L   -(A1),A6
+    ADD.L   #$40,D7
+    ADD.L   D0,A2
+    ADD.L   D0,$E115
+    ADD.L   D0,$E1234567
+    ADD.L   D5,$11
+    ADD.L    D5,$11111111
+
 *
-**
 ****----------21. ADDA-------------------------
 *
-*    ADDX    -(A0),-(A1)  ; bad case
-*    ADDA.W  D0,A0
-*    ADDA.L  D1,A1
-*    ADD.L   A0,A1  
-*    ADDA.W  #123,A5
-*    ADDA.L  #123,A5
-*    ADD.L   #$123,A5
+    ADDA.W  D0,A0
+    ADDA.W  A2,A1
+    ADDA.W  (A0),A1    
+    ADDA.W  (A0)+,A1 
+    ADDA.W  $12,A5
+    ADDA.W  $123,A5
+    ADDA.W  $123,A5
+    ADDA.W  #12,A5
+    ADDA.W  #$12,A5
+    ADDA.W  #$1235,A5
+    ADDA.W  #$1235,A5
+    
+    ADDA.L  D0,A0
+    ADDA.L  A2,A1
+    ADDA.L  (A0),A1    
+    ADDA.L  (A0)+,A1 
+    ADDA.L  $12,A5
+    ADDA.L  $123,A5
+    ADDA.L  $123,A5
+    ADDA.L  #12,A5
+    ADDA.L  #$12,A5
+    ADDA.L  #$1235,A5
+    ADDA.L #$1235,A5
 *             
 ***----------22. ASR----------------------------    
 * ASR.B EA - EA IS NOT DN, AN, #<DATA>
