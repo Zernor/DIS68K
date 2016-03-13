@@ -539,6 +539,8 @@ OPCODE_MOVE_DECODER    *** Do Source ***
 C_OPCODE0001
     MOVE.B          #',',(A5)+
     MOVE.W          D7, D4
+    MOVE.W          D7, D5
+    ROL.W           #3,D5
     ANDI.W          #$01C0, D4
     CMP.W           #$0000, D4
     BEQ             DESTINATION_DN_CASE_0001
@@ -789,7 +791,7 @@ OPCODE0011
     BRA             OPCODE_MOVE_DECODER 
 *----------------------------------------------------END MOVE.W------------------------------
 ************************************************************************************************    
-*----------------------------------------------------JSR RTS NOP LEA------------------------------
+*----------------------------------------------------JSR RTS NOP LEA CLR ------------------------------
 OPCODE0100
     MOVE.W          D7,D4
     ANDI.W          #$0B80, D4
@@ -1132,6 +1134,7 @@ P_IS_MOVEQ
     MOVE.W          D7, D4
     ANDI.W          #$00FF, D4
     MOVE.B          #'#',(A5)+
+    MOVE.B          #'$',(A5)+
     MOVE.B              #0,D6                         
     MOVE.L          D4,D5                         
     MOVE.B          #8,D3
@@ -2590,6 +2593,10 @@ IS_RTS
     
     
 THREE2000
+    MOVE.W      D7,D4
+    ANDI.W      #$0F00,D4
+    CMP.W       #$0200,D4
+    BNE         ERROR
     MOVE.B      #'C',(A5)+
     MOVE.B      #'L',(A5)+
     MOVE.B      #'R',(A5)+
@@ -2605,9 +2612,16 @@ THREE2000
     MULU        #6, D6
     LEA         EA_MODE, A0
     JSR         00(A0,D6)   
-       
+    RTS
+ERROR
+    ADDI.B      #10,BAD_DATA_SWITCH  
     RTS
 THREE2001
+    MOVE.W      D7,D4
+    ANDI.W      #$FF00,D4
+    CMP.W       #$4200,D4
+    BNE         ERROR
+
     MOVE.B      #'C',(A5)+
     MOVE.B      #'L',(A5)+
     MOVE.B      #'R',(A5)+
@@ -2628,9 +2642,12 @@ THREE2001
 
 THREE2010
     MOVE.W      D7, D6
-    ANDI.W      #$FF00, D6
+    
+    ANDI.W      #$FE00, D6
     CMP.W       #$4200, D6
     BEQ         IS_CLR
+    CMP.W       #$4E00, D6
+    BNE         ERROR
     
     MOVE.B      #'J',(A5)+
     MOVE.B      #'S',(A5)+
@@ -2658,12 +2675,16 @@ THREE2010_EA
     JSR         00(A0,D6)  
     RTS
 THREE2011
+    ADDI.B      #10,BAD_DATA_SWITCH
     RTS
 THREE2100
+    ADDI.B      #10,BAD_DATA_SWITCH
     RTS
 THREE2101
+    ADDI.B      #10,BAD_DATA_SWITCH
     RTS
 THREE2110
+    ADDI.B      #10,BAD_DATA_SWITCH
     RTS
 THREE2111 
     MOVE.B      #'L',(A5)+
@@ -2684,7 +2705,7 @@ THREE2111
     CLR.L       D5
     MOVE.W      D7, D5
     ROL.L       #4, D5
-    JSR         EAMODE010 
+    JSR         EAMODE001 
     RTS
     
 
@@ -3034,6 +3055,7 @@ ENDING_ADD      DS.L    1
 PRINTER         DC.L    1
         
         END    START        ; last line of source
+
 
 
 
