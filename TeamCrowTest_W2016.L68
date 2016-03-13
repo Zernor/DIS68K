@@ -1,6 +1,6 @@
 00007000 Starting Address
 Assembler used: EASy68K Editor/Assembler v5.15.04
-Created On: 3/13/2016 11:40:12 AM
+Created On: 3/13/2016 1:31:22 PM
 
 00000000                             1  *-----------------------------------------------------------
 00000000                             2  * Title      :
@@ -1041,127 +1041,126 @@ Created On: 3/13/2016 11:40:12 AM
 00007A8C  9B80                    1037      SUBX.L  D0,D5
 00007A8E  9788                    1038      SUBX.L  -(A0),-(A3)
 00007A90                          1039   
-00007A90                          1040  ***** TEST BAD OPCODE FOR GROUP 1110 LSL, ASL, ROL----------------- 
+00007A90                          1040  ***** TEST BAD OPCODE FOR GROUP 1110 LSL, ASR, ROL----------------- 
 00007A90                          1041  **-----------------  ASR TEST GROUP 1110 -------------------
-00007A90  E600                    1042      ASR.B   #3, D0
-00007A92  E801                    1043      ASR.B   #4, D1
-00007A94  E820                    1044      ASR.B   D4, D0
+00007A90  E700                    1042      ASL.B   #3, D0
+00007A92  E901                    1043      ASL.B   #4, D1
+00007A94  E920                    1044      ASL.B   D4, D0
 00007A96                          1045      
-00007A96                          1046       
-00007A96  EE41                    1047      ASR.W   #7,D1
-00007A98  EC42                    1048      ASR.W   #6,D2
-00007A9A  E260                    1049      ASR.W   D1, D0
-00007A9C  E0D5                    1050      ASR.W   (A5)
-00007A9E  E0DF                    1051      ASR.W   (A7)+
-00007AA0  E0E4                    1052      ASR.W   -(A4)
-00007AA2  E0F8 0009               1053      ASR.W   $9
-00007AA6  E0F8 0019               1054      ASR.W   $19
-00007AAA  E0F8 0191               1055      ASR.W   $191
-00007AAE  E0F8 1919               1056      ASR.W   $1919
-00007AB2  E0F9 0FF00000           1057      ASR.W   $0FF00000
-00007AB8  E0F9 55555555           1058      ASR.W   $55555555  
-00007ABE                          1059      
-00007ABE  E082                    1060      ASR.L   #8,D2
-00007AC0  EE86                    1061      ASR.L   #7,D6
-00007AC2  E666                    1062      ASR.W   D3, D6
-00007AC4                          1063  **-----------------  LSR TEST GROUP 1110 -------------------
-00007AC4  EA08                    1064      LSR.B   #5, D0
-00007AC6  EE09                    1065      LSR.B   #7, D1
-00007AC8  EE2B                    1066      LSR.B   D7, D3
-00007ACA                          1067      
-00007ACA                          1068       
-00007ACA  E449                    1069      LSR.W   #2,D1
-00007ACC  E24A                    1070      LSR.W   #1,D2
-00007ACE  EC68                    1071      LSR.W   D6, D0
-00007AD0  E2D1                    1072      LSR.W   (A1)
-00007AD2  E2DB                    1073      LSR.W   (A3)+
-00007AD4  E2E4                    1074      LSR.W   -(A4)
-00007AD6  E2F8 0009               1075      LSR.W   $9
-00007ADA  E2F8 0019               1076      LSR.W   $19
-00007ADE  E2F8 0191               1077      LSR.W   $191
-00007AE2  E2F8 1919               1078      LSR.W   $1919
-00007AE6  E2F9 0FF00000           1079      LSR.W   $0FF00000
-00007AEC  E2F9 55555555           1080      LSR.W   $55555555  
-00007AF2                          1081      
-00007AF2  E08A                    1082      LSR.L   #8,D2
-00007AF4  EE8E                    1083      LSR.L   #7,D6
-00007AF6  E6AE                    1084      LSR.L   D3, D6
-00007AF8                          1085  **-----------------  ROR TEST GROUP 1110 -------------------
-00007AF8  EA18                    1086      ROR.B   #5, D0
-00007AFA  EE19                    1087      ROR.B   #7, D1
-00007AFC  EE3B                    1088      ROR.B   D7, D3
-00007AFE                          1089      
-00007AFE                          1090       
-00007AFE  E459                    1091      ROR.W   #2,D1
-00007B00  E25A                    1092      ROR.W   #1,D2
-00007B02  EC78                    1093      ROR.W   D6, D0
-00007B04  E6D1                    1094      ROR.W   (A1)
-00007B06  E6DB                    1095      ROR.W   (A3)+
-00007B08  E6E4                    1096      ROR.W   -(A4)
-00007B0A  E6F8 0009               1097      ROR.W   $9
-00007B0E  E6F8 0019               1098      ROR.W   $19
-00007B12  E6F8 0191               1099      ROR.W   $191
-00007B16  E6F8 1919               1100      ROR.W   $1919
-00007B1A  E6F9 0FF00000           1101      ROR.W   $0FF00000
-00007B20  E6F9 55555555           1102      ROR.W   $55555555  
-00007B26                          1103      
-00007B26  E09A                    1104      ROR.L   #8,D2
-00007B28  EE9E                    1105      ROR.L   #7,D6
-00007B2A  E6BE                    1106      ROR.L   D3, D6
-00007B2C                          1107      
-00007B2C                          1108  **-----------------  ROXL TEST GROUP 1110 -------------------    
-00007B2C  EA10                    1109      ROXR.B   #5, D0
-00007B2E  EE11                    1110      ROXR.B   #7, D1
-00007B30  EE33                    1111      ROXR.B   D7, D3
-00007B32                          1112      
-00007B32                          1113       
-00007B32  E451                    1114      ROXR.W   #2,D1
-00007B34  E252                    1115      ROXR.W   #1,D2
-00007B36  EC70                    1116      ROXR.W   D6, D0
-00007B38  E4D1                    1117      ROXR.W   (A1)
-00007B3A  E4DB                    1118      ROXR.W   (A3)+
-00007B3C  E4E4                    1119      ROXR.W   -(A4)
-00007B3E  E4F8 0009               1120      ROXR.W   $9
-00007B42  E4F8 0019               1121      ROXR.W   $19
-00007B46  E4F8 0191               1122      ROXR.W   $191
-00007B4A  E4F8 1919               1123      ROXR.W   $1919
-00007B4E  E4F9 0FF00000           1124      ROXR.W   $0FF00000
-00007B54  E4F9 55555555           1125      ROXR.W   $55555555  
-00007B5A                          1126      
-00007B5A  E092                    1127      ROXR.L   #8,D2
-00007B5C  EE96                    1128      ROXR.L   #7,D6
-00007B5E  E6B6                    1129      ROXR.L   D3, D6
-00007B60                          1130      
-00007B60                          1131  **-----------------  ROXL TEST GROUP 1110 -------------------  
-00007B60  EB10                    1132      ROXL.B   #5, D0
-00007B62  EF11                    1133      ROXL.B   #7, D1
-00007B64  EF33                    1134      ROXL.B   D7, D3
-00007B66                          1135      
-00007B66                          1136       
-00007B66  E551                    1137      ROXL.W   #2,D1
-00007B68  E352                    1138      ROXL.W   #1,D2
-00007B6A  ED70                    1139      ROXL.W   D6, D0
-00007B6C  E5D1                    1140      ROXL.W   (A1)
-00007B6E  E5DB                    1141      ROXL.W   (A3)+
-00007B70  E5E4                    1142      ROXL.W   -(A4)
-00007B72  E5F8 0009               1143      ROXL.W   $9
-00007B76  E5F8 0019               1144      ROXL.W   $19
-00007B7A  E5F8 0191               1145      ROXL.W   $191
-00007B7E  E5F8 1919               1146      ROXL.W   $1919
-00007B82  E5F9 0FF00000           1147      ROXL.W   $0FF00000
-00007B88  E5F9 55555555           1148      ROXL.W   $55555555  
-00007B8E                          1149      
-00007B8E  E192                    1150      ROXL.L   #8,D2
-00007B90  EF96                    1151      ROXL.L   #7,D6
-00007B92  E7B6                    1152      ROXL.L   D3, D6
-00007B94  =000000BA               1153  VAR1    EQU $BA    BVAR
-00007B94  =00001234               1154  VAR2    EQU $1234   WVAR
-00007B94  =FFAA1234               1155  VAR3    EQU $FFAA1234  WVAR
-00007B94  =00000012               1156  VAR4    EQU $12     DVAR
-00007B94  =00000000               1157  VAR5    EQU $00000000  ZVAR
-00007B94  =FCFCFCFC               1158  VAR6   EQU $FCFCFCFC    VBIN1
-00007B94                          1159  
-00007B94                          1160      END    START        ; last line of source
+00007A96  EF41                    1046      ASL.W   #7,D1
+00007A98  ED42                    1047      ASL.W   #6,D2
+00007A9A  E360                    1048      ASL.W   D1, D0
+00007A9C  E1D5                    1049      ASL.W   (A5)
+00007A9E  E1DF                    1050      ASL.W   (A7)+
+00007AA0  E1E4                    1051      ASL.W   -(A4)
+00007AA2  E1F8 0009               1052      ASL.W   $9
+00007AA6  E1F8 0019               1053      ASL.W   $19
+00007AAA  E1F8 0191               1054      ASL.W   $191
+00007AAE  E1F8 1919               1055      ASL.W   $1919
+00007AB2  E1F9 0FF00000           1056      ASL.W   $0FF00000
+00007AB8  E1F9 55555555           1057      ASL.W   $55555555  
+00007ABE                          1058      
+00007ABE  E182                    1059      ASL.L   #8,D2
+00007AC0  EF86                    1060      ASL.L   #7,D6
+00007AC2  E766                    1061      ASL.W   D3, D6
+00007AC4                          1062  **-----------------  LSR TEST GROUP 1110 -------------------
+00007AC4  EA08                    1063      LSR.B   #5, D0
+00007AC6  EE09                    1064      LSR.B   #7, D1
+00007AC8  EE2B                    1065      LSR.B   D7, D3
+00007ACA                          1066      
+00007ACA                          1067       
+00007ACA  E449                    1068      LSR.W   #2,D1
+00007ACC  E24A                    1069      LSR.W   #1,D2
+00007ACE  EC68                    1070      LSR.W   D6, D0
+00007AD0  E2D1                    1071      LSR.W   (A1)
+00007AD2  E2DB                    1072      LSR.W   (A3)+
+00007AD4  E2E4                    1073      LSR.W   -(A4)
+00007AD6  E2F8 0009               1074      LSR.W   $9
+00007ADA  E2F8 0019               1075      LSR.W   $19
+00007ADE  E2F8 0191               1076      LSR.W   $191
+00007AE2  E2F8 1919               1077      LSR.W   $1919
+00007AE6  E2F9 0FF00000           1078      LSR.W   $0FF00000
+00007AEC  E2F9 55555555           1079      LSR.W   $55555555  
+00007AF2                          1080      
+00007AF2  E08A                    1081      LSR.L   #8,D2
+00007AF4  EE8E                    1082      LSR.L   #7,D6
+00007AF6  E6AE                    1083      LSR.L   D3, D6
+00007AF8                          1084  **-----------------  ROR TEST GROUP 1110 -------------------
+00007AF8  EA18                    1085      ROR.B   #5, D0
+00007AFA  EE19                    1086      ROR.B   #7, D1
+00007AFC  EE3B                    1087      ROR.B   D7, D3
+00007AFE                          1088      
+00007AFE                          1089       
+00007AFE  E459                    1090      ROR.W   #2,D1
+00007B00  E25A                    1091      ROR.W   #1,D2
+00007B02  EC78                    1092      ROR.W   D6, D0
+00007B04  E6D1                    1093      ROR.W   (A1)
+00007B06  E6DB                    1094      ROR.W   (A3)+
+00007B08  E6E4                    1095      ROR.W   -(A4)
+00007B0A  E6F8 0009               1096      ROR.W   $9
+00007B0E  E6F8 0019               1097      ROR.W   $19
+00007B12  E6F8 0191               1098      ROR.W   $191
+00007B16  E6F8 1919               1099      ROR.W   $1919
+00007B1A  E6F9 0FF00000           1100      ROR.W   $0FF00000
+00007B20  E6F9 55555555           1101      ROR.W   $55555555  
+00007B26                          1102      
+00007B26  E09A                    1103      ROR.L   #8,D2
+00007B28  EE9E                    1104      ROR.L   #7,D6
+00007B2A  E6BE                    1105      ROR.L   D3, D6
+00007B2C                          1106      
+00007B2C                          1107  **-----------------  ROXL TEST GROUP 1110 -------------------    
+00007B2C  EA10                    1108      ROXR.B   #5, D0
+00007B2E  EE11                    1109      ROXR.B   #7, D1
+00007B30  EE33                    1110      ROXR.B   D7, D3
+00007B32                          1111      
+00007B32                          1112       
+00007B32  E451                    1113      ROXR.W   #2,D1
+00007B34  E252                    1114      ROXR.W   #1,D2
+00007B36  EC70                    1115      ROXR.W   D6, D0
+00007B38  E4D1                    1116      ROXR.W   (A1)
+00007B3A  E4DB                    1117      ROXR.W   (A3)+
+00007B3C  E4E4                    1118      ROXR.W   -(A4)
+00007B3E  E4F8 0009               1119      ROXR.W   $9
+00007B42  E4F8 0019               1120      ROXR.W   $19
+00007B46  E4F8 0191               1121      ROXR.W   $191
+00007B4A  E4F8 1919               1122      ROXR.W   $1919
+00007B4E  E4F9 0FF00000           1123      ROXR.W   $0FF00000
+00007B54  E4F9 55555555           1124      ROXR.W   $55555555  
+00007B5A                          1125      
+00007B5A  E092                    1126      ROXR.L   #8,D2
+00007B5C  EE96                    1127      ROXR.L   #7,D6
+00007B5E  E6B6                    1128      ROXR.L   D3, D6
+00007B60                          1129      
+00007B60                          1130  **-----------------  ROXL TEST GROUP 1110 -------------------  
+00007B60  EB10                    1131      ROXL.B   #5, D0
+00007B62  EF11                    1132      ROXL.B   #7, D1
+00007B64  EF33                    1133      ROXL.B   D7, D3
+00007B66                          1134      
+00007B66                          1135       
+00007B66  E551                    1136      ROXL.W   #2,D1
+00007B68  E352                    1137      ROXL.W   #1,D2
+00007B6A  ED70                    1138      ROXL.W   D6, D0
+00007B6C  E5D1                    1139      ROXL.W   (A1)
+00007B6E  E5DB                    1140      ROXL.W   (A3)+
+00007B70  E5E4                    1141      ROXL.W   -(A4)
+00007B72  E5F8 0009               1142      ROXL.W   $9
+00007B76  E5F8 0019               1143      ROXL.W   $19
+00007B7A  E5F8 0191               1144      ROXL.W   $191
+00007B7E  E5F8 1919               1145      ROXL.W   $1919
+00007B82  E5F9 0FF00000           1146      ROXL.W   $0FF00000
+00007B88  E5F9 55555555           1147      ROXL.W   $55555555  
+00007B8E                          1148      
+00007B8E  E192                    1149      ROXL.L   #8,D2
+00007B90  EF96                    1150      ROXL.L   #7,D6
+00007B92  E7B6                    1151      ROXL.L   D3, D6
+00007B94  =000000BA               1152  VAR1    EQU $BA    BVAR
+00007B94  =00001234               1153  VAR2    EQU $1234   WVAR
+00007B94  =FFAA1234               1154  VAR3    EQU $FFAA1234  WVAR
+00007B94  =00000012               1155  VAR4    EQU $12     DVAR
+00007B94  =00000000               1156  VAR5    EQU $00000000  ZVAR
+00007B94  =FCFCFCFC               1157  VAR6   EQU $FCFCFCFC    VBIN1
+00007B94                          1158  
+00007B94                          1159      END    START        ; last line of source
 
 No errors detected
 No warnings generated

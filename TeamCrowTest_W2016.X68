@@ -1037,29 +1037,29 @@ TESTBSR1011
     SUBX.L  D0,D5
     SUBX.L  -(A0),-(A3)
  
-***** TEST BAD OPCODE FOR GROUP 1110 LSL, ASL, ROL----------------- 
+***** TEST BAD OPCODE FOR GROUP 1110 LSL, ASR, ROL----------------- 
 **-----------------  ASR TEST GROUP 1110 -------------------
-    ASR.B   #3, D0
-    ASR.B   #4, D1
-    ASR.B   D4, D0
+    ASL.B   #3, D0
+    ASL.B   #4, D1
+    ASL.B   D4, D0
     
      
-    ASR.W   #7,D1
-    ASR.W   #6,D2
-    ASR.W   D1, D0
-    ASR.W   (A5)
-    ASR.W   (A7)+
-    ASR.W   -(A4)
-    ASR.W   $9
-    ASR.W   $19
-    ASR.W   $191
-    ASR.W   $1919
-    ASR.W   $0FF00000
-    ASR.W   $55555555  
+    ASL.W   #7,D1
+    ASL.W   #6,D2
+    ASL.W   D1, D0
+    ASL.W   (A5)
+    ASL.W   (A7)+
+    ASL.W   -(A4)
+    ASL.W   $9
+    ASL.W   $19
+    ASL.W   $191
+    ASL.W   $1919
+    ASL.W   $0FF00000
+    ASL.W   $55555555  
     
-    ASR.L   #8,D2
-    ASR.L   #7,D6
-    ASR.W   D3, D6
+    ASL.L   #8,D2
+    ASL.L   #7,D6
+    ASL.W   D3, D6
 **-----------------  LSR TEST GROUP 1110 -------------------
     LSR.B   #5, D0
     LSR.B   #7, D1
@@ -1158,6 +1158,7 @@ VAR5    EQU $00000000  ZVAR
 VAR6   EQU $FCFCFCFC    VBIN1
 
     END    START        ; last line of source
+
 
 
 
