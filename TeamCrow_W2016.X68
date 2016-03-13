@@ -150,7 +150,7 @@ ADDR_LOOP
         JSR         CLEAR_REGISTERS             * Clear registers
         MOVE.L      ENDING_ADD,A5               * Check current address against ending adress           
         CMP.L       A5,A6
-        BGT         END_PROGRAM    
+        BGT         END_PROGRAM_MSG    
 
         MOVE.L      #$00000000, A5
         CMP.B       #25, LINE_COUNT             * Check line counter
@@ -556,8 +556,8 @@ C_OPCODE0001
 DN_CASE_0001   
     MOVE.B          #'D',(A5)+
     MOVE.W          D7, D4
-    ROR.W           #4, D4
-    ROR.W           #3, D4
+*    ROR.W           #4, D4
+*    ROR.W           #3, D4
     ANDI.W          #$0007, D4
     LSL.W           #3, D4
     MOVE.W          D4, D5
@@ -571,8 +571,8 @@ DN_CASE_0001
 AN_CASE_0001   
     MOVE.B          #'A',(A5)+
     MOVE.W          D7, D4
-    ROR.W           #4, D4
-    ROR.W           #3, D4
+*    ROR.W           #4, D4
+*    ROR.W           #3, D4
     ANDI.W          #$0007, D4
     LSL.W           #3, D4
     MOVE.W          D4, D5
@@ -587,8 +587,8 @@ ABSOLUTE_AN_CASE_0001
     MOVE.B          #'(',(A5)+
     MOVE.B          #'A',(A5)+
     MOVE.W          D7, D4
-    ROR.W           #4, D4
-    ROR.W           #3, D4
+*    ROR.W           #4, D4
+*    ROR.W           #3, D4
     ANDI.W          #$0007, D4
     LSL.W           #3, D4
     MOVE.W          D4, D5
@@ -604,8 +604,8 @@ INCREMENT_AN_CASE_0001
     MOVE.B          #'(',(A5)+
     MOVE.B          #'A',(A5)+
     MOVE.W          D7, D4
-    ROR.W           #4, D4
-    ROR.W           #3, D4
+*    ROR.W           #4, D4
+*    ROR.W           #3, D4
     ANDI.W          #$0007, D4
     LSL.W           #3, D4
     MOVE.W          D4, D5
@@ -623,8 +623,8 @@ DECREMENT_AN_CASE_0001
     MOVE.B          #'(',(A5)+
     MOVE.B          #'A',(A5)+
     MOVE.W          D7, D4
-    ROR.W           #4, D4
-    ROR.W           #3, D4
+*    ROR.W           #4, D4
+*    ROR.W           #3, D4
     ANDI.W          #$0007, D4
     LSL.W           #3, D4
     MOVE.W          D4, D5
@@ -638,8 +638,8 @@ DECREMENT_AN_CASE_0001
     BRA             C_OPCODE0001
 EA_CASE_0001 
     MOVE.W          D7, D4
-    ROR.W           #4, D4
-    ROR.W           #3, D4
+*    ROR.W           #4, D4
+*    ROR.W           #3, D4
     ANDI.W          #$0007, D4
     CMP.W           #$0000, D4
     BEQ             EA_000_CASE_0001
@@ -654,12 +654,9 @@ EA_CASE_0001
 DESTINATION_DN_CASE_0001   
     MOVE.B          #'D',(A5)+
     MOVE.W          D7, D4
+    ROL.W           #7,D4
     ANDI.W          #$0007, D4
-    LSL.W           #3, D4
-    MOVE.W          D4, D5
     MOVE.W          D4, D6
-    LSR.W           #3, D6
-    ANDI.W          #$0007, D6
     MULU            #6, D6
     LEA             REGISTER, A0
     JSR             00(A0,D6)     
@@ -668,12 +665,9 @@ DESTINATION_ABSOLUTE_AN_0001
     MOVE.B          #'(',(A5)+
     MOVE.B          #'A',(A5)+
     MOVE.W          D7, D4
+    ROL.W           #7,D4
     ANDI.W          #$0007, D4
-    LSL.W           #3, D4
-    MOVE.W          D4, D5
     MOVE.W          D4, D6
-    LSR.W           #3, D6
-    ANDI.W          #$0007, D6
     MULU            #6, D6
     LEA             REGISTER, A0
     JSR             00(A0,D6)
@@ -683,15 +677,12 @@ DESTINATION_INCREMENT_AN_0001
     MOVE.B          #'(',(A5)+
     MOVE.B          #'A',(A5)+
     MOVE.W          D7, D4
+    ROL.W           #7,D4
     ANDI.W          #$0007, D4
-    LSL.W           #3, D4
-    MOVE.W          D4, D5
     MOVE.W          D4, D6
-    LSR.W           #3, D6
-    ANDI.W          #$0007, D6
     MULU            #6, D6
     LEA             REGISTER, A0
-    JSR             00(A0,D6)
+    JSR             00(A0,D6) 
     MOVE.B          #')',(A5)+
     MOVE.B          #'+',(A5)+
     RTS
@@ -700,28 +691,22 @@ DESTINATION_DECREMENT_AN_0001
     MOVE.B          #'(',(A5)+
     MOVE.B          #'A',(A5)+
     MOVE.W          D7, D4
+    ROL.W           #7,D4
     ANDI.W          #$0007, D4
-    LSL.W           #3, D4
-    MOVE.W          D4, D5
     MOVE.W          D4, D6
-    LSR.W           #3, D6
-    ANDI.W          #$0007, D6
     MULU            #6, D6
     LEA             REGISTER, A0
-    JSR             00(A0,D6)
+    JSR             00(A0,D6) 
     MOVE.B          #')',(A5)+
     RTS
 DESTINATION_EA_CASE_0001 
     MOVE.W          D7, D4
-    LSR.W           #8, D4
-    LSR.W           #1, D4
-   
+    ROL.w           #7,D4
     ANDI.W          #$0007, D4
     CMP.W           #$0000, D4
     BEQ             DEA_000_CASE_0001
     CMP.W           #$0001, D4
     BEQ             DEA_001_CASE_0001
-   
     ADD.B           #10, BAD_DATA_SWITCH  
     RTS
    
@@ -733,6 +718,7 @@ EA_000_CASE_0001
     JSR         WORD_ASCII
     BRA         C_OPCODE0001
 EA_001_CASE_0001
+    
     MOVE.B      #'$',(A5)+
     MOVE.B          #0,D6                         
     MOVE.L      (A6)+,D5                         
@@ -740,11 +726,21 @@ EA_001_CASE_0001
     JSR         LONG_ASCII    
     BRA         C_OPCODE0001
 EA_100_CASE_0001
+    MOVE.W      D7, D4
+    ANDI.W      #$F000,D4
+    MOVE.B      #'#',(A5)+
     MOVE.B      #'$',(A5)+
-    MOVE.B          #0,D6                          
-    MOVE.W      (A6)+,D5                         
+    MOVE.B          #0,D6
+    CMP.W       #$2000,D4
+    BEQ         EA_100_CASE_0001_LONG
+    MOVE.W      (A6)+,D5 
     MOVE.B      #4,D3 
     JSR         WORD_ASCII
+    BRA         C_OPCODE0001 
+EA_100_CASE_0001_LONG
+    MOVE.L      (A6)+,D5 
+    MOVE.B      #8,D3 
+    JSR         LONG_ASCII
     BRA         C_OPCODE0001  
     
     
@@ -1041,20 +1037,20 @@ OPCODE0110_BCC
 OPCODE0110_DISPLACEMENT
     MOVE.W          D7,D6                           *D7:6XXX  -> D6:6XXX
     MOVE.L          A6,D5                           *Save current address to D5
+    MOVE.B          #0,D0                           *Set counter
+    MOVE.B          #8,D1                           *Max Counter 
     ANDI.W          #$00FF, D6                      *D6:00XX
     CMP.W           #$00,D6                         *XX:00, then check the next 2 bytes from current address
     BEQ             OPCODE0110_DISPLACEMENT_WORD    
     CMP.W           #$FF,D6                         *XX:FF, then check the next 4 bytes from current address
     BEQ             OPCODE0110_DISPLACEMENT_LONG
-    MOVE.B          #0,D0                           *Set counter
-    MOVE.B          #8,D1                           *Max Counter 
     BRA             OPCODE011_TWOSCOMPLEMENT_BYTE   *XX:00<XX<FF, then must do twos complement because we have to subtract
 OPCODE0110_DISPLACEMENT_WORD
     MOVE.W          (A6)+,D6                        *Save the next word size from current address
     MOVE.B          #16,D1                          *Set counter for word-bit size
     MOVE.W          D6,D4                           *Copy D6 to D4
-    ANDI.W          #$F000,D4   
-    CMP.W           #$F000,D4                       *Checking to see if I need to go backwards
+    ANDI.W          #$8000,D4   
+    CMP.W           #$8000,D4                       *Checking to see if I need to go backwards
     BEQ             OPCODE011_TWOSCOMPLEMENT_WORD   
     ADD.W           D6,D5                           *Else, add the value with current address
     BRA             OPCODE0110_PRINT                *print word
@@ -1063,8 +1059,8 @@ OPCODE0110_DISPLACEMENT_LONG                        *same as OPCODE0110_DISPLACE
     MOVE.L          (A6)+,D6                        
     MOVE.B          #32,D1
     MOVE.L          D6,D4
-    ANDI.L          #$F0000000,D4
-    CMP.L           #$F0000000,D4
+    ANDI.L          #$80000000,D4
+    CMP.L           #$80000000,D4
     BEQ             OPCODE011_TWOSCOMPLEMENT_WORD
     ADD.L           D6,D5
     BRA             OPCODE0110_PRINT
@@ -1792,12 +1788,12 @@ OPCODE1100_AND_WORD
 OPCODE1100_AND_LONG
     MOVE.B      #2,D3
     RTS    
-    MOVE.B      #'A',(A5)+
-    MOVE.B      #'N',(A5)+
-    MOVE.B      #'D',(A5)+
-    MOVE.B      #'.',(A5)+
-    CMP.W       #0,D5
-    BEQ         OPCODE1100_AND_BYTE
+*    MOVE.B      #'A',(A5)+
+*    MOVE.B      #'N',(A5)+
+*    MOVE.B      #'D',(A5)+
+*    MOVE.B      #'.',(A5)+
+*    CMP.W       #0,D5
+*    BEQ         OPCODE1100_AND_BYTE
 
 OPCODE1100_MULS
     MOVE.B      #'M',(A5)+
@@ -2695,6 +2691,7 @@ THREE2111
 
 
 EAMODE000
+    MOVEM.L     D0-D7,-(SP)
     MOVE.B      #'D',(A5)+  
     MOVE.W      D5, D6                     
     ROL.W       #3, D6
@@ -2703,8 +2700,10 @@ EAMODE000
     MULU        #6, D6
     LEA         REGISTER, A0
     JSR         00(A0,D6)
+    MOVEM.L     (SP)+,D0-D7
     RTS   
 EAMODE001
+    MOVEM.L     D0-D7,-(SP)
     MOVE.B      #'A',(A5)+  
     MOVE.W      D5, D6                     
     ROL.W       #3, D6
@@ -2713,9 +2712,10 @@ EAMODE001
     MULU        #6, D6
     LEA         REGISTER, A0
     JSR         00(A0,D6)
-    RTS 
+    MOVEM.L     (SP)+,D0-D7
     RTS       		
 EAMODE010 
+    MOVEM.L     D0-D7,-(SP)
     MOVE.B      #'(',(A5)+  
     MOVE.B      #'A',(A5)+  
     MOVE.W      D5, D6                     
@@ -2726,8 +2726,10 @@ EAMODE010
     LEA         REGISTER, A0
     JSR         00(A0,D6)
     MOVE.B      #')',(A5)+
+    MOVEM.L     (SP)+,D0-D7
     RTS		
-EAMODE011 
+EAMODE011
+    MOVEM.L     D0-D7,-(SP) 
     MOVE.B      #'(',(A5)+  
     MOVE.B      #'A',(A5)+  
     MOVE.W      D5, D6                     
@@ -2739,8 +2741,10 @@ EAMODE011
     JSR         00(A0,D6)
     MOVE.B      #')',(A5)+
     MOVE.B      #'+',(A5)+
+    MOVEM.L     (SP)+,D0-D7
     RTS
 EAMODE100
+    MOVEM.L     D0-D7,-(SP)
     MOVE.B      #'-',(A5)+
     MOVE.B      #'(',(A5)+  
     MOVE.B      #'A',(A5)+  
@@ -2752,6 +2756,7 @@ EAMODE100
     LEA         REGISTER, A0
     JSR         00(A0,D6)
     MOVE.B      #')',(A5)+
+    MOVEM.L     (SP)+,D0-D7
     RTS      		
 EAMODE101
     ADD.B       #10, BAD_DATA_SWITCH             
@@ -2760,6 +2765,7 @@ EAMODE110
     ADD.B       #10, BAD_DATA_SWITCH             
     RTS     		
 EAMODE111
+    MOVEM.L     D0-D7,-(SP)
     MOVE.W      D5, D6                     
     ROL.W       #3, D6
     MOVE.W      D6, D5
@@ -2767,6 +2773,7 @@ EAMODE111
     MULU        #6, D6
     LEA         REGISTER, A0
     JSR         00(A0,D6)
+    MOVEM.L     (SP)+,D0-D7
     RTS 		
 
 
@@ -2969,7 +2976,26 @@ CLEAR_REGISTERS
 ********************************************************************************************
 ********************************************************************************************
 ********************************************************************************************
+END_PROGRAM_MSG
+        LEA         RESTART_PROGRAM_MSG, A1            * Load the prompt message
+        MOVE.B      #14,D0
+        TRAP        #15 
+        MOVE.B      #$00, LINE_COUNT            * Reset Line Count 
+        MOVE.B      #5, D0                      * Log keyboard input
+        TRAP        #15                 
+        CMP.B       #$D, D1                     * Compare the key press with ENTER
+        BEQ         CLEAR_SCREEN                  
+        CMP.B       #$59, D1                    * Compare the key press with Y
+        BEQ         RESTART             
+        CMP.B       #$79, D1                    * Compare the key press with y
+        BEQ         RESTART             
+        CMP.B       #$4E, D1                    * Compare the key press with N
+        BEQ         END_PROGRAM             
+        CMP.B       #$6E, D1                    * Compare the key press with n
+        BEQ         END_PROGRAM
+        
 END_PROGRAM
+        JSR         CLEAR_SCREEN        
         SIMHALT             ; halt simulator
 ********************************************************************************************
 ********************************************************************************************
@@ -2989,6 +3015,7 @@ GREETING        DC.B    '       HELLO THERE, WELCOME TO AWESOME DISASSEMBLER'
 PROMPTSADDR     DC.W    'ENTER A STARTING ADDRESS (ON CAPS): ',0
 PROMPTEADDR     DC.W    'ENTER A ENDING ADDRESS   (ON CAPS): ',0
 PROMPTOPTIONS    DC.B    'Press: ENTER to Continue || Q or q to Quit || R OR r to Restart',CR,LF,CR,LF,0
+RESTART_PROGRAM_MSG DC.B    'Press: Y/y to restart || N/n to end program',CR,LF,CR,LF,0
 * ERROR MSG --------------------------------------------------------------------------------------------
 INVALIDSADDR        DC.B    'ERROR: INVALID STARTING ADDRESS VERSUS ENDING.',CR,LF,CR,LF,0
 ERRORINPUTSIZE      DC.B    'ERROR: INVALID ADDRESS SIZE',CR,LF,CR,LF,0
@@ -3007,6 +3034,7 @@ ENDING_ADD      DS.L    1
 PRINTER         DC.L    1
         
         END    START        ; last line of source
+
 
 
 
