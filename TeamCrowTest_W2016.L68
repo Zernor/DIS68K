@@ -1,6 +1,6 @@
 00007000 Starting Address
 Assembler used: EASy68K Editor/Assembler v5.15.04
-Created On: 3/12/2016 6:20:19 PM
+Created On: 3/13/2016 11:40:12 AM
 
 00000000                             1  *-----------------------------------------------------------
 00000000                             2  * Title      :
@@ -10,7 +10,7 @@ Created On: 3/12/2016 6:20:19 PM
 00000000                             6  *-----------------------------------------------------------
 00007000                             7      ORG    $7000
 00007000                             8  START:                  ; first instruction of program
-00007000                             9      
+00007000                             9  
 00007000                            10  * Put program code here 
 00007000                            11  **----------1. ADDI------------------
 00007000                            12  **EA can't be An and #<data>
@@ -35,515 +35,1133 @@ Created On: 3/12/2016 6:20:19 PM
 00007054  06B8 000007D0 6666        31      ADDI.L  #2000, $6666
 0000705C  06B9 00000BB8 11112222    32      ADDI.L  #3000, $11112222
 00007066                            33      
-00007066                            34  **--------- TEST FOR BAD OPCODE----------------
-00007066                            35  
-00007066  0066 04D2                 36      ORI.W   #1234,-(A6)     
-0000706A  0C00 000C                 37      CMPI.B  #12,D0
-0000706E  0254 04D2                 38      ANDI.W  #1234, (A4)
-00007072  0678 08AE 1111            39      ADDI.W  #2222,$1111
-00007078  0478 0055 2222            40      SUBI.W  #$55, $2222
-0000707E  0A7C 0009                 41      EORI.W  #09,SR
-00007082  0C5D 0D05                 42      CMPI.W  #3333,(A5)+
-00007086  0512                      43      BTST.B  D2,(A2)
-00007088  0805 000C                 44      BTST.L  #12,D5   * BTST.W IS NOT WORK
-0000708C  035A                      45      BCHG.B  D1,(A2)+
-0000708E                            46      
-0000708E                            47      
-0000708E                            48  ***-----------2. MOVE.B OPCODE-----------
-0000708E                            49  
-0000708E                            50  *    MOVE.B  #101,D1
-0000708E                            51  *    MOVE.B  $48,D2
-0000708E                            52  *    MOVE.B  #$AA,D1
-0000708E                            53  *    MOVE.B  D4,(A6)+
-0000708E                            54  *    MOVE.B  D2,(A5)
-0000708E                            55  *    MOVE.B  D5,-(A2)
-0000708E                            56  *    MOVE.B  (A1),D4
-0000708E                            57  *    MOVE.B  (A2)+,D3
-0000708E                            58  *    MOVE.B  -(A1),D1
-0000708E                            59  *    MOVE.B  #$44,D2
-0000708E                            60  *    MOVE.B  D0,-(A7)
-0000708E                            61  *    MOVE.B  D0, $E111
-0000708E                            62  *    MOVE.B  D0, $E1234560
-0000708E                            63  * 
-0000708E                            64  ***----------3. MOVE.W-------------------
-0000708E                            65  *    MOVE.W  #1201,D1
-0000708E                            66  *    MOVE.W  $418,D2
-0000708E                            67  *    MOVE.W  #$BA,D1
-0000708E                            68  *    MOVE.W  D1,(A6)+
-0000708E                            69  *    MOVE.W  D0,(A2)
-0000708E                            70  *    MOVE.W  D0,-(A0)
-0000708E                            71  *    MOVE.W  (A1),D1
-0000708E                            72  *    MOVE.W  (A1)+,D1
-0000708E                            73  *    MOVE.W  -(A1),D1
-0000708E                            74  *    MOVE.W  #$4120,D2
-0000708E                            75  *    MOVE.W  D0,D1
-0000708E                            76  *    MOVE.W  D0,$E111
-0000708E                            77  *    MOVE.W  D0,$1234   
-0000708E                            78  *  
-0000708E                            79  ***-----------4. MOVE.L---------------
-0000708E                            80  * 
-0000708E                            81  *    MOVE.L  #1201,D1
-0000708E                            82  *    MOVE.L  $418,D2
-0000708E                            83  *    MOVE.L  #$BA,D1
-0000708E                            84  *    MOVE.L  D1,(A6)+
-0000708E                            85  *    MOVE.L  D0,(A2)
-0000708E                            86  *    MOVE.L  D0,-(A0)
-0000708E                            87  *    MOVE.L  (A1),D1
-0000708E                            88  *    MOVE.L  (A1)+,D1
-0000708E                            89  *    MOVE.L  -(A1),D1
-0000708E                            90  *    MOVE.L  #$4120,D2
-0000708E                            91  *    MOVE.L  D2,D4
-0000708E                            92  *    MOVE.L  D4,$AE11  
-0000708E                            93  *    MOVE.L  D5,$E123 
-0000708E                            94  *    
-0000708E                            95  *
-0000708E                            96  ****-----------5. LEA----------------
-0000708E  41D3                      97      LEA     (A3),A0         (An),An
-00007090  47D3                      98      LEA     (A3),A3
-00007092  43F9 00009800             99      LEA     $9800,A1
-00007098  45F8 0001                100      LEA     $0001,A2
-0000709C  4FF8 4000                101      LEA     $4000,A7
-000070A0  4BF8 1230                102      LEA     $1230,A5
-000070A4  4BF8 1301                103      LEA     $1301,A5
-000070A8  43F8 1001                104      LEA     $01001,A1    
-000070AC  43F9 00001234            105      LEA     VAR2,A1        (xxx).W,An
-000070B2  45F9 FFAA1234            106      LEA     VAR3,A2        (xxx).L,An
-000070B8  49F8 0001                107      LEA     $1,A4
-000070BC  4FF9 00123456            108      LEA     $123456,A7   
-000070C2                           109   
-000070C2                           110  ***-------6. JRS-------------
-000070C2  4EB8 0000                111      JSR      $0000
-000070C6  4EB9 0000A000            112      JSR      $A000
-000070CC  4E94                     113      JSR      (A4)
-000070CE  4EB8 1234                114      JSR     $1234
-000070D2  4E91                     115      JSR     (A1)
-000070D4  4E92                     116      JSR     (A2)
-000070D6  4E93                     117      JSR     (A3)
-000070D8  4E94                     118      JSR     (A4)
-000070DA  4E95                     119      JSR     (A5)
-000070DC  4EB9 0000725C            120      JSR     JUMP1
-000070E2  4EB9 00007260            121      JSR     JUMP2
-000070E8  4E91                     122      JSR     (A1)        (An)
-000070EA  4EB9 00001234            123      JSR     VAR2       (xxx).W
-000070F0  4EB9 FFAA1234            124      JSR     VAR3       (xxx).L   
-000070F6                           125  **-------7. CLR-------------------
-000070F6                           126  ** IF THE SIZE IS NOT SPECIFIED, IT AUTOMATICALLY GO WITH SIZE W   
-000070F6  4240                     127      CLR      D0
-000070F8                           128  *   CLR      A4         *NOT An
-000070F8  4252                     129      CLR     (A2)        (An)
-000070FA  425B                     130      CLR     (A3)+       (An)+
-000070FC  4260                     131      CLR     -(A0)
-000070FE  4279 00001234            132      CLR     VAR2       (xxx).W
-00007104  4279 FFAA1234            133      CLR     VAR3       (xxx).L
-0000710A  4278 1000                134      CLR     $1000
-0000710E  4279 20003000            135      CLR     $20003000
-00007114                           136  *   CLR     #3          NOT #
-00007114                           137     
-00007114  4200                     138      CLR.B   D0
-00007116  4203                     139      CLR.B   D3
-00007118  4210                     140      CLR.B   (A0)
-0000711A  4212                     141      CLR.B   (A2)
-0000711C  421F                     142      CLR.B   (A7)+       (An)+
-0000711E  4225                     143      CLR.B   -(A5)
-00007120  4238 7FFF                144      CLR.B   $7FFF     
-00007124  4239 00008000            145      CLR.B   $8000
-0000712A  4239 AAAABBBB            146      CLR.B   $AAAABBBB 
-00007130                           147      
-00007130  4240                     148      CLR.W   D0
-00007132  4245                     149      CLR.W   D5 
-00007134  4250                     150      CLR.W   (A0)
-00007136  425B                     151      CLR.W   (A3)+
-00007138  4265                     152      CLR.W   -(A5)
-0000713A  4278 0011                153      CLR.W   $0011      
-0000713E  4279 0000BBBB            154      CLR.W   $BBBB
-00007144  4279 23232323            155      CLR.W   $23232323
-0000714A                           156      
-0000714A  4280                     157      CLR.L   D0
-0000714C  4283                     158      CLR.L   D3 
-0000714E  4290                     159      CLR.L   (A0)
-00007150  4298                     160      CLR.L   (A0)+ 
-00007152  42A4                     161      CLR.L   -(A4)       -(An)
-00007154  42B8 0001                162      CLR.L   $0001 
-00007158  42B9 12351235            163      CLR.L   $12351235
-0000715E                           164      
-0000715E                           165  ***---------BAD OPCODE FOR CLR------------    
-0000715E                           166      
-0000715E                           167   
-0000715E  4042                     168      NEGX   D2    * NOT An AND #<DATA>  
-00007160  4053                     169      NEGX   (A3) 
-00007162  405C                     170      NEGX   (A4)+ 
-00007164  4064                     171      NEGX   -(A4) 
-00007166  4078 3444                172      NEGX   $3444 
-0000716A  4079 04444999            173      NEGX   $4444999
-00007170                           174      
-00007170  4440                     175      NEG   D0    * NOT An AND #<DATA>  
-00007172  4452                     176      NEG   (A2) 
-00007174  445B                     177      NEG   (A3)+ 
-00007176  4464                     178      NEG   -(A4) 
-00007178  4478 1234                179      NEG   $1234 
-0000717C  4479 44445555            180      NEG   $44445555
-00007182                           181      
-00007182  4643                     182      NOT   D3    * NOT An AND #<DATA>  
-00007184  4652                     183      NOT   (A2) 
-00007186  465B                     184      NOT   (A3)+ 
-00007188  4664                     185      NOT   -(A4)
-0000718A  4678 0012                186      NOT   $12 
-0000718E  4678 1234                187      NOT   $1234 
-00007192  4679 44445555            188      NOT   $44445555
-00007198                           189      
-00007198  4882                     190      EXT.W D2   *ONLY W AND L AND Dn
-0000719A  48C7                     191      EXT.L D7  
-0000719C                           192      
-0000719C                           193      *Subtracts the destination operand and the extend bit from zero.
-0000719C  4800                     194      NBCD.B D0       *BYTE AND Dn ONLY, NO An And #<DATA>
-0000719E                           195      
-0000719E                           196      *Exchange the 16-bit words (halves) of a data register.
-0000719E  4843                     197      SWAP  D3    * ONLY WORD SIZE AND Dn
-000071A0                           198      
-000071A0                           199      *Computes the effective address and pushes it onto the stack. The effective address is a long address.
-000071A0  4857                     200      PEA     (A7)
-000071A2  4878 4000                201      PEA     $4000
-000071A6  4879 40001111            202      PEA     $40001111
-000071AC                           203      
-000071AC                           204      *Forces an illegal instruction exception, vector number 4. All other illegalinstruction bit patterns
-000071AC                           205      * are reserved for future extension of the instruction set and
-000071AC                           206      *should not be used to force an exception.
-000071AC  4AFC                     207      ILLEGAL
-000071AE                           208      
-000071AE                           209      *Tests and sets the byte operand addressed by the effective address field.
-000071AE  4AC3                     210      TAS   D3     * ONLY ON BYTE AND NOT An AND #<DATA> 
-000071B0  4AD2                     211      TAS  (A2) 
-000071B2  4ADB                     212      TAS   (A3)+ 
-000071B4  4AE6                     213      TAS   -(A6)
-000071B6  4AF8 0022                214      TAS   $22 
-000071BA  4AF8 1004                215      TAS   $1004 
-000071BE  4AF9 49999995            216      TAS   $49999995    
-000071C4                           217      
-000071C4                           218      *Compares the operand with zero and sets the condition codes according to
-000071C4                           219      *the results of the test.
-000071C4  4A03                     220      TST.B   D3  
-000071C6                           221  *   TST.B   A4     INVALID   
-000071C6  4A15                     222      TST.B  (A5) 
-000071C8  4A1A                     223      TST.B  (A2)+ 
-000071CA  4A24                     224      TST.B  -(A4)
-000071CC  4A38 0034                225      TST.B   $34 
-000071D0  4A38 6666                226      TST.B   $6666 
-000071D4  4A39 49995555            227      TST.B   $49995555
-000071DA                           228  *   TST.B   #$4    INVALID  
-000071DA                           229      
-000071DA  4A43                     230      TST.W   D3  
-000071DC  4A55                     231      TST.W  (A5) 
-000071DE  4A5A                     232      TST.W  (A2)+ 
-000071E0  4A64                     233      TST.W  -(A4)
-000071E2  4A78 0034                234      TST.W   $34 
-000071E6  4A78 6666                235      TST.W   $6666 
-000071EA  4A79 49995555            236      TST.W   $49995555
-000071F0                           237      
-000071F0  4A83                     238      TST.L   D3  
-000071F2  4A92                     239      TST.L  (A2) 
-000071F4  4A9E                     240      TST.L  (A6)+ 
-000071F6  4AA4                     241      TST.L  -(A4)
-000071F8  4AB8 0011                242      TST.L   $11 
-000071FC  4AB9 0000ACDA            243      TST.L   $ACDA 
-00007202  4AB9 49995555            244      TST.L   $49995555
-00007208                           245      
-00007208                           246      *Causes a TRAP # < vector > exception.
-00007208  4E41                     247      TRAP   #1  *UNSIZED
-0000720A  4E4F                     248      TRAP   #15
-0000720C                           249      
-0000720C                           250      *Pushes the contents of the specified address register onto the stack.
-0000720C  4E52 0017                251      LINK    A2, #23
-00007210  4E53 000C                252      LINK    A3, #12
-00007214                           253      
-00007214                           254      *Loads the stack pointer from the specified address register, then loads the
-00007214                           255      *address register with the long word pulled from the top of the stack.
-00007214  4E5B                     256      UNLK   A3             *UNSIZED, An ONLY
-00007216                           257      
-00007216                           258      *Moves the contents of the user stack pointer to or from the specified address register.
-00007216  4E6B                     259      MOVE USP, A3
-00007218  4E62                     260      MOVE A2, USP
-0000721A                           261      
-0000721A                           262      *Asserts the RSTO signal for 512 (124 for MC68000, clock periods,
-0000721A                           263      *resetting all external devices. The processor state, other than the program counter, is
-0000721A                           264      *unaffected, and execution continues with the next instruction.
-0000721A  4E70                     265      RESET
-0000721C                           266      
-0000721C                           267      *Loads the processor state information stored in the exception stack frame
-0000721C                           268      *located at the top of the stack into the processor.
-0000721C  4E73                     269      RTE
-0000721E                           270      
-0000721E                           271      *If the overflow condition is set, causes a TRAPV exception with a vector
-0000721E                           272      *number 7. If the overflow condition is not set, the processor performs no operation and
-0000721E                           273      *execution continues with the next instruction
-0000721E  1638 0023                274      MOVE.B   $23, D3
-00007222  0643 03E8                275      ADDI.W   #1000, D3
-00007226  4E76                     276      TRAPV    *UNSIZED
-00007228                           277      
-00007228                           278      *Pulls the condition code and program counter values from the stack. The
-00007228                           279      *previous condition code and program counter values are lost. The supervisor portion
-00007228                           280      *of the status register is unaffected.
-00007228  4E77                     281      RTR
-0000722A                           282      
-0000722A                           283      *Program execution continues at the effective address specified by the instruction.
-0000722A  4ED3                     284      JMP    (A3)
-0000722C  4EF8 0080                285      JMP    $80
-00007230  4EF8 2000                286      JMP    $2000
-00007234  4EF9 10000000            287      JMP    $10000000
-0000723A                           288      
-0000723A                           289      *Compares the value in the data register specified in the instruction to zero and
-0000723A                           290      *to the upper bound (effective address operand).
-0000723A                           291      
-0000723A  4380                     292      CHK.W    D0,D1 
-0000723C  4391                     293      CHK.W   (A1),D1
-0000723E  4398                     294      CHK.W   (A0)+,D1
-00007240  43A0                     295      CHK.W   -(A0),D1
-00007242  49B8 1111                296      CHK.W   $1111,D4
-00007246  49B9 11111111            297      CHK.W   $11111111,D4
-0000724C  41BC 1000                298      CHK.W   #$1000,D0
-00007250                           299      
-00007250                           300  ****-------8. RTS-------------------
-00007250  4EB8 0000                301     JSR      $0000 
-00007254  4EB9 0000A000            302     JSR      $A000
-0000725A  4E94                     303     JSR      (A4)
-0000725C                           304  JUMP1    *For JSR & RTS test
-0000725C  1201                     305     MOVE.B  D1, D1
-0000725E  4E75                     306     RTS
-00007260                           307  
-00007260                           308  JUMP2   
-00007260  4E75                     309      RTS *For JSR & RTS test
-00007262                           310      
-00007262                           311  ***-------9. NOP-------------------
-00007262                           312  *    NOP
-00007262                           313  ***-------10. MOVEM-------------------
-00007262                           314  *
-00007262                           315  *    MOVEM.L  D0-D7,-(SP)
-00007262                           316  *    MOVEM.L  A3/D2,-(SP)
-00007262                           317  *    MOVEM.L  A1-A5/D1-D4,-(SP)
-00007262                           318  *    MOVEM.L  A1-A3,-(SP)
-00007262                           319  *    MOVEM.L  (SP)+,D0-D7
-00007262                           320  *    MOVEM.L  (SP)+,A3/D2
-00007262                           321  *    MOVEM.L  (SP)+,A1-A5/D1-D4
-00007262                           322  *    MOVEM.L  (SP)+,A1-A6/D2/D3   
-00007262                           323  *
-00007262                           324  *
-00007262                           325  ****----------10. BCC PASS---------------------- 
-00007262                           326  *   CMP.B    D0,D2
-00007262                           327  *   BCC      AAAA    
-00007262                           328  *    
-00007262                           329  ****----------11. BLE PASS---------------------  
-00007262                           330  *AAAA 
-00007262                           331  *    CMP.W    #1,D4
-00007262                           332  *    BLE      BBBB
-00007262                           333  *        
-00007262                           334  ****----------12. BGT PASS----------------------
-00007262                           335  *BBBB   
-00007262                           336  *    CMP.B    $5, D4
-00007262                           337  *    BGT      CCCC
-00007262                           338  *CCCC  
-00007262                           339  *    MOVEA.W   #4,A4         
-00007262                           340  ****-----------14. MOVEQ ------------------
-00007262                           341   
-00007262  7801                     342      MOVEQ    #1, D4   * BYTE AND An ONLY
-00007264  7802                     343      MOVEQ    #2, D4
-00007266  7803                     344      MOVEQ    #3,D4
-00007268  7A2D                     345      MOVEQ    #45, D5
-0000726A  7212                     346      MOVEQ    #$12,D1
-0000726C  7623                     347      MOVEQ    #$23,D3
-0000726E  7812                     348      MOVEQ    #$12,D4
-00007270  78FF                     349      MOVEQ    #255,D4 
-00007272                           350  
-00007272                           351  ****----------15. DIVU---------------------
-00007272  82C0                     352      DIVU    D0,D1
-00007274  80FC 1000                353      DIVU    #$1000,D0
-00007278  82D0                     354      DIVU    (A0),D1
-0000727A  88F9 11111111            355      DIVU    $11111111,D4
-00007280                           356    
-00007280                           357  ****----------16. SUB-------------------------
-00007280                           358  *    SUB.B   $11,D0
-00007280                           359  *    SUB.W   $1111,D0
-00007280                           360  *    SUB.L   $11111111,D0 
-00007280                           361  *    SUB.B   $1111,D0
-00007280                           362  *    SUB.W   $11111111,D0
-00007280                           363  *    SUB.B   D0,$11
-00007280                           364  *    SUB.W   D0,$1111
-00007280                           365  *    SUB.L   D0,$11111111 
-00007280                           366  ****-----------17. CMP----------------- 
-00007280                           367  *      CMP.W  #1, D6   
-00007280                           368  *      CMP.W  A2, D2     *An case 
-00007280                           369  *      CMP.W  D2, A3     *BAD DATA
-00007280                           370  *      CMP.W  D2, D6     *Dn case
-00007280                           371  *      CMP.W  (A3),D5    *(An) case
-00007280                           372  *      CMP.B  -(A1),D0  *-(An) case
-00007280                           373  *      CMP.B  (A2)+, D1  *(An)+ case
-00007280                           374  *      CMP.W  #$10, D4   * (xxx).W
-00007280                           375  *      CMP.L  #$2000,D5  * (xxx).L
-00007280                           376  ****-----------18. MULS------------------   
-00007280                           377  *     MULS    $11,D0
-00007280                           378  *     MULS.W  $1111,D2
-00007280                           379  *     MULS    $1111,D2
-00007280                           380  *     MULS    $11111111,D5
-00007280                           381  *     MULS.W  #1,D4
-00007280                           382  *     MULS.W  D0,D5
-00007280                           383  *     MULS.W  #$1111,D4
-00007280                           384  *     MULS.W  #$03,D3
-00007280                           385  *     MULS.W  D0,D6
-00007280                           386  *TEST_FORWARD   RTS
-00007280                           387  ****-----------19. AND-------------------
-00007280                           388  *    AND.B   $11,D5
-00007280                           389  *    AND.W   $1111,D5
-00007280                           390  *    AND.L   $11111111,D5
-00007280                           391  *    AND.B   $1111,D5
-00007280                           392  *    AND.W   $11111111,D5  
-00007280                           393  *    AND.B   D5,$11
-00007280                           394  *    AND.W   D5,$1111
-00007280                           395  *    AND.L   D5,$11111111
-00007280                           396  *    AND.B   D1,$300
-00007280                           397  *    AND.B   D1,D0
-00007280                           398  *    AND.B   D2,D0
-00007280                           399  *    AND.W   D3,D0
-00007280                           400  *    AND.B   D4,D0
-00007280                           401  *    AND.B   D5,D0
-00007280                           402  *    AND.L   D6,D0
-00007280                           403  *    AND.B   D7,D0
-00007280                           404  *    AND.W   D1,D1
-00007280                           405  *    AND.L   D1,D1
-00007280                           406  *    AND.B   (A1),D1
-00007280                           407  *    AND.B   (A2),D2
-00007280                           408  *    AND.L   (A3),D2
-00007280                           409  *    AND.B   (A4),D2
-00007280                           410  *    AND.W   (A5),D2
-00007280                           411  *    AND.B   (A6),D2
-00007280                           412  *    AND.L   (A7),D2
-00007280                           413  *    AND.B   (A2)+,D2            
-00007280                           414  *    AND.L   -(A2),D2
-00007280                           415  *    AND.B   $4000,D2
-00007280                           416  *    AND.B   $7F,D2
-00007280                           417  *    AND.B   $80000000,D2
-00007280                           418  *    AND.W   D2,$80000000
-00007280                           419  *    AND.W   D3,$80000000
-00007280                           420  *    AND.W   D4,$80000000
-00007280                           421  *    AND.W   D5,$80000000
-00007280                           422  *    AND.W   D6,$80000000
-00007280                           423  *    AND.W   D7,$80000000
-00007280                           424  *    
-00007280                           425  *
-00007280                           426  ****----------20. ADD--------------------------
-00007280                           427  *    ADD.B   $11,D5
-00007280                           428  *    ADD.W   $1111,D5
-00007280                           429  *    ADD.L   $11111111,D5
-00007280                           430  *    ADD.B   $1111,D5
-00007280                           431  *    ADD.W   $11111111,D5
-00007280                           432  *    ADD.B   $48,D2
-00007280                           433  *    ADD.B   #$DA,D3
-00007280                           434  *    ADD.B   D3,(A6)+
-00007280                           435  *    ADD.B   D1,(A2)
-00007280                           436  *    ADD.B   D5,-(A0)
-00007280                           437  *    ADD.B   #$40,D2
-00007280                           438  *    ADD.B   D1,$E115
-00007280                           439  *    ADD.B   D5,$E1234567   
-00007280                           440  *    ADD.W   #101,A6
-00007280                           441  *    ADD.W   $48,D3
-00007280                           442  *    ADD.W   #$AA,D6
-00007280                           443  *    ADD.W   D3,(A5)+
-00007280                           444  *    ADD.W   D5,(A2)
-00007280                           445  *    ADD.W   D2,-(A0)
-00007280                           446  *    ADD.W   (A1),A5
-00007280                           447  *    ADD.W   (A1)+,A1
-00007280                           448  *    ADD.W   -(A1),A6
-00007280                           449  *    ADD.W   #$40,D7
-00007280                           450  *    ADD.W   D0,A2
-00007280                           451  *    ADD.W   D0,$E115
-00007280                           452  *    ADD.W   D0,$E1234567
-00007280                           453  *    ADD.B   D5,$11
-00007280                           454  *    ADD.W   D5,$1111
-00007280                           455  *    ADD.L   D5,$11111111
-00007280                           456  *
-00007280                           457  **
-00007280                           458  ****----------21. ADDA-------------------------
-00007280                           459  *
-00007280                           460  *    ADDX    -(A0),-(A1)  ; bad case
-00007280                           461  *    ADDA.W  D0,A0
-00007280                           462  *    ADDA.L  D1,A1
-00007280                           463  *    ADD.L   A0,A1  
-00007280                           464  *    ADDA.W  #123,A5
-00007280                           465  *    ADDA.L  #123,A5
-00007280                           466  *    ADD.L   #$123,A5
-00007280                           467  *             
-00007280                           468  ***----------22. ASR----------------------------    
-00007280                           469  *    ASR.W   #8,D0
-00007280                           470  *    ASR.W   #7,D1
-00007280                           471  *    ASR.W   #6,D2
-00007280                           472  *    ASR.W   #5,D3
-00007280                           473  *    ASR.W   #4,D4
-00007280                           474  *    ASR.W   #3,D5
-00007280                           475  *    ASR.W   #2,D6
-00007280                           476  *    ASR.W   #1,D7
-00007280                           477  *    
-00007280                           478  *    ASR.B   #8,D0
-00007280                           479  *    ASR.B   #7,D1
-00007280                           480  *    ASR.B   #6,D2
-00007280                           481  *    ASR.B   #5,D3
-00007280                           482  *    ASR.B   #4,D4
-00007280                           483  *    ASR.B   #3,D5
-00007280                           484  *    ASR.B   #2,D6
-00007280                           485  *    ASR.B   #1,D7
-00007280                           486  *    CLR.B   (A0)
-00007280                           487  *    ASR.W   $0FF00000
-00007280                           488  *    ASR.W   $0FF00000
-00007280                           489  *    
-00007280                           490  *    ASR.W   $0FF00000
-00007280                           491  *    ASR.W   (A4)+
-00007280                           492  *    ASR.W   -(A6)
-00007280                           493  *
-00007280                           494  *    ASR.B   D1, D0
-00007280                           495  *    ASR.B   D2, D0
-00007280                           496  *    ASR.B   D3, D0
-00007280                           497  *    ASR.B   D4, D0
-00007280                           498  *    ASR.B   D5, D6
-00007280                           499  *    ASR.B   D1, D6
-00007280                           500  *    ASR.B   D2, D6
-00007280                           501  *    ASR.B   D3, D6
-00007280                           502  *    ASR.L   #8,D0
-00007280                           503  *    ASR.L   #7,D1
-00007280                           504  *    ASR.L   #8,D2
-00007280                           505  *    ASR.L   #6,D3
-00007280                           506  *    ASR.L   #5,D4
-00007280                           507  *    ASR.L   #4,D5
-00007280                           508  *    ASR.L   #3,D6
-00007280                           509  *    ASR.L   #2,D7
-00007280                           510  *    ASR.L   #1,D7
-00007280                           511  *            
-00007280                           512  ***----------23. LSL----------------------------
-00007280                           513  *    LSL.B   D0,D2
-00007280                           514  *    LSL.L   D0,D2
-00007280                           515  *    lSR.B   #7,D4  ;  bad case for LSL
-00007280                           516  *    LSL.L   #8,D4
-00007280                           517  *    LSL.W   $0FF00000 ; 
-00007280                           518  *    LSL.W   (a4)+
-00007280                           519  *    LSL.W   -(a6)
-00007280                           520  ***-----------24. ROL-----------------
-00007280                           521  *    ROL.W   #6,D0
-00007280                           522  *    ROL.B   D0,D2
-00007280                           523  *    ROL.L   D0,D2
-00007280                           524  *    ROL.B   #7,D4  ;  bad case for LSL
-00007280                           525  *    ROL.L   #8,D4
-00007280                           526  *    ROL.W   $0FF00000 ; 
-00007280                           527  *    ROL.W   (a4)+
-00007280                           528  *    ROL.w   -(a6)
-00007280                           529  *    ROL.W   (a4)+     
-00007280                           530      
-00007280  FFFF FFFF                531      SIMHALT             ; halt simulator
-00007284                           532  
-00007284                           533  * Put variables and constants here
-00007284                           534      
-00007284  =000000BA                535  VAR1    EQU $BA    BVAR
-00007284  =00001234                536  VAR2    EQU $1234   WVAR
-00007284  =FFAA1234                537  VAR3    EQU $FFAA1234  WVAR
-00007284  =00000012                538  VAR4    EQU $12     DVAR
-00007284  =00000000                539  VAR5    EQU $00000000  ZVAR
-00007284  =FCFCFCFC                540  VAR6   EQU $FCFCFCFC    VBIN1
-00007284                           541  
-00007284                           542      END    START        ; last line of source
+00007066                            34      
+00007066                            35      
+00007066                            36  ***-----------2. MOVE.B OPCODE-----------
+00007066                            37       
+00007066  1403                      38       MOVE.B  D3, D2
+00007068  1811                      39       MOVE.B  (A1),D4     *DESTINATION CANT BE AN & #<DATA>
+0000706A  161A                      40       MOVE.B  (A2)+,D3
+0000706C  1221                      41       MOVE.B  -(A1),D1   
+0000706E  1438 0048                 42       MOVE.B  $48,D2
+00007072  123C 0001                 43       MOVE.B  #1,D1
+00007076  123C 00AA                 44       MOVE.B  #$AA,D1
+0000707A                            45  *     MOVE.B  #$4444,D2
+0000707A                            46  *     MOVE.B  #$4444888,D2
+0000707A                            47      
+0000707A  1483                      48       MOVE.B  D3, (A2)
+0000707C  1891                      49       MOVE.B  (A1),(A4)     *DESTINATION CANT BE AN & #<DATA>
+0000707E  169A                      50       MOVE.B  (A2)+,(A3)
+00007080  12A1                      51       MOVE.B  -(A1),(A1)  
+00007082  14B8 0048                 52       MOVE.B  $48,(A2)
+00007086  12BC 0001                 53       MOVE.B  #1,(A1)
+0000708A  12BC 00AA                 54       MOVE.B  #$AA,(A1)
+0000708E                            55  *     MOVE.B  #$4444,(D2)
+0000708E                            56  *     MOVE.B  #$4444888,(D2)
+0000708E                            57      
+0000708E  14C3                      58       MOVE.B  D3, (A2)+
+00007090  18D1                      59       MOVE.B  (A1),(A4)+     *DESTINATION CANT BE AN & #<DATA>
+00007092  16DA                      60       MOVE.B  (A2)+,(A3)+
+00007094  12E1                      61       MOVE.B  -(A1),(A1)+  
+00007096  14F8 0048                 62       MOVE.B  $48,(A2)+
+0000709A  12FC 0001                 63       MOVE.B  #1,(A1)+
+0000709E  12FC 00AA                 64       MOVE.B  #$AA,(A1)+   
+000070A2                            65                        
+000070A2  1503                      66       MOVE.B  D3, -(A2)
+000070A4  1911                      67       MOVE.B  (A1),-(A4)     *DESTINATION CANT BE AN & #<DATA>
+000070A6  171A                      68       MOVE.B  (A2)+,-(A3)
+000070A8  1321                      69       MOVE.B  -(A1),-(A1)  
+000070AA  1538 0048                 70       MOVE.B  $48,-(A2)
+000070AE  133C 0001                 71       MOVE.B  #1,-(A1)
+000070B2  133C 00AA                 72       MOVE.B  #$AA,-(A1) 
+000070B6                            73     
+000070B6  11C3 0012                 74       MOVE.B  D3,$12 
+000070BA  11D1 0012                 75       MOVE.B  (A1),$12      *DESTINATION CANT BE AN & #<DATA>
+000070BE  11DA 0012                 76       MOVE.B  (A2)+,$12 
+000070C2  11E1 0012                 77       MOVE.B  -(A1),$12   
+000070C6  11F8 0048 0012            78       MOVE.B  $48,$12 
+000070CC  11FC 0001 0012            79       MOVE.B  #1,$12 
+000070D2  11FC 00AA 0012            80       MOVE.B  #$AA,$12    
+000070D8                            81      
+000070D8  11C3 1212                 82       MOVE.B  D3,$1212 
+000070DC  11D1 1212                 83       MOVE.B  (A1),$1212      *DESTINATION CANT BE AN & #<DATA>
+000070E0  11DA 1212                 84       MOVE.B  (A2)+,$1212 
+000070E4  11E1 1212                 85       MOVE.B  -(A1),$1212   
+000070E8  11F8 0048 1212            86       MOVE.B  $48,$1212 
+000070EE  11FC 0001 1212            87       MOVE.B  #1,$1212 
+000070F4  11FC 00AA 1212            88       MOVE.B  #$AA,$1212
+000070FA                            89       
+000070FA  13C3 12124444             90       MOVE.B  D3,$12124444 
+00007100  13D1 12124444             91       MOVE.B  (A1),$12124444      *DESTINATION CANT BE AN & #<DATA>
+00007106  13DA 12124444             92       MOVE.B  (A2)+,$12124444 
+0000710C  13E1 12124444             93       MOVE.B  -(A1),$12124444   
+00007112  13F8 0048 12124444        94       MOVE.B  $48,$12124444 
+0000711A  13FC 0001 12124444        95       MOVE.B  #1,$12124444 
+00007122  13FC 00AA 12124444        96       MOVE.B  #$AA,$12124444
+0000712A                            97       
+0000712A                            98  
+0000712A                            99  
+0000712A                           100  ***----------3. MOVE.W-------------------
+0000712A  3403                     101       MOVE.W  D3, D2
+0000712C  3811                     102       MOVE.W  (A1),D4     *DESTINATION CANT BE AN & #<DATA>
+0000712E  361A                     103       MOVE.W  (A2)+,D3
+00007130  3221                     104       MOVE.W  -(A1),D1   
+00007132  3438 0048                105       MOVE.W  $48,D2
+00007136  323C 0001                106       MOVE.W  #1,D1
+0000713A  323C 00AA                107       MOVE.W  #$AA,D1
+0000713E  343C 4444                108       MOVE.W  #$4444,D2
+00007142                           109  *     MOVE.W  #$4444888,D2
+00007142                           110      
+00007142  3483                     111       MOVE.W  D3, (A2)
+00007144  3891                     112       MOVE.W  (A1),(A4)     *DESTINATION CANT BE AN & #<DATA>
+00007146  369A                     113       MOVE.W  (A2)+,(A3)
+00007148  32A1                     114       MOVE.W  -(A1),(A1)  
+0000714A  34B8 0048                115       MOVE.W  $48,(A2)
+0000714E  32BC 0001                116       MOVE.W  #1,(A1)
+00007152  32BC 00AA                117       MOVE.W  #$AA,(A1)
+00007156  34BC 4444                118       MOVE.W  #$4444,(A2)
+0000715A                           119  *     MOVE.W  #$4444888,(D2)
+0000715A                           120      
+0000715A  34C3                     121       MOVE.W  D3, (A2)+
+0000715C  38D1                     122       MOVE.W  (A1),(A4)+     *DESTINATION CANT BE AN & #<DATA>
+0000715E  36DA                     123       MOVE.W  (A2)+,(A3)+
+00007160  32E1                     124       MOVE.W  -(A1),(A1)+  
+00007162  34F8 0048                125       MOVE.W  $48,(A2)+
+00007166  32FC 0001                126       MOVE.W  #1,(A1)+
+0000716A  32FC 00AA                127       MOVE.W  #$AA,(A1)+   
+0000716E                           128                        
+0000716E  3503                     129       MOVE.W  D3, -(A2)
+00007170  3911                     130       MOVE.W  (A1),-(A4)     *DESTINATION CANT BE AN & #<DATA>
+00007172  371A                     131       MOVE.W  (A2)+,-(A3)
+00007174  3321                     132       MOVE.W  -(A1),-(A1)  
+00007176  3538 0048                133       MOVE.W  $48,-(A2)
+0000717A  333C 0001                134       MOVE.W  #1,-(A1)
+0000717E  333C 00AA                135       MOVE.W  #$AA,-(A1) 
+00007182                           136     
+00007182  31C3 0012                137       MOVE.W  D3,$12 
+00007186  31D1 0012                138       MOVE.W  (A1),$12      *DESTINATION CANT BE AN & #<DATA>
+0000718A  31DA 0012                139       MOVE.W  (A2)+,$12 
+0000718E  31E1 0012                140       MOVE.W  -(A1),$12   
+00007192  31F8 0048 0012           141       MOVE.W  $48,$12 
+00007198  31FC 0001 0012           142       MOVE.W  #1,$12 
+0000719E  31FC 00AA 0012           143       MOVE.W  #$AA,$12    
+000071A4                           144      
+000071A4  31C3 1212                145       MOVE.W  D3,$1212 
+000071A8  31D1 1212                146       MOVE.W  (A1),$1212      *DESTINATION CANT BE AN & #<DATA>
+000071AC  31DA 1212                147       MOVE.W  (A2)+,$1212 
+000071B0  31E1 1212                148       MOVE.W  -(A1),$1212   
+000071B4  31F8 0048 1212           149       MOVE.W  $48,$1212 
+000071BA  31FC 0001 1212           150       MOVE.W  #1,$1212 
+000071C0  31FC 00AA 1212           151       MOVE.W  #$AA,$1212
+000071C6                           152       
+000071C6  33C3 12124444            153       MOVE.W  D3,$12124444 
+000071CC  33D1 12124444            154       MOVE.W  (A1),$12124444      *DESTINATION CANT BE AN & #<DATA>
+000071D2  33DA 12124444            155       MOVE.W  (A2)+,$12124444 
+000071D8  33E1 12124444            156       MOVE.W  -(A1),$12124444   
+000071DE  33F8 0048 12124444       157       MOVE.W  $48,$12124444 
+000071E6  33FC 0001 12124444       158       MOVE.W  #1,$12124444 
+000071EE  33FC 00AA 12124444       159       MOVE.W  #$AA,$12124444
+000071F6                           160       
+000071F6                           161  
+000071F6                           162   
+000071F6                           163  *  
+000071F6                           164  ***-----------4. MOVE.L---------------
+000071F6  3403                     165   MOVE.W  D3, D2
+000071F8  2811                     166       MOVE.L  (A1),D4     *DESTINATION CANT BE AN & #<DATA>
+000071FA  261A                     167       MOVE.L  (A2)+,D3
+000071FC  2221                     168       MOVE.L  -(A1),D1   
+000071FE  2438 0048                169       MOVE.L  $48,D2
+00007202  7201                     170       MOVE.L  #1,D1
+00007204  223C 000000AA            171       MOVE.L  #$AA,D1
+0000720A  243C 00004444            172       MOVE.L  #$4444,D2
+00007210  243C 04444888            173       MOVE.L  #$4444888,D2
+00007216                           174      
+00007216  2483                     175       MOVE.L  D3, (A2)
+00007218  2891                     176       MOVE.L  (A1),(A4)     *DESTINATION CANT BE AN & #<DATA>
+0000721A  269A                     177       MOVE.L  (A2)+,(A3)
+0000721C  22A1                     178       MOVE.L  -(A1),(A1)  
+0000721E  24B8 0048                179       MOVE.L  $48,(A2)
+00007222  22BC 00000001            180       MOVE.L  #1,(A1)
+00007228  22BC 000000AA            181       MOVE.L  #$AA,(A1)
+0000722E  24BC 00004444            182       MOVE.L  #$4444,(A2)
+00007234  24BC 04444888            183       MOVE.L  #$4444888,(A2)
+0000723A                           184      
+0000723A  24C3                     185       MOVE.L  D3, (A2)+
+0000723C  28D1                     186       MOVE.L  (A1),(A4)+     
+0000723E  26DA                     187       MOVE.L  (A2)+,(A3)+
+00007240  22E1                     188       MOVE.L  -(A1),(A1)+  
+00007242  24F8 0048                189       MOVE.L  $48,(A2)+
+00007246  22FC 00000001            190       MOVE.L  #1,(A1)+
+0000724C  22FC 000000AA            191       MOVE.L  #$AA,(A1)+ 
+00007252  24FC 04444888            192       MOVE.L  #$4444888,(A2)+  
+00007258                           193                        
+00007258  2503                     194       MOVE.L  D3, -(A2)
+0000725A  2911                     195       MOVE.L  (A1),-(A4)     *DESTINATION CANT BE AN & #<DATA>
+0000725C  271A                     196       MOVE.L  (A2)+,-(A3)
+0000725E  2321                     197       MOVE.L  -(A1),-(A1)  
+00007260  2538 0048                198       MOVE.L  $48,-(A2)
+00007264  233C 00000001            199       MOVE.L  #1,-(A1)
+0000726A  233C 000000AA            200       MOVE.L  #$AA,-(A1) 
+00007270  253C 04444888            201       MOVE.L  #$4444888,-(A2)
+00007276                           202     
+00007276  21C3 0012                203       MOVE.L  D3,$12 
+0000727A  21D1 0012                204       MOVE.L  (A1),$12      *DESTINATION CANT BE AN & #<DATA>
+0000727E  21DA 0012                205       MOVE.L  (A2)+,$12 
+00007282  21E1 0012                206       MOVE.L  -(A1),$12   
+00007286  21F8 0048 0012           207       MOVE.L  $48,$12 
+0000728C  21FC 00000001 0012       208       MOVE.L  #1,$12 
+00007294  21FC 000000AA 0012       209       MOVE.L  #$AA,$12 
+0000729C  21FC 04444888 0034       210       MOVE.L  #$4444888,$34   
+000072A4                           211      
+000072A4  21C3 1212                212       MOVE.L  D3,$1212 
+000072A8  21D1 1212                213       MOVE.L  (A1),$1212      *DESTINATION CANT BE AN & #<DATA>
+000072AC  21DA 1212                214       MOVE.L  (A2)+,$1212 
+000072B0  21E1 1212                215       MOVE.L  -(A1),$1212   
+000072B4  21F8 0048 1212           216       MOVE.L  $48,$1212 
+000072BA  21FC 00000001 1212       217       MOVE.L  #1,$1212 
+000072C2  21FC 000000AA 1212       218       MOVE.L  #$AA,$1212
+000072CA  21FC 04444888 1234       219       MOVE.L  #$4444888,$1234
+000072D2                           220       
+000072D2  23C3 12124444            221       MOVE.L  D3,$12124444 
+000072D8  23D1 12124444            222       MOVE.L  (A1),$12124444      *DESTINATION CANT BE AN & #<DATA>
+000072DE  23DA 12124444            223       MOVE.L  (A2)+,$12124444 
+000072E4  23E1 12124444            224       MOVE.L  -(A1),$12124444   
+000072EA  23F8 0048 12124444       225       MOVE.L  $48,$12124444 
+000072F2  23FC 00000001 12124444   226       MOVE.L  #1,$12124444 
+000072FC  23FC 000000AA 12124444   227       MOVE.L  #$AA,$12124444
+00007306  23FC 04444888 12341234   228       MOVE.L  #$4444888,$12341234
+00007310                           229     
+00007310                           230  *
+00007310                           231  ****-----------5. LEA----------------
+00007310  41D3                     232      LEA     (A3),A0         (An),An
+00007312  47D3                     233      LEA     (A3),A3
+00007314  43F9 00009800            234      LEA     $9800,A1
+0000731A  45F8 0001                235      LEA     $0001,A2
+0000731E  4FF8 4000                236      LEA     $4000,A7
+00007322  4BF8 1230                237      LEA     $1230,A5
+00007326  4BF8 1301                238      LEA     $1301,A5
+0000732A  43F8 1001                239      LEA     $01001,A1    
+0000732E  43F9 00001234            240      LEA     VAR2,A1        (xxx).W,An
+00007334  45F9 FFAA1234            241      LEA     VAR3,A2        (xxx).L,An
+0000733A  49F8 0001                242      LEA     $1,A4
+0000733E  4FF9 00123456            243      LEA     $123456,A7   
+00007344                           244   
+00007344                           245  ***-------6. JRS-------------
+00007344  4EB8 0000                246      JSR      $0000
+00007348  4EB9 0000A000            247      JSR      $A000
+0000734E  4E94                     248      JSR      (A4)
+00007350  4EB8 1234                249      JSR     $1234
+00007354  4E91                     250      JSR     (A1)
+00007356  4E92                     251      JSR     (A2)
+00007358  4E93                     252      JSR     (A3)
+0000735A  4E94                     253      JSR     (A4)
+0000735C  4E95                     254      JSR     (A5)
+0000735E  4EB9 000073EC            255      JSR     JUMP1
+00007364  4EB9 000073F0            256      JSR     JUMP2
+0000736A  4E91                     257      JSR     (A1)        (An)
+0000736C  4EB9 00001234            258      JSR     VAR2       (xxx).W
+00007372  4EB9 FFAA1234            259      JSR     VAR3       (xxx).L   
+00007378                           260  **-------7. CLR-------------------
+00007378                           261  ** IF THE SIZE IS NOT SPECIFIED, IT AUTOMATICALLY GO WITH SIZE W   
+00007378  4240                     262      CLR      D0
+0000737A                           263  *   CLR      A4         *NOT An
+0000737A  4252                     264      CLR     (A2)        (An)
+0000737C  425B                     265      CLR     (A3)+       (An)+
+0000737E  4260                     266      CLR     -(A0)
+00007380  4279 00001234            267      CLR     VAR2       (xxx).W
+00007386  4279 FFAA1234            268      CLR     VAR3       (xxx).L
+0000738C  4278 1000                269      CLR     $1000
+00007390  4279 20003000            270      CLR     $20003000
+00007396                           271  *   CLR     #3          NOT #
+00007396                           272     
+00007396  4200                     273      CLR.B   D0
+00007398  4203                     274      CLR.B   D3
+0000739A  4210                     275      CLR.B   (A0)
+0000739C  4212                     276      CLR.B   (A2)
+0000739E  421F                     277      CLR.B   (A7)+       (An)+
+000073A0  4225                     278      CLR.B   -(A5)
+000073A2  4238 7FFF                279      CLR.B   $7FFF     
+000073A6  4239 00008000            280      CLR.B   $8000
+000073AC  4239 AAAABBBB            281      CLR.B   $AAAABBBB 
+000073B2                           282      
+000073B2  4240                     283      CLR.W   D0
+000073B4  4245                     284      CLR.W   D5 
+000073B6  4250                     285      CLR.W   (A0)
+000073B8  425B                     286      CLR.W   (A3)+
+000073BA  4265                     287      CLR.W   -(A5)
+000073BC  4278 0011                288      CLR.W   $0011      
+000073C0  4279 0000BBBB            289      CLR.W   $BBBB
+000073C6  4279 23232323            290      CLR.W   $23232323
+000073CC                           291      
+000073CC  4280                     292      CLR.L   D0
+000073CE  4283                     293      CLR.L   D3 
+000073D0  4290                     294      CLR.L   (A0)
+000073D2  4298                     295      CLR.L   (A0)+ 
+000073D4  42A4                     296      CLR.L   -(A4)       -(An)
+000073D6  42B8 0001                297      CLR.L   $0001 
+000073DA  42B9 12351235            298      CLR.L   $12351235
+000073E0                           299      
+000073E0                           300  ****-------8. RTS-------------------
+000073E0  4EB8 0000                301     JSR      $0000 
+000073E4  4EB9 0000A000            302     JSR      $A000
+000073EA  4E94                     303     JSR      (A4)
+000073EC                           304  JUMP1    *For JSR & RTS test
+000073EC  1201                     305     MOVE.B  D1, D1
+000073EE  4E75                     306     RTS
+000073F0                           307  
+000073F0                           308  JUMP2   
+000073F0  4E75                     309      RTS *For JSR & RTS test
+000073F2                           310      
+000073F2                           311  ***-------9. NOP-------------------
+000073F2                           312  *    NOP
+000073F2                           313  ***-------10. MOVEM-------------------
+000073F2                           314  
+000073F2  48E7 FF00                315      MOVEM.L  D0-D7,-(SP)
+000073F6  48E7 2010                316      MOVEM.L  A3/D2,-(SP)
+000073FA  48E7 787C                317      MOVEM.L  A1-A5/D1-D4,-(SP)
+000073FE  48E7 0070                318      MOVEM.L  A1-A3,-(SP)
+00007402  4CDF 00FF                319      MOVEM.L  (SP)+,D0-D7
+00007406  4CDF 0804                320      MOVEM.L  (SP)+,A3/D2
+0000740A  4CDF 3E1E                321      MOVEM.L  (SP)+,A1-A5/D1-D4
+0000740E  4CDF 7E0C                322      MOVEM.L  (SP)+,A1-A6/D2/D3   
+00007412                           323  
+00007412                           324  
+00007412                           325  ****----------10. BCC PASS---------------------- 
+00007412  B400                     326     CMP.B    D0,D2
+00007414  6400 0002                327     BCC      AAAA    
+00007418                           328      
+00007418                           329  ****----------11. BLE PASS---------------------  
+00007418                           330  AAAA 
+00007418  B87C 0001                331      CMP.W    #1,D4
+0000741C  6F00 0002                332      BLE      BBBB
+00007420                           333          
+00007420                           334  ****----------12. BGT PASS----------------------
+00007420                           335  BBBB   
+00007420  B838 0005                336      CMP.B    $5, D4
+00007424  6E00 0002                337      BGT      CCCC
+00007428                           338  CCCC  
+00007428  387C 0004                339      MOVEA.W   #4,A4         
+0000742C                           340  ****-----------14. MOVEQ ------------------
+0000742C                           341   
+0000742C  7801                     342      MOVEQ    #1, D4   * BYTE AND An ONLY
+0000742E  7802                     343      MOVEQ    #2, D4
+00007430  7803                     344      MOVEQ    #3,D4
+00007432  7A2D                     345      MOVEQ    #45, D5
+00007434  7212                     346      MOVEQ    #$12,D1
+00007436  7623                     347      MOVEQ    #$23,D3
+00007438  7812                     348      MOVEQ    #$12,D4
+0000743A  78FF                     349      MOVEQ    #255,D4 
+0000743C                           350      
+0000743C                           351  *MOVEQ DON'T HAVE BAD OPCODE
+0000743C                           352  
+0000743C                           353  ****----------15. DIVU---------------------
+0000743C  82C0                     354      DIVU    D0,D1
+0000743E  80FC 1000                355      DIVU    #$1000,D0
+00007442  82D0                     356      DIVU    (A0),D1
+00007444  88F9 11111111            357      DIVU    $11111111,D4
+0000744A                           358   
+0000744A                           359  ****----------16. SUB-------------------------
+0000744A  9001                     360      SUB.B   D1,D0
+0000744C                           361  *    SUB.B   A4,D0
+0000744C  901C                     362      SUB.B   (A4)+,D0 
+0000744E  9025                     363      SUB.B   -(A5),D0
+00007450  9038 0011                364      SUB.B   $11,D0
+00007454  9438 1234                365      SUB.B   $1234,D2
+00007458  9A39 AAAABBBB            366      SUB.B   $AAAABBBB,D5
+0000745E  5307                     367      SUB.B   #1,D7
+00007460  0407 000C                368      SUB.B   #12,D7  
+00007464                           369  *    SUB.B   #1212,D7
+00007464                           370  *    SUB.B   #12121234,D7
+00007464                           371  
+00007464  9041                     372      SUB.W   D1,D0
+00007466  904C                     373      SUB.W   A4,D0
+00007468  905C                     374      SUB.W   (A4)+,D0 
+0000746A  9065                     375      SUB.W   -(A5),D0
+0000746C  9078 0011                376      SUB.W   $11,D0
+00007470  9478 1234                377      SUB.W   $1234,D2
+00007474  9A79 AAAABBBB            378      SUB.W   $AAAABBBB,D5
+0000747A  5347                     379      SUB.W   #1,D7
+0000747C  0447 000C                380      SUB.W   #12,D7  
+00007480  0447 04BC                381      SUB.W   #1212,D7
+00007484                           382  *    SUB.B   #12121234,D7
+00007484                           383  
+00007484  9081                     384      SUB.L   D1,D0
+00007486  908C                     385      SUB.L   A4,D0
+00007488  908C                     386      SUB.L   A4,D0
+0000748A  909C                     387      SUB.L   (A4)+,D0 
+0000748C  90A5                     388      SUB.L   -(A5),D0
+0000748E  90B8 0011                389      SUB.L   $11,D0
+00007492  94B8 1234                390      SUB.L   $1234,D2
+00007496  9AB9 AAAABBBB            391      SUB.L   $AAAABBBB,D5
+0000749C  5387                     392      SUB.L   #1,D7
+0000749E  0487 0000000C            393      SUB.L   #12,D7  
+000074A4  0487 000004BC            394      SUB.L   #1212,D7
+000074AA  0487 00B8F492            395      SUB.L   #12121234,D7
+000074B0                           396  ****-----------17. CMP----------------- 
+000074B0  BC00                     397       CMP.B  D0, D6   * DESTINATION IS DN ONLY AND EA CANT BE AN
+000074B2                           398  *     CMP.B  A2, D2     
+000074B2  B61C                     399       CMP.B  (A4)+,D3     
+000074B4  BC02                     400       CMP.B  D2, D6    
+000074B6  BA13                     401       CMP.B (A3),D5    
+000074B8  B021                     402       CMP.B  -(A1),D0 
+000074BA  B21A                     403       CMP.B  (A2)+, D1  
+000074BC  B038 0023                404       CMP.B  $23,D0 
+000074C0  B238 4444                405       CMP.B  $4444, D1 
+000074C4  BE39 44440000            406       CMP.B  $44440000,D7 
+000074CA  B83C 0001                407       CMP.B  #$1, D4
+000074CE  B83C 0010                408       CMP.B  #$10, D4   
+000074D2                           409  *     CMP.B  #$2000,D5 
+000074D2                           410       
+000074D2  BC40                     411       CMP.W  D0, D6      
+000074D4  B65C                     412       CMP.W  (A4)+,D3     
+000074D6  BC42                     413       CMP.W  D2, D6    
+000074D8  BA53                     414       CMP.W (A3),D5    
+000074DA  B061                     415       CMP.W  -(A1),D0 
+000074DC  B25A                     416       CMP.W  (A2)+, D1  
+000074DE  B078 0023                417       CMP.W  $23,D0 
+000074E2  B278 4444                418       CMP.W  $4444, D1 
+000074E6  BE79 44440000            419       CMP.W  $44440000,D7 
+000074EC  B87C 0001                420       CMP.W  #$1, D4
+000074F0  B87C 0010                421       CMP.W  #$10, D4   
+000074F4  BA7C 2000                422       CMP.W  #$2000,D5
+000074F8                           423  
+000074F8  BC80                     424       CMP.L  D0, D6      
+000074FA  B69C                     425       CMP.L  (A4)+,D3     
+000074FC  BC82                     426       CMP.L  D2, D6    
+000074FE  BA93                     427       CMP.L (A3),D5    
+00007500  B0A1                     428       CMP.L  -(A1),D0 
+00007502  B29A                     429       CMP.L  (A2)+, D1  
+00007504  B0B8 0023                430       CMP.L  $23,D0 
+00007508  B2B8 4444                431       CMP.L  $4444, D1 
+0000750C  BEB9 44440000            432       CMP.L  $44440000,D7 
+00007512  B8BC 00000001            433       CMP.L  #$1, D4
+00007518  B8BC 00000010            434       CMP.L  #$10, D4   
+0000751E  BABC 00002000            435       CMP.L  #$2000,D5 
+00007524                           436       
+00007524                           437   
+00007524                           438  ****-----------18. MULS------------------ 
+00007524                           439    
+00007524  CDC0                     440       MULS      D0,D6 
+00007526  CDD1                     441       MULS      (A1),D6 
+00007528  C1DA                     442       MULS      (A2)+,D0
+0000752A  C5E3                     443       MULS      -(A3),D2
+0000752C  C5F8 0011                444       MULS      $11,D2
+00007530  CBF8 1111                445       MULS      $1111,D5
+00007534  CBF9 11111111            446       MULS      $11111111,D5
+0000753A  C9FC 0001                447       MULS      #1,D4
+0000753E  C7FC 0003                448       MULS      #$03,D3
+00007542  C9FC 1111                449       MULS      #$1111,D4
+00007546  CDC0                     450       MULS.W    D0,D6 
+00007548  CDD1                     451       MULS.W    (A1),D6 
+0000754A  C1DA                     452       MULS.W    (A2)+,D0
+0000754C  C5E3                     453       MULS.W    -(A3),D2
+0000754E  C5F8 0011                454       MULS.W    $11,D2
+00007552  CBF8 1111                455       MULS.W    $1111,D5
+00007556  CBF9 11111111            456       MULS.W    $11111111,D5
+0000755C  C9FC 0001                457       MULS.W    #1,D4
+00007560  C7FC 0003                458       MULS.W    #$03,D3
+00007564  C9FC 1111                459       MULS.W    #$1111,D4
+00007568                           460      
+00007568                           461  
+00007568                           462  ****-----------19. AND-------------------
+00007568  C403                     463       AND.B  D3, D2
+0000756A  C811                     464       AND.B  (A1),D4     *DESTINATION CANT BE AN & #<DATA>
+0000756C  C61A                     465       AND.B  (A2)+,D3
+0000756E  C221                     466       AND.B  -(A1),D1   
+00007570  C438 0048                467       AND.B  $48,D2
+00007574  C23C 0001                468       AND.B  #1,D1
+00007578  C23C 00AA                469       AND.B  #$AA,D1
+0000757C                           470  *     AND.B.B  #$4444,D2
+0000757C                           471  *     MOVE.B  #$4444888,D2
+0000757C                           472      
+0000757C                           473      
+0000757C                           474  *     MOVE.B  #$4444,(D2)
+0000757C                           475  *     MOVE.B  #$4444888,(D2)
+0000757C                           476      
+0000757C  C71A                     477       AND.B    D3, (A2)+
+0000757E  0221 0001                478       AND.B  #1,-(A1)
+00007582  0221 00AA                479       AND.B  #$AA,-(A1) 
+00007586                           480     
+00007586  C738 0012                481       AND.B  D3,$12 
+0000758A  0238 0001 0012           482       AND.B #1,$12 
+00007590  0238 00AA 0012           483       AND.B  #$AA,$12    
+00007596  C738 1212                484       AND.B  D3,$1212 
+0000759A                           485  
+0000759A  0238 0001 1212           486       AND.B  #1,$1212 
+000075A0  0238 00AA 1212           487       AND.B  #$AA,$1212   
+000075A6  C739 12124444            488       AND.B  D3,$12124444 
+000075AC  0239 0001 12124444       489       AND.B  #1,$12124444 
+000075B4  0239 00AA 12124444       490       AND.B  #$AA,$12124444    
+000075BC                           491  
+000075BC                           492  ****----------20. ADD--------------------------
+000075BC                           493  
+000075BC  DA38 0011                494      ADD.B   $11,D5
+000075C0  DA38 1111                495      ADD.B   $1111,D5
+000075C4  DA39 11111111            496      ADD.B   $11111111,D5
+000075CA  DA38 1111                497      ADD.B   $1111,D5
+000075CE  DA79 11111111            498      ADD.W   $11111111,D5
+000075D4  D438 0048                499      ADD.B   $48,D2
+000075D8  0603 00DA                500      ADD.B   #$DA,D3
+000075DC  D71E                     501      ADD.B   D3,(A6)+
+000075DE  D312                     502      ADD.B   D1,(A2)
+000075E0  DB20                     503      ADD.B   D5,-(A0)
+000075E2  0602 0040                504      ADD.B   #$40,D2
+000075E6  D339 0000E115            505      ADD.B   D1,$E115
+000075EC  DB39 E1234567            506      ADD.B   D5,$E1234567
+000075F2                           507      
+000075F2  DCFC 0065                508      ADD.W   #101,A6
+000075F6  D678 0048                509      ADD.W   $48,D3
+000075FA  0646 00AA                510      ADD.W   #$AA,D6
+000075FE  D75D                     511      ADD.W   D3,(A5)+
+00007600  DB52                     512      ADD.W   D5,(A2)
+00007602  D560                     513      ADD.W   D2,-(A0)
+00007604  DAD1                     514      ADD.W   (A1),A5
+00007606  D2D9                     515      ADD.W   (A1)+,A1
+00007608  DCE1                     516      ADD.W   -(A1),A6
+0000760A  0647 0040                517      ADD.W   #$40,D7
+0000760E  D4C0                     518      ADD.W   D0,A2
+00007610  D179 0000E115            519      ADD.W   D0,$E115
+00007616  D179 E1234567            520      ADD.W   D0,$E1234567
+0000761C  DB78 0011                521      ADD.W   D5,$11
+00007620  DB79 11111111            522      ADD.W    D5,$11111111
+00007626                           523          
+00007626  DDFC 00000065            524      ADD.L   #101,A6
+0000762C  D6B8 0048                525      ADD.L   $48,D3
+00007630  0686 000000AA            526      ADD.L   #$AA,D6
+00007636  D79D                     527      ADD.L   D3,(A5)+
+00007638  DB92                     528      ADD.L   D5,(A2)
+0000763A  D5A0                     529      ADD.L   D2,-(A0)
+0000763C  DBD1                     530      ADD.L   (A1),A5
+0000763E  D3D9                     531      ADD.L   (A1)+,A1
+00007640  DDE1                     532      ADD.L   -(A1),A6
+00007642  0687 00000040            533      ADD.L   #$40,D7
+00007648  D5C0                     534      ADD.L   D0,A2
+0000764A  D1B9 0000E115            535      ADD.L   D0,$E115
+00007650  D1B9 E1234567            536      ADD.L   D0,$E1234567
+00007656  DBB8 0011                537      ADD.L   D5,$11
+0000765A  DBB9 11111111            538      ADD.L    D5,$11111111
+00007660                           539  
+00007660                           540  *
+00007660                           541  ****----------21. ADDA-------------------------
+00007660                           542  *
+00007660  D0C0                     543      ADDA.W  D0,A0
+00007662  D2CA                     544      ADDA.W  A2,A1
+00007664  D2D0                     545      ADDA.W  (A0),A1    
+00007666  D2D8                     546      ADDA.W  (A0)+,A1 
+00007668  DAF8 0012                547      ADDA.W  $12,A5
+0000766C  DAF8 0123                548      ADDA.W  $123,A5
+00007670  DAF8 0123                549      ADDA.W  $123,A5
+00007674  DAFC 000C                550      ADDA.W  #12,A5
+00007678  DAFC 0012                551      ADDA.W  #$12,A5
+0000767C  DAFC 1235                552      ADDA.W  #$1235,A5
+00007680  DAFC 1235                553      ADDA.W  #$1235,A5
+00007684                           554      
+00007684  D1C0                     555      ADDA.L  D0,A0
+00007686  D3CA                     556      ADDA.L  A2,A1
+00007688  D3D0                     557      ADDA.L  (A0),A1    
+0000768A  D3D8                     558      ADDA.L  (A0)+,A1 
+0000768C  DBF8 0012                559      ADDA.L  $12,A5
+00007690  DBF8 0123                560      ADDA.L  $123,A5
+00007694  DBF8 0123                561      ADDA.L  $123,A5
+00007698  DBFC 0000000C            562      ADDA.L  #12,A5
+0000769E  DBFC 00000012            563      ADDA.L  #$12,A5
+000076A4  DBFC 00001235            564      ADDA.L  #$1235,A5
+000076AA  DBFC 00001235            565      ADDA.L #$1235,A5
+000076B0                           566  *             
+000076B0                           567  ***----------22. ASR----------------------------    
+000076B0                           568  * ASR.B EA - EA IS NOT DN, AN, #<DATA>
+000076B0                           569  * ASR.B #DATA, DN   
+000076B0  E600                     570      ASR.B   #3, D0
+000076B2  E801                     571      ASR.B   #4, D1
+000076B4                           572      
+000076B4  E0F9 55555555            573      ASR.W   $55555555   
+000076BA  EE41                     574      ASR.W   #7,D1
+000076BC  EC42                     575      ASR.W   #6,D2
+000076BE  E0D5                     576      ASR.W   (A5)
+000076C0  E0DF                     577      ASR.W   (A7)+
+000076C2  E0E4                     578      ASR.W   -(A4)
+000076C4  E0F8 0009                579      ASR.W   $9
+000076C8  E0F8 0019                580      ASR.W   $19
+000076CC  E0F8 0191                581      ASR.W   $191
+000076D0  E0F8 1919                582      ASR.W   $1919
+000076D4  E0F9 0FF00000            583      ASR.W   $0FF00000
+000076DA                           584     
+000076DA  E082                     585      ASR.L   #8,D2
+000076DC  EE86                     586      ASR.L   #7,D6
+000076DE                           587  
+000076DE                           588  *            
+000076DE                           589  ***----------23. LSL----------------------------
+000076DE  E12A                     590      LSL.B   D0,D2
+000076E0  EE0C                     591      lSR.B   #7,D4  ;  bad case for LSL
+000076E2  E10C                     592      LSL.B   #8,D4
+000076E4                           593      
+000076E4  E3F9 0FF00000            594      LSL.W   $0FF00000 ; 
+000076EA  E3DC                     595      LSL.W   (a4)+
+000076EC  E3E6                     596      LSL.W   -(a6)
+000076EE  E708                     597      LSL.B   #3, D0
+000076F0  E909                     598      LSL.B   #4, D1
+000076F2  E928                     599      LSL.B   D4, D0
+000076F4                           600      
+000076F4                           601       
+000076F4  EF49                     602      LSL.W   #7,D1
+000076F6  ED4A                     603      LSL.W   #6,D2
+000076F8  E368                     604      LSL.W   D1, D0
+000076FA  E3D5                     605      LSL.W   (A5)
+000076FC  E3DF                     606      LSL.W   (A7)+
+000076FE  E3E4                     607      LSL.W   -(A4)
+00007700  E3F8 0009                608      LSL.W   $9
+00007704  E3F8 0019                609      LSL.W   $19
+00007708  E3F8 0191                610      LSL.W   $191
+0000770C  E3F8 1919                611      LSL.W   $1919
+00007710  E3F9 0FF00000            612      LSL.W   $0FF00000
+00007716  E3F9 55555555            613      LSL.W   $55555555  
+0000771C                           614      
+0000771C  E18A                     615      LSL.L   #8,D2
+0000771E  EF8E                     616      LSL.L   #7,D6
+00007720  E7AE                     617      LSL.L   D3, D6
+00007722  E1AA                     618      LSL.L   D0,D2
+00007724                           619  ***-----------24. ROL-----------------
+00007724                           620     
+00007724  E13A                     621      ROL.B   D0,D2
+00007726  ED3A                     622      ROL.B   D6,D2
+00007728  ED18                     623      ROL.B   #6,D0
+0000772A  EF1C                     624      ROL.B   #7,D4  ;  bad case for LSL
+0000772C  E11C                     625      ROL.B   #8,D4
+0000772E                           626      
+0000772E  EF7B                     627      ROL.W   D7, D3
+00007730  ED78                     628      ROL.W   D6, D0  
+00007732  E7D1                     629      ROL.W   (A1)
+00007734  E7F8 0004                630      ROL.W   (4)
+00007738  E7D9                     631      ROL.W   (A1)+
+0000773A  E7E6                     632      ROL.W   -(a6)
+0000773C  E7DC                     633      ROL.W   (a4)+  
+0000773E  E559                     634      ROL.W   #2,D1
+00007740  E35A                     635      ROL.W   #1,D2   
+00007742  EB58                     636      ROL.W   #5, D0
+00007744  EF59                     637      ROL.W   #7, D1
+00007746  E7F8 0FF0                638      ROL.W   $0FF0
+0000774A  E7F9 00FF0000            639      ROL.W   $0FF0000 
+00007750                           640      
+00007750  E19A                     641      ROL.L   #8,D2
+00007752  EF9E                     642      ROL.L   #7,D6
+00007754  E7BE                     643      ROL.L   D3, D6
+00007756                           644  
+00007756                           645  
+00007756                           646  **--------- TEST FOR BAD OPCODE FOR GROUP 0000 ADDI ----------------
+00007756                           647  
+00007756  0066 04D2                648      ORI.W   #1234,-(A6)     
+0000775A  0C00 000C                649      CMPI.B  #12,D0
+0000775E  0254 04D2                650      ANDI.W  #1234, (A4)
+00007762  0678 08AE 1111           651      ADDI.W  #2222,$1111
+00007768  0478 0055 2222           652      SUBI.W  #$55, $2222
+0000776E  0A7C 0009                653      EORI.W  #09,SR
+00007772  0C5D 0D05                654      CMPI.W  #3333,(A5)+
+00007776  0512                     655      BTST.B  D2,(A2)
+00007778  0805 000C                656      BTST.L  #12,D5   * BTST.W IS NOT WORK
+0000777C  035A                     657      BCHG.B  D1,(A2)+   
+0000777E  FFFF FFFF                658      SIMHALT             ; halt simulator
+00007782                           659  
+00007782                           660  ***---------BAD OPCODE FOR GROUP 0100- CLR, MOVEM, LEA, JRS, NOP, RTS------------    
+00007782                           661      
+00007782                           662   
+00007782  4042                     663      NEGX   D2    * NOT An AND #<DATA>  
+00007784  4053                     664      NEGX   (A3) 
+00007786  405C                     665      NEGX   (A4)+ 
+00007788  4064                     666      NEGX   -(A4) 
+0000778A  4078 3444                667      NEGX   $3444 
+0000778E  4079 04444999            668      NEGX   $4444999
+00007794                           669      
+00007794  4440                     670      NEG   D0    * NOT An AND #<DATA>  
+00007796  4452                     671      NEG   (A2) 
+00007798  445B                     672      NEG   (A3)+ 
+0000779A  4464                     673      NEG   -(A4) 
+0000779C  4478 1234                674      NEG   $1234 
+000077A0  4479 44445555            675      NEG   $44445555
+000077A6                           676      
+000077A6  4643                     677      NOT   D3    * NOT An AND #<DATA>  
+000077A8  4652                     678      NOT   (A2) 
+000077AA  465B                     679      NOT   (A3)+ 
+000077AC  4664                     680      NOT   -(A4)
+000077AE  4678 0012                681      NOT   $12 
+000077B2  4678 1234                682      NOT   $1234 
+000077B6  4679 44445555            683      NOT   $44445555
+000077BC                           684      
+000077BC  4882                     685      EXT.W D2   *ONLY W AND L AND Dn
+000077BE  48C7                     686      EXT.L D7  
+000077C0                           687      
+000077C0                           688      *Subtracts the destination operand and the extend bit from zero.
+000077C0  4800                     689      NBCD.B D0       *BYTE AND Dn ONLY, NO An And #<DATA>
+000077C2                           690      
+000077C2                           691      *Exchange the 16-bit words (halves) of a data register.
+000077C2  4843                     692      SWAP  D3    * ONLY WORD SIZE AND Dn
+000077C4                           693      
+000077C4                           694      *Computes the effective address and pushes it onto the stack. The effective address is a long address.
+000077C4  4857                     695      PEA     (A7)
+000077C6  4878 4000                696      PEA     $4000
+000077CA  4879 40001111            697      PEA     $40001111
+000077D0                           698      
+000077D0                           699      *Forces an illegal instruction exception, vector number 4. All other illegalinstruction bit patterns
+000077D0                           700      * are reserved for future extension of the instruction set and
+000077D0                           701      *should not be used to force an exception.
+000077D0  4AFC                     702      ILLEGAL
+000077D2                           703      
+000077D2                           704      *Tests and sets the byte operand addressed by the effective address field.
+000077D2  4AC3                     705      TAS   D3     * ONLY ON BYTE AND NOT An AND #<DATA> 
+000077D4  4AD2                     706      TAS  (A2) 
+000077D6  4ADB                     707      TAS   (A3)+ 
+000077D8  4AE6                     708      TAS   -(A6)
+000077DA  4AF8 0022                709      TAS   $22 
+000077DE  4AF8 1004                710      TAS   $1004 
+000077E2  4AF9 49999995            711      TAS   $49999995    
+000077E8                           712      
+000077E8                           713      *Compares the operand with zero and sets the condition codes according to
+000077E8                           714      *the results of the test.
+000077E8  4A03                     715      TST.B   D3  
+000077EA                           716  *   TST.B   A4     INVALID   
+000077EA  4A15                     717      TST.B  (A5) 
+000077EC  4A1A                     718      TST.B  (A2)+ 
+000077EE  4A24                     719      TST.B  -(A4)
+000077F0  4A38 0034                720      TST.B   $34 
+000077F4  4A38 6666                721      TST.B   $6666 
+000077F8  4A39 49995555            722      TST.B   $49995555
+000077FE                           723  *   TST.B   #$4    INVALID  
+000077FE                           724      
+000077FE  4A43                     725      TST.W   D3  
+00007800  4A55                     726      TST.W  (A5) 
+00007802  4A5A                     727      TST.W  (A2)+ 
+00007804  4A64                     728      TST.W  -(A4)
+00007806  4A78 0034                729      TST.W   $34 
+0000780A  4A78 6666                730      TST.W   $6666 
+0000780E  4A79 49995555            731      TST.W   $49995555
+00007814                           732      
+00007814  4A83                     733      TST.L   D3  
+00007816  4A92                     734      TST.L  (A2) 
+00007818  4A9E                     735      TST.L  (A6)+ 
+0000781A  4AA4                     736      TST.L  -(A4)
+0000781C  4AB8 0011                737      TST.L   $11 
+00007820  4AB9 0000ACDA            738      TST.L   $ACDA 
+00007826  4AB9 49995555            739      TST.L   $49995555
+0000782C                           740      
+0000782C                           741      *Causes a TRAP # < vector > exception.
+0000782C  4E41                     742      TRAP   #1  *UNSIZED
+0000782E  4E4F                     743      TRAP   #15
+00007830                           744      
+00007830                           745      *Pushes the contents of the specified address register onto the stack.
+00007830  4E52 0017                746      LINK    A2, #23
+00007834  4E53 000C                747      LINK    A3, #12
+00007838                           748      
+00007838                           749      *Loads the stack pointer from the specified address register, then loads the
+00007838                           750      *address register with the long word pulled from the top of the stack.
+00007838  4E5B                     751      UNLK   A3             *UNSIZED, An ONLY
+0000783A                           752      
+0000783A                           753      *Moves the contents of the user stack pointer to or from the specified address register.
+0000783A  4E6B                     754      MOVE USP, A3
+0000783C  4E62                     755      MOVE A2, USP
+0000783E                           756      
+0000783E                           757      *Asserts the RSTO signal for 512 (124 for MC68000, clock periods,
+0000783E                           758      *resetting all external devices. The processor state, other than the program counter, is
+0000783E                           759      *unaffected, and execution continues with the next instruction.
+0000783E  4E70                     760      RESET
+00007840                           761      
+00007840                           762      *Loads the processor state information stored in the exception stack frame
+00007840                           763      *located at the top of the stack into the processor.
+00007840  4E73                     764      RTE
+00007842                           765      
+00007842                           766      *If the overflow condition is set, causes a TRAPV exception with a vector
+00007842                           767      *number 7. If the overflow condition is not set, the processor performs no operation and
+00007842                           768      *execution continues with the next instruction
+00007842  1638 0023                769      MOVE.B   $23, D3
+00007846  0643 03E8                770      ADDI.W   #1000, D3
+0000784A  4E76                     771      TRAPV    *UNSIZED
+0000784C                           772      
+0000784C                           773      *Pulls the condition code and program counter values from the stack. The
+0000784C                           774      *previous condition code and program counter values are lost. The supervisor portion
+0000784C                           775      *of the status register is unaffected.
+0000784C  4E77                     776      RTR
+0000784E                           777      
+0000784E                           778      *Program execution continues at the effective address specified by the instruction.
+0000784E  4ED3                     779      JMP    (A3)
+00007850  4EF8 0080                780      JMP    $80
+00007854  4EF8 2000                781      JMP    $2000
+00007858  4EF9 10000000            782      JMP    $10000000
+0000785E                           783      
+0000785E                           784      *Compares the value in the data register specified in the instruction to zero and
+0000785E                           785      *to the upper bound (effective address operand).
+0000785E                           786      
+0000785E  4380                     787      CHK.W    D0,D1 
+00007860  4391                     788      CHK.W   (A1),D1
+00007862  4398                     789      CHK.W   (A0)+,D1
+00007864  43A0                     790      CHK.W   -(A0),D1
+00007866  49B8 1111                791      CHK.W   $1111,D4
+0000786A  49B9 11111111            792      CHK.W   $11111111,D4
+00007870  41BC 1000                793      CHK.W   #$1000,D0
+00007874                           794      
+00007874                           795  ***** TEST BAD OPCODE FOR GROUP 1001- SUB - CODE EOR -----------------
+00007874                           796  *-------------SUBA- TEST FOR 1001------------------------------------------------
+00007874                           797  *Subtracts the source operand from the destination address register and stores
+00007874                           798  *the result in the address register.
+00007874  9CC0                     799       SUBA.W  D0, A6      
+00007876  96DC                     800       SUBA.W  (A4)+,A3     
+00007878  9CC2                     801       SUBA.W  D2, A6    
+0000787A  9AD3                     802       SUBA.W (A3),A5    
+0000787C  90E1                     803       SUBA.W -(A1),A0 
+0000787E  92DA                     804       SUBA.W  (A2)+, A1  
+00007880  90F8 0023                805       SUBA.W  $23,A0 
+00007884  92F8 4444                806       SUBA.W  $4444, A1 
+00007888  9EF9 44440000            807       SUBA.W $44440000,A7 
+0000788E  534C                     808       SUBA.W  #$1, A4
+00007890  98FC 0010                809       SUBA.W  #$10, A4   
+00007894  9AFC 2000                810       SUBA.W  #$2000,A5
+00007898                           811  
+00007898  9CC0                     812       SUBA.W  D0, A6      
+0000789A  96DC                     813       SUBA.W  (A4)+,A3     
+0000789C  9CC2                     814       SUBA.W  D2, A6    
+0000789E  9AD3                     815       SUBA.W (A3),A5    
+000078A0  90E1                     816       SUBA.W  -(A1),A0 
+000078A2  92DA                     817       SUBA.W  (A2)+, A1  
+000078A4  90F8 0023                818       SUBA.W  $23,A0 
+000078A8  92F8 4444                819       SUBA.W  $4444, A1 
+000078AC  9EF9 44440000            820       SUBA.W $44440000,A7 
+000078B2  534C                     821       SUBA.W  #$1, A4
+000078B4  98FC 0010                822       SUBA.W  #$10, A4   
+000078B8  9AFC 2000                823       SUBA.W  #$2000,A5 
+000078BC                           824       
+000078BC                           825  *-------------SUBX- TEST FOR 1001------------------------------------------------
+000078BC                           826  *Subtracts the source operand and the extend bit from the destination operand
+000078BC                           827  *and stores the result in the destination
+000078BC  9742                     828      SUBX.W  D2, D3
+000078BE  994A                     829      SUBX.W  -(A2),-(A4)
+000078C0  9B82                     830      SUBX.L  D2,D5
+000078C2  978A                     831      SUBX.L  -(A2),-(A3)
+000078C4                           832   
+000078C4                           833  ***** TEST BAD OPCODE FOR GROUP 1011 BCC, BGT, BLE  - CODE EOR -----------------
+000078C4                           834  *----------------CODE BRA   TEST FOR GROUP 1011-----------------------------------    
+000078C4  6000 0002                835      BRA    TEST1011
+000078C8                           836  TEST1011
+000078C8  1038 000C                837      MOVE.B  12, D0  
+000078CC                           838    
+000078CC                           839  *----------------CODE BRS   TEST FOR GROUP 1011----------------------------------- 
+000078CC                           840  *Pushes the long-word address of the instruction immediately following the
+000078CC                           841  *BSR instruction onto the system stack
+000078CC  6100 0002                842      BSR   TESTBSR1011
+000078D0                           843  TESTBSR1011    
+000078D0  3678 1234                844     MOVEA.W  $1234, A3
+000078D4                           845   
+000078D4                           846   
+000078D4                           847   ***** TEST FOR BAD OPCODE DIVU- GROUP - 1000---------------------------  
+000078D4                           848    
+000078D4                           849  
+000078D4                           850  *Divides the signed destination operand by the signed source operand and
+000078D4                           851  *stores the signed result in the destination
+000078D4  81C2                     852      DIVS.W   D2,D0   * EA IS NOT AN
+000078D6  81D2                     853      DIVS.W   (A2),D0
+000078D8  8BDD                     854      DIVS.W   (A5)+,D5
+000078DA  87E6                     855      DIVS.W   -(A6),D3 
+000078DC  81F8 0011                856      DIVS.W  $11,D0
+000078E0  81F8 1111                857      DIVS.W  $1111,D0
+000078E4  8DF9 11111111            858      DIVS.W  $11111111,D6 
+000078EA  81F8 0001                859      DIVS.W  $1,D0
+000078EE  81F8 0011                860      DIVS.W  $11,D0
+000078F2  8BF8 1111                861      DIVS.W  $1111,D5
+000078F6                           862      
+000078F6                           863      
+000078F6                           864  ***** TEST FOR BAD OPCODE DIVU-------------------------
+000078F6                           865  *Subtracts the source operand and the extend bit from the destination operand
+000078F6                           866  *and stores the result in the destination location
+000078F6  8702                     867     SBCD   D2, D3
+000078F8  8B09                     868     SBCD   -(A1), -(A5)
+000078FA                           869     
+000078FA                           870  ***** TEST FOR BAD OPCODE DIVU   
+000078FA                           871  *Performs an inclusive-OR operation on the source operand and the
+000078FA                           872  *destination operand and stores the result in the destination location
+000078FA  8200                     873       OR.B  D0,D1
+000078FC                           874  *    OR.B  A2,D2   EA CAN'T BE AN
+000078FC  8213                     875       OR.B  (A3),D1
+000078FE                           876  *    OR.B  (A4)+,(A6)+   DESTINATION IS NOT DN, AN,(AN) #<DATA>
+000078FE  8626                     877       OR.B  -(A6),D3
+00007900  8838 0022                878       OR.B  $22,D4
+00007904  8A38 2222                879       OR.B  $2222,D5
+00007908  8C39 22448888            880       OR.B  $22448888,D6
+0000790E                           881       
+0000790E  8113                     882       OR.B  D0,(A3)
+00007910                           883  *    OR.B  A2,D2     
+00007910                           884  *    OR.B  (A3),(A3)      INVALID
+00007910                           885  *    OR.B  (A4)+,(A6)+    DESTINATION IS NOT DN, AN, #<DATA>
+00007910                           886  *    OR.B  -(A6),(A3)
+00007910  8838 0022                887       OR.B  $22,D4
+00007914  8A38 2222                888       OR.B  $2222,D5
+00007918  8C39 22448888            889       OR.B  $22448888,D6
+0000791E  8C3C 0002                890       OR.B  #$2,D6
+00007922  883C 0022                891       OR.B  #$22,D4
+00007926  8A3C 0022                892       OR.B  #$22,D5       ONLY WORK ON BYTE 
+0000792A                           893   
+0000792A  8123                     894       OR.B  D0,-(A3)     * OTHER EA NOT WORK FOR -(A3)
+0000792C  8123                     895       OR.B  D0,-(A3)
+0000792E  0023 0002                896       OR.B  #$2,-(A3)
+00007932  0023 0022                897       OR.B  #$22,-(A3)
+00007936  0023 0022                898       OR.B  #$22,-(A3) 
+0000793A                           899       
+0000793A  8138 0012                900       OR.B  D0,$12  * OTHER EA IS NOT WORK FOR DESTINATION $12
+0000793E                           901     
+0000793E  8240                     902       OR.W  D0,D1
+00007940  8253                     903       OR.W (A3),D1
+00007942  8666                     904       OR.W  -(A6),D3
+00007944  8878 0022                905       OR.W $22,D4
+00007948  8A78 2222                906       OR.W  $2222,D5
+0000794C  8C79 22448888            907       OR.W  $22448888,D6
+00007952                           908       
+00007952  8153                     909       OR.W  D0,(A3)
+00007954  8878 0022                910       OR.W  $22,D4
+00007958  8A78 2222                911       OR.W  $2222,D5
+0000795C  8C79 22448888            912       OR.W  $22448888,D6
+00007962  8C7C 0002                913       OR.W  #$2,D6
+00007966  887C 0022                914       OR.W  #$22,D4
+0000796A  8A7C 0022                915       OR.W  #$22,D5       ONLY WORK ON BYTE 
+0000796E                           916   
+0000796E  8163                     917       OR.W  D0,-(A3)     * OTHER EA NOT WORK FOR -(A3)
+00007970  8163                     918       OR.W  D0,-(A3)
+00007972  0063 0002                919       OR.W  #$2,-(A3)
+00007976  0063 0022                920       OR.W  #$22,-(A3)
+0000797A  0063 0022                921       OR.W  #$22,-(A3) 
+0000797E                           922   
+0000797E  8178 0012                923       OR.W  D0,$12  * OTHER EA IS NOT WORK FOR DESTINATION $12
+00007982                           924       
+00007982                           925       
+00007982  8280                     926       OR.L  D0,D1
+00007984  8293                     927       OR.L (A3),D1
+00007986  86A6                     928       OR.L -(A6),D3
+00007988  88B8 0022                929       OR.L $22,D4
+0000798C  8AB8 2222                930       OR.L  $2222,D5
+00007990  8CB9 22448888            931       OR.L  $22448888,D6
+00007996                           932       
+00007996  8193                     933       OR.L  D0,(A3)
+00007998  88B8 0022                934       OR.L  $22,D4
+0000799C  8AB8 2222                935       OR.L  $2222,D5
+000079A0  8CB9 22448888            936       OR.L  $22448888,D6
+000079A6  8CBC 00000002            937       OR.L #$2,D6
+000079AC  88BC 00000022            938       OR.L  #$22,D4
+000079B2  8ABC 00000022            939       OR.L  #$22,D5       ONLY WORK ON BYTE 
+000079B8                           940   
+000079B8  81A3                     941       OR.L  D0,-(A3)     * OTHER EA NOT WORK FOR -(A3)
+000079BA  81A3                     942       OR.L  D0,-(A3)
+000079BC  00A3 00000002            943       OR.L  #$2,-(A3)
+000079C2  00A3 00000022            944       OR.L  #$22,-(A3)
+000079C8  00A3 00000022            945       OR.L  #$22,-(A3) 
+000079CE                           946   
+000079CE  81B8 0012                947       OR.L  D0,$12  * OTHER EA IS NOT WORK FOR DESTINATION $12
+000079D2                           948  
+000079D2                           949  
+000079D2                           950    ***** TEST BAD OPCODE FOR GROUP 1011 CMP  - CODE EOR -----------------
+000079D2                           951  *Performs an exclusive-OR operation on the destination operand using the
+000079D2                           952  *source operand and stores the result in the destination location 
+000079D2                           953  
+000079D2                           954  
+000079D2  B106                     955       EOR.B  D0, D6   
+000079D4  B506                     956       EOR.B  D2, D6    *THIS IS SO WRONG, 68K SAYS EA CAN'T BE AN AND #<DATA>
+000079D6  0A04 0001                957       EOR.B  #$1, D4   
+000079DA  0A04 0010                958       EOR.B  #$10, D4   
+000079DE                           959  
+000079DE                           960       
+000079DE  B146                     961       EOR.W   D0, D6      
+000079E0  B546                     962       EOR.W  D2, D6    
+000079E2  0A44 0001                963       EOR.W  #$1, D4
+000079E6  0A44 0010                964       EOR.W  #$10, D4   
+000079EA  0A45 2000                965       EOR.W  #$2000,D5
+000079EE                           966  
+000079EE  B186                     967       EOR.L  D0, D6      
+000079F0  B586                     968       EOR.L  D2, D6    
+000079F2  0A84 00000001            969       EOR.L  #$1, D4
+000079F8  0A84 00000010            970       EOR.L  #$10, D4   
+000079FE  0A85 00002000            971       EOR.L  #$2000,D5 
+00007A04                           972  
+00007A04                           973    
+00007A04                           974  ***** TEST BAD OPCODE FOR GROUP 1011 CMP - CODE CMPA-----------------
+00007A04                           975  *Subtracts the source operand from the destination address register and sets
+00007A04                           976  *the condition codes according to the result     
+00007A04  BCC0                     977       CMPA.W  D0, A6      
+00007A06  B6DC                     978       CMPA.W  (A4)+,A3     
+00007A08  BCC2                     979       CMPA.W  D2, A6    
+00007A0A  BAD3                     980       CMPA.W (A3),A5    
+00007A0C  B0E1                     981       CMPA.W  -(A1),A0 
+00007A0E  B2DA                     982       CMPA.W  (A2)+, A1  
+00007A10  B0F8 0023                983       CMPA.W  $23,A0 
+00007A14  B2F8 4444                984       CMPA.W  $4444, A1 
+00007A18  BEF9 44440000            985       CMPA.W  $44440000,A7 
+00007A1E  B8FC 0001                986       CMPA.W  #$1, A4
+00007A22  B8FC 0010                987       CMPA.W  #$10, A4   
+00007A26  BAFC 2000                988       CMPA.W  #$2000,A5
+00007A2A                           989  
+00007A2A  BDC0                     990       CMPA.L  D0, A6      
+00007A2C  B7DC                     991       CMPA.L  (A4)+,A3     
+00007A2E  BDC2                     992       CMPA.L  D2, A6    
+00007A30  BBD3                     993       CMPA.L (A3),A5    
+00007A32  B1E1                     994       CMPA.L  -(A1),A0 
+00007A34  B3DA                     995       CMPA.L  (A2)+, A1  
+00007A36  B1F8 0023                996       CMPA.L  $23,A0 
+00007A3A  B3F8 4444                997       CMPA.L  $4444, A1 
+00007A3E  BFF9 44440000            998       CMPA.L  $44440000,A7 
+00007A44  B9FC 00000001            999       CMPA.L  #$1, A4
+00007A4A  B9FC 00000010           1000       CMPA.L  #$10, A4   
+00007A50  BBFC 00002000           1001       CMPA.L  #$2000,A5 
+00007A56                          1002    
+00007A56                          1003  ***** TEST BAD OPCODE FOR GROUP 1100 AND,MULS-----------------  
+00007A56                          1004  *-----------------  ABCD  -------------------
+00007A56                          1005  *Adds the source operand to the destination operand along with the extend bit,
+00007A56                          1006  *and stores the result in the destination location
+00007A56  C902                    1007      ABCD.B D2, D4      *OPERATION ON BYTE ONLY, DN ->DN AND AN->AN
+00007A58  CD0A                    1008      ABCD.B -(A2),-(A6)
+00007A5A                          1009  *-----------------  EXG EXCHANGE REGISTER-TEST GROUP 1100  -------------------
+00007A5A                          1010  *Exchanges the contents of two 32-bit registers. The instruction performs three
+00007A5A                          1011  *types of exchanges.  
+00007A5A  C744                    1012     EXG   D3, D4
+00007A5C  C34C                    1013     EXG   A1, A4
+00007A5E  C58D                    1014     EXG   D2, A5
+00007A60                          1015     
+00007A60                          1016  **-----------------  MULS SIGNED MULTIPLY TEST GROUP 1100 -------------------
+00007A60                          1017  *Multiplies two signed operands yielding a signed result. This instruction has a
+00007A60                          1018  *word operand form 
+00007A60  C3C2                    1019       MULS.W   D2, D1      * EA CANT BE AN
+00007A62  C5DD                    1020       MULS.W  (A5)+,D2        
+00007A64  CBD3                    1021       MULS.W  (A3),D5    
+00007A66  CBE2                    1022       MULS.W   -(A2),D5 
+00007A68  C9DA                    1023       MULS.W  (A2)+, D4  
+00007A6A  CDF8 0020               1024       MULS.W  $20,D6 
+00007A6E  C9F8 4499               1025       MULS.W  $4499,D4 
+00007A72  CBF9 10000000           1026       MULS.W  $10000000,D5 
+00007A78  C5FC 0009               1027       MULS.W  #$9,D2
+00007A7C  C5FC 0050               1028       MULS.W  #$50,D2   
+00007A80  CFFC 7000               1029       MULS.W #$7000,D7
+00007A84                          1030   
+00007A84                          1031  ***** TEST BAD OPCODE FOR GROUP 1101 ADD,ADDA-----------------
+00007A84                          1032  **-----------------  ADDX ADD EXTENDED TEST GROUP 1101 -------------------
+00007A84  D702                    1033      ADDX.B  D2, D3
+00007A86  DB0C                    1034      ADDX.B  -(A4),-(A5)
+00007A88  DD44                    1035      ADDX.W  D4, D6
+00007A8A  994B                    1036      SUBX.W  -(A3),-(A4)
+00007A8C  9B80                    1037      SUBX.L  D0,D5
+00007A8E  9788                    1038      SUBX.L  -(A0),-(A3)
+00007A90                          1039   
+00007A90                          1040  ***** TEST BAD OPCODE FOR GROUP 1110 LSL, ASL, ROL----------------- 
+00007A90                          1041  **-----------------  ASR TEST GROUP 1110 -------------------
+00007A90  E600                    1042      ASR.B   #3, D0
+00007A92  E801                    1043      ASR.B   #4, D1
+00007A94  E820                    1044      ASR.B   D4, D0
+00007A96                          1045      
+00007A96                          1046       
+00007A96  EE41                    1047      ASR.W   #7,D1
+00007A98  EC42                    1048      ASR.W   #6,D2
+00007A9A  E260                    1049      ASR.W   D1, D0
+00007A9C  E0D5                    1050      ASR.W   (A5)
+00007A9E  E0DF                    1051      ASR.W   (A7)+
+00007AA0  E0E4                    1052      ASR.W   -(A4)
+00007AA2  E0F8 0009               1053      ASR.W   $9
+00007AA6  E0F8 0019               1054      ASR.W   $19
+00007AAA  E0F8 0191               1055      ASR.W   $191
+00007AAE  E0F8 1919               1056      ASR.W   $1919
+00007AB2  E0F9 0FF00000           1057      ASR.W   $0FF00000
+00007AB8  E0F9 55555555           1058      ASR.W   $55555555  
+00007ABE                          1059      
+00007ABE  E082                    1060      ASR.L   #8,D2
+00007AC0  EE86                    1061      ASR.L   #7,D6
+00007AC2  E666                    1062      ASR.W   D3, D6
+00007AC4                          1063  **-----------------  LSR TEST GROUP 1110 -------------------
+00007AC4  EA08                    1064      LSR.B   #5, D0
+00007AC6  EE09                    1065      LSR.B   #7, D1
+00007AC8  EE2B                    1066      LSR.B   D7, D3
+00007ACA                          1067      
+00007ACA                          1068       
+00007ACA  E449                    1069      LSR.W   #2,D1
+00007ACC  E24A                    1070      LSR.W   #1,D2
+00007ACE  EC68                    1071      LSR.W   D6, D0
+00007AD0  E2D1                    1072      LSR.W   (A1)
+00007AD2  E2DB                    1073      LSR.W   (A3)+
+00007AD4  E2E4                    1074      LSR.W   -(A4)
+00007AD6  E2F8 0009               1075      LSR.W   $9
+00007ADA  E2F8 0019               1076      LSR.W   $19
+00007ADE  E2F8 0191               1077      LSR.W   $191
+00007AE2  E2F8 1919               1078      LSR.W   $1919
+00007AE6  E2F9 0FF00000           1079      LSR.W   $0FF00000
+00007AEC  E2F9 55555555           1080      LSR.W   $55555555  
+00007AF2                          1081      
+00007AF2  E08A                    1082      LSR.L   #8,D2
+00007AF4  EE8E                    1083      LSR.L   #7,D6
+00007AF6  E6AE                    1084      LSR.L   D3, D6
+00007AF8                          1085  **-----------------  ROR TEST GROUP 1110 -------------------
+00007AF8  EA18                    1086      ROR.B   #5, D0
+00007AFA  EE19                    1087      ROR.B   #7, D1
+00007AFC  EE3B                    1088      ROR.B   D7, D3
+00007AFE                          1089      
+00007AFE                          1090       
+00007AFE  E459                    1091      ROR.W   #2,D1
+00007B00  E25A                    1092      ROR.W   #1,D2
+00007B02  EC78                    1093      ROR.W   D6, D0
+00007B04  E6D1                    1094      ROR.W   (A1)
+00007B06  E6DB                    1095      ROR.W   (A3)+
+00007B08  E6E4                    1096      ROR.W   -(A4)
+00007B0A  E6F8 0009               1097      ROR.W   $9
+00007B0E  E6F8 0019               1098      ROR.W   $19
+00007B12  E6F8 0191               1099      ROR.W   $191
+00007B16  E6F8 1919               1100      ROR.W   $1919
+00007B1A  E6F9 0FF00000           1101      ROR.W   $0FF00000
+00007B20  E6F9 55555555           1102      ROR.W   $55555555  
+00007B26                          1103      
+00007B26  E09A                    1104      ROR.L   #8,D2
+00007B28  EE9E                    1105      ROR.L   #7,D6
+00007B2A  E6BE                    1106      ROR.L   D3, D6
+00007B2C                          1107      
+00007B2C                          1108  **-----------------  ROXL TEST GROUP 1110 -------------------    
+00007B2C  EA10                    1109      ROXR.B   #5, D0
+00007B2E  EE11                    1110      ROXR.B   #7, D1
+00007B30  EE33                    1111      ROXR.B   D7, D3
+00007B32                          1112      
+00007B32                          1113       
+00007B32  E451                    1114      ROXR.W   #2,D1
+00007B34  E252                    1115      ROXR.W   #1,D2
+00007B36  EC70                    1116      ROXR.W   D6, D0
+00007B38  E4D1                    1117      ROXR.W   (A1)
+00007B3A  E4DB                    1118      ROXR.W   (A3)+
+00007B3C  E4E4                    1119      ROXR.W   -(A4)
+00007B3E  E4F8 0009               1120      ROXR.W   $9
+00007B42  E4F8 0019               1121      ROXR.W   $19
+00007B46  E4F8 0191               1122      ROXR.W   $191
+00007B4A  E4F8 1919               1123      ROXR.W   $1919
+00007B4E  E4F9 0FF00000           1124      ROXR.W   $0FF00000
+00007B54  E4F9 55555555           1125      ROXR.W   $55555555  
+00007B5A                          1126      
+00007B5A  E092                    1127      ROXR.L   #8,D2
+00007B5C  EE96                    1128      ROXR.L   #7,D6
+00007B5E  E6B6                    1129      ROXR.L   D3, D6
+00007B60                          1130      
+00007B60                          1131  **-----------------  ROXL TEST GROUP 1110 -------------------  
+00007B60  EB10                    1132      ROXL.B   #5, D0
+00007B62  EF11                    1133      ROXL.B   #7, D1
+00007B64  EF33                    1134      ROXL.B   D7, D3
+00007B66                          1135      
+00007B66                          1136       
+00007B66  E551                    1137      ROXL.W   #2,D1
+00007B68  E352                    1138      ROXL.W   #1,D2
+00007B6A  ED70                    1139      ROXL.W   D6, D0
+00007B6C  E5D1                    1140      ROXL.W   (A1)
+00007B6E  E5DB                    1141      ROXL.W   (A3)+
+00007B70  E5E4                    1142      ROXL.W   -(A4)
+00007B72  E5F8 0009               1143      ROXL.W   $9
+00007B76  E5F8 0019               1144      ROXL.W   $19
+00007B7A  E5F8 0191               1145      ROXL.W   $191
+00007B7E  E5F8 1919               1146      ROXL.W   $1919
+00007B82  E5F9 0FF00000           1147      ROXL.W   $0FF00000
+00007B88  E5F9 55555555           1148      ROXL.W   $55555555  
+00007B8E                          1149      
+00007B8E  E192                    1150      ROXL.L   #8,D2
+00007B90  EF96                    1151      ROXL.L   #7,D6
+00007B92  E7B6                    1152      ROXL.L   D3, D6
+00007B94  =000000BA               1153  VAR1    EQU $BA    BVAR
+00007B94  =00001234               1154  VAR2    EQU $1234   WVAR
+00007B94  =FFAA1234               1155  VAR3    EQU $FFAA1234  WVAR
+00007B94  =00000012               1156  VAR4    EQU $12     DVAR
+00007B94  =00000000               1157  VAR5    EQU $00000000  ZVAR
+00007B94  =FCFCFCFC               1158  VAR6   EQU $FCFCFCFC    VBIN1
+00007B94                          1159  
+00007B94                          1160      END    START        ; last line of source
 
 No errors detected
 No warnings generated
@@ -552,9 +1170,14 @@ No warnings generated
 SYMBOL TABLE INFORMATION
 Symbol-name         Value
 -------------------------
-JUMP1               725C
-JUMP2               7260
+AAAA                7418
+BBBB                7420
+CCCC                7428
+JUMP1               73EC
+JUMP2               73F0
 START               7000
+TEST1011            78C8
+TESTBSR1011         78D0
 VAR1                BA
 VAR2                1234
 VAR3                FFAA1234
