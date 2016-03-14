@@ -822,14 +822,6 @@ CCCC
      SUBA.W  #$10, A4   
      SUBA.W  #$2000,A5 
      
-*-------------SUBX- TEST FOR 1001------------------------------------------------
-*Subtracts the source operand and the extend bit from the destination operand
-*and stores the result in the destination
-    SUBX.W  D2, D3
-    SUBX.W  -(A2),-(A4)
-    SUBX.L  D2,D5
-    SUBX.L  -(A2),-(A3)
- 
 ***** TEST BAD OPCODE FOR GROUP 1011 BCC, BGT, BLE  - CODE EOR -----------------
 *----------------CODE BRA   TEST FOR GROUP 1011-----------------------------------    
     BRA    TEST1011
@@ -1158,6 +1150,8 @@ VAR5    EQU $00000000  ZVAR
 VAR6   EQU $FCFCFCFC    VBIN1
 
     END    START        ; last line of source
+
+
 
 
 

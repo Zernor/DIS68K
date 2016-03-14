@@ -215,8 +215,8 @@ WORD_ASCII
     	BLE         IS_NUM                          
     	ADDI.B      #$37,D4                        
     	BRA         IS_LET
-IS_NUM                                          * ADD 30 to D4 if num
-    	ADDI.B      #$30,D4             	        
+IS_NUM                                          * ADD 30 to D4 if num         
+        ADDI.B      #$30,D4           	        
     	BRA         IS_LET
 IS_LET
     	ADDI.B      #1,D6               	    * ADD 30 to D4 if letter   
@@ -1361,15 +1361,14 @@ L_DN_EA_1001
     LEA             EA_MODE, A0
     JSR         00(A0,D6) 
     RTS
-  
- 
- 
+
 LOAD_SUB_
     MOVE.B          #'S',(A5)+
     MOVE.B          #'U',(A5)+
     MOVE.B          #'B',(A5)+
     MOVE.B          #'.',(A5)+
     RTS
+        
 ******************* CMP ******************************************************************************************************
 OPCODE1011
     MOVE.B         #'C',(A5)+            
@@ -1650,6 +1649,7 @@ OPCODE1100_EA_SOURCE
     LEA         EA_MODE,A0
     MOVE.W      D6,D5
     ANDI.W      #$7,D6
+    MOVE.B      #$1,D3
     MULU        #6,D6
     JSR         00(A0,D6)
     
@@ -2040,6 +2040,8 @@ W_EA_AN
     MOVE.B          #',',(A5)+
     MOVE.B          #'A',(A5)+
     MOVE.W          D7, D4
+    MOVE.W          D7, D5
+    ROL.W           #7,D5
     ANDI.W          #$0E00, D4
     LSR.W           #4, D4
     LSR.W           #4, D4
@@ -2078,6 +2080,8 @@ L_EA_AN
     MOVE.B          #',',(A5)+
     MOVE.B          #'A',(A5)+
     MOVE.W          D7, D4
+    MOVE.W          D7, D5
+    ROL.W           #7,D5
     ANDI.W          #$0E00, D4
     LSR.W           #4, D4
     LSR.W           #4, D4
@@ -2320,6 +2324,16 @@ SHIFTER_NUM
     RTS
 ****************** DIVU **********************************************************************************    
 OPCODE1000
+    MOVEM.L         D0,-(SP)
+    MOVE.W          D7,D0
+    ANDI.W          #$01C0,D0
+    CMP.W           #$00C0,D0
+    BEQ             DIVU
+    MOVEM.L         (SP)+,D0
+    ADDI.B          #10,BAD_DATA_SWITCH
+    RTS             
+DIVU
+    MOVEM.L        (SP)+,D0    
     MOVE.B         #'D',(A5)+            
     MOVE.B         #'I',(A5)+
     MOVE.B         #'V',(A5)+ 
@@ -2855,6 +2869,7 @@ SIZE100
     BEQ         ReadNextL_100
 ReadNextW_100
     MOVE.B      #'#',(A5)+
+    MOVE.B      #'$',(A5)+
     MOVE.B      #0,D6
     MOVE.W      (A6)+,D5
     MOVE.B      #4,D3
@@ -2862,8 +2877,9 @@ ReadNextW_100
     RTS
 ReadNextL_100
     MOVE.B      #'#',(A5)+
+    MOVE.B      #'$',(A5)+    
     MOVE.B      #0,D6
-    MOVE.W      (A6)+,D5
+    MOVE.L      (A6)+,D5
     MOVE.B      #8,D3
     JSR         LONG_ASCII
     RTS
@@ -3041,6 +3057,8 @@ ENDING_ADD      DS.L    1
 PRINTER         DC.L    1
         
         END    START
+
+
 
 
 
